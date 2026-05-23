@@ -1,0 +1,7 @@
+{
+  "event": "SessionStart",
+  "matcher": "*",
+  "command": "fdh doctor --quiet",
+  "description": "Run fdh doctor at session start to surface drift early.",
+  "timeout_seconds": 10
+}

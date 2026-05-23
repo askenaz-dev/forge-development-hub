@@ -1,9 +1,15 @@
 #!/usr/bin/env python3
-"""Validate skills/registry.yaml against the rules in the hub-skills-registry spec.
+"""Validate the hub catalog (hub/registry.yaml) and curated profiles
+(hub/profiles.yaml) against the schemas in the hub-registry-v2 +
+hub-profiles + hub-skills-registry specs.
+
+Also validates that skills/registry.yaml is in sync with hub/registry.yaml
+(it is a generated mirror; if stale, fail and direct the user to the
+regen script).
 
 Exit codes:
-    0  registry valid
-    1  registry has one or more errors (printed to stderr)
+    0  registry + profiles + mirror valid
+    1  one or more validation errors (printed to stderr)
     2  usage error (file not found, YAML parse error)
 
 Run from the hub root:
@@ -28,16 +34,27 @@ except ImportError:
     sys.exit(2)
 
 REPO_ROOT = Path(__file__).resolve().parent.parent
-REGISTRY_PATH = REPO_ROOT / "skills" / "registry.yaml"
-SKILLS_DIR = REPO_ROOT / "skills"
+HUB_REGISTRY = REPO_ROOT / "hub" / "registry.yaml"
+HUB_PROFILES = REPO_ROOT / "hub" / "profiles.yaml"
+MIRROR_REGISTRY = REPO_ROOT / "skills" / "registry.yaml"
 
+# kind -> directory under repo root that hosts that kind's components
+KIND_DIRS: dict[str, Path] = {
+    "skill": REPO_ROOT / "skills",
+    "rule": REPO_ROOT / "rules",
+    "agent": REPO_ROOT / "agents",
+    "hook": REPO_ROOT / "hooks",
+}
+SUPPORTED_KINDS = set(KIND_DIRS.keys())
 SUPPORTED_AGENTS = {"claude-code", "codex", "copilot", "opencode"}
-SUPPORTED_SCHEMA_VERSIONS = {1}
+SUPPORTED_REGISTRY_SCHEMA_VERSIONS = {2}
+SUPPORTED_PROFILES_SCHEMA_VERSIONS = {1}
 KEBAB = re.compile(r"^[a-z][a-z0-9]*(-[a-z0-9]+)*$")
 SEMVER = re.compile(r"^\d+\.\d+\.\d+(?:-[\w.]+)?$")
 
-REQUIRED_SKILL_FIELDS = {
+REQUIRED_COMPONENT_FIELDS = {
     "name": str,
+    "kind": str,
     "description": str,
     "owner_team": str,
     "tags": list,
@@ -48,170 +65,398 @@ REQUIRED_SKILL_FIELDS = {
 }
 
 
-def fail(errors: list[str]) -> None:
-    for err in errors:
-        print(f"  ✗ {err}", file=sys.stderr)
-    print(f"\nregistry invalid: {len(errors)} error(s)", file=sys.stderr)
-    sys.exit(1)
+# ---------------------------------------------------------------------------
+# Registry validation
+# ---------------------------------------------------------------------------
 
 
-def validate_top_level(data: dict) -> list[str]:
+def validate_registry_top_level(data: object) -> list[str]:
     errors: list[str] = []
     if not isinstance(data, dict):
-        return ["top-level must be a mapping"]
+        return ["hub/registry.yaml: top-level must be a mapping"]
     if "schema_version" not in data:
-        errors.append("missing top-level field: schema_version")
+        errors.append("hub/registry.yaml: missing top-level field `schema_version`")
     elif not isinstance(data["schema_version"], int):
-        errors.append(f"schema_version must be int, got {type(data['schema_version']).__name__}")
-    elif data["schema_version"] not in SUPPORTED_SCHEMA_VERSIONS:
         errors.append(
-            f"unsupported schema_version: {data['schema_version']} "
-            f"(supported: {sorted(SUPPORTED_SCHEMA_VERSIONS)})"
+            f"hub/registry.yaml: `schema_version` must be int, "
+            f"got {type(data['schema_version']).__name__}"
+        )
+    elif data["schema_version"] not in SUPPORTED_REGISTRY_SCHEMA_VERSIONS:
+        errors.append(
+            f"hub/registry.yaml: unsupported `schema_version` "
+            f"{data['schema_version']} (supported: "
+            f"{sorted(SUPPORTED_REGISTRY_SCHEMA_VERSIONS)}). "
+            f"Run: python tools/migrate-registry-v1-v2.py"
         )
     if "hub_version" not in data:
-        errors.append("missing top-level field: hub_version")
+        errors.append("hub/registry.yaml: missing top-level field `hub_version`")
     elif not isinstance(data["hub_version"], str) or not data["hub_version"].strip():
-        errors.append("hub_version must be a non-empty string")
-    if "skills" not in data:
-        errors.append("missing top-level field: skills")
-    elif not isinstance(data["skills"], list):
-        errors.append("skills must be a list")
+        errors.append("hub/registry.yaml: `hub_version` must be a non-empty string")
+    if "components" not in data:
+        errors.append("hub/registry.yaml: missing top-level field `components` (a list)")
+    elif not isinstance(data["components"], list):
+        errors.append("hub/registry.yaml: `components` must be a list")
+    if "skills" in data and isinstance(data.get("skills"), list):
+        errors.append(
+            "hub/registry.yaml: top-level `skills:` is the v1 schema. v2 uses "
+            "`components:` (with `kind:` per entry). "
+            "Run: python tools/migrate-registry-v1-v2.py"
+        )
     return errors
 
 
-def validate_skill_entry(idx: int, entry: object) -> list[str]:
+def validate_component_entry(idx: int, entry: object) -> list[str]:
     if not isinstance(entry, dict):
-        return [f"skills[{idx}]: must be a mapping, got {type(entry).__name__}"]
+        return [f"components[{idx}]: must be a mapping, got {type(entry).__name__}"]
     errors: list[str] = []
-    ident = entry.get("name", f"<index {idx}>")
-    for field, expected_type in REQUIRED_SKILL_FIELDS.items():
+    ident_name = entry.get("name", f"<index {idx}>")
+    ident_kind = entry.get("kind", "<no-kind>")
+    ident = f"{ident_kind}:{ident_name}"
+
+    for field, expected_type in REQUIRED_COMPONENT_FIELDS.items():
         if field not in entry:
-            errors.append(f"skills[{ident}]: missing field '{field}'")
+            errors.append(f"components[{ident}]: missing field `{field}`")
             continue
         value = entry[field]
         if not isinstance(value, expected_type):
             errors.append(
-                f"skills[{ident}]: field '{field}' must be {expected_type.__name__}, "
-                f"got {type(value).__name__}"
+                f"components[{ident}]: field `{field}` must be "
+                f"{expected_type.__name__}, got {type(value).__name__}"
             )
 
-    if isinstance(entry.get("name"), str) and not KEBAB.match(entry["name"]):
-        errors.append(f"skills[{ident}]: 'name' must be kebab-case (e.g. design-system)")
-    if isinstance(entry.get("description"), str) and not entry["description"].strip():
-        errors.append(f"skills[{ident}]: 'description' must be non-empty")
-    if isinstance(entry.get("owner_team"), str) and not entry["owner_team"].strip():
-        errors.append(f"skills[{ident}]: 'owner_team' must be non-empty")
-    if isinstance(entry.get("min_fdh_version"), str) and not SEMVER.match(entry["min_fdh_version"]):
+    name = entry.get("name")
+    if isinstance(name, str) and not KEBAB.match(name):
+        errors.append(f"components[{ident}]: `name` must be kebab-case (e.g. design-system)")
+
+    kind = entry.get("kind")
+    if isinstance(kind, str) and kind not in SUPPORTED_KINDS:
         errors.append(
-            f"skills[{ident}]: 'min_fdh_version' must be semver "
-            f"(got '{entry['min_fdh_version']}')"
+            f"components[{ident}]: unknown `kind` '{kind}' "
+            f"(supported: {sorted(SUPPORTED_KINDS)})"
+        )
+
+    desc = entry.get("description")
+    if isinstance(desc, str) and not desc.strip():
+        errors.append(f"components[{ident}]: `description` must be non-empty")
+    owner = entry.get("owner_team")
+    if isinstance(owner, str) and not owner.strip():
+        errors.append(f"components[{ident}]: `owner_team` must be non-empty")
+    min_ver = entry.get("min_fdh_version")
+    if isinstance(min_ver, str) and not SEMVER.match(min_ver):
+        errors.append(
+            f"components[{ident}]: `min_fdh_version` must be semver "
+            f"(got '{min_ver}')"
         )
 
     agents = entry.get("agents_supported")
     if isinstance(agents, list):
         if len(agents) == 0:
-            errors.append(f"skills[{ident}]: 'agents_supported' must be non-empty")
+            errors.append(f"components[{ident}]: `agents_supported` must be non-empty")
         unknown = [a for a in agents if a not in SUPPORTED_AGENTS]
         if unknown:
             errors.append(
-                f"skills[{ident}]: 'agents_supported' has unknown values {unknown} "
-                f"(allowed: {sorted(SUPPORTED_AGENTS)})"
+                f"components[{ident}]: `agents_supported` has unknown values "
+                f"{unknown} (allowed: {sorted(SUPPORTED_AGENTS)})"
+            )
+
+    # path ↔ kind coherence
+    path_str = entry.get("path")
+    if isinstance(path_str, str) and isinstance(kind, str) and kind in SUPPORTED_KINDS:
+        expected_prefix = KIND_DIRS[kind].name + "/"  # e.g. "rules/"
+        if not path_str.startswith(expected_prefix):
+            errors.append(
+                f"components[{ident}]: path '{path_str}' inconsistent with "
+                f"kind '{kind}' (expected prefix '{expected_prefix}')"
             )
 
     return errors
 
 
-def validate_paths_and_orphans(entries: list[dict]) -> list[str]:
+def validate_uniqueness_per_kind(entries: list) -> list[str]:
+    """Enforce (kind, name) uniqueness. Same name in different kinds is allowed
+    by spec but flagged here as a separate duplicate-by-kind check."""
+    errors: list[str] = []
+    seen: dict[tuple, int] = {}
+    for idx, entry in enumerate(entries):
+        if not isinstance(entry, dict):
+            continue
+        name = entry.get("name")
+        kind = entry.get("kind")
+        if not (isinstance(name, str) and isinstance(kind, str)):
+            continue
+        key = (kind, name)
+        if key in seen:
+            errors.append(
+                f"duplicate component {kind}:{name} at indices "
+                f"{seen[key]} and {idx}"
+            )
+        else:
+            seen[key] = idx
+    return errors
+
+
+def validate_paths_and_orphans(entries: list) -> list[str]:
+    """Verify each entry's path exists + detect orphan directories under any
+    of the four kind dirs. An orphan is a directory under skills/, rules/,
+    agents/, hooks/ that has no entry in registry pointing at it."""
     errors: list[str] = []
     declared_paths: dict[str, str] = {}
-    declared_dirs: set[Path] = set()
+    declared_dirs_per_kind: dict[str, set[Path]] = {k: set() for k in SUPPORTED_KINDS}
+
     for entry in entries:
         if not isinstance(entry, dict):
             continue
         name = entry.get("name", "<unnamed>")
-        path = entry.get("path")
-        if not isinstance(path, str):
+        kind = entry.get("kind")
+        path_str = entry.get("path")
+        if not isinstance(path_str, str) or not isinstance(kind, str):
             continue
-        abs_path = (REPO_ROOT / path).resolve()
+        if kind not in SUPPORTED_KINDS:
+            continue
+        ident = f"{kind}:{name}"
+        abs_path = (REPO_ROOT / path_str).resolve()
         if not abs_path.exists():
-            errors.append(f"skills[{name}]: declared path '{path}' does not exist")
+            errors.append(
+                f"components[{ident}]: declared path '{path_str}' does not exist"
+            )
             continue
         if not abs_path.is_dir():
-            errors.append(f"skills[{name}]: declared path '{path}' is not a directory")
+            errors.append(
+                f"components[{ident}]: declared path '{path_str}' is not a directory"
+            )
             continue
         try:
-            abs_path.relative_to(SKILLS_DIR.resolve())
+            abs_path.relative_to(KIND_DIRS[kind].resolve())
         except ValueError:
             errors.append(
-                f"skills[{name}]: declared path '{path}' must be under skills/"
+                f"components[{ident}]: declared path '{path_str}' must be "
+                f"under '{KIND_DIRS[kind].name}/'"
             )
             continue
-        if path in declared_paths:
+        if path_str in declared_paths:
             errors.append(
-                f"skills[{name}]: path '{path}' already declared by "
-                f"skills[{declared_paths[path]}]"
+                f"components[{ident}]: path '{path_str}' already declared "
+                f"by components[{declared_paths[path_str]}]"
             )
-        declared_paths[path] = name
-        declared_dirs.add(abs_path)
+        declared_paths[path_str] = ident
+        declared_dirs_per_kind[kind].add(abs_path)
 
-    if SKILLS_DIR.exists():
-        for child in SKILLS_DIR.iterdir():
+    # Orphan detection per kind directory
+    for kind, kind_dir in KIND_DIRS.items():
+        if not kind_dir.exists():
+            continue
+        for child in kind_dir.iterdir():
             if not child.is_dir():
                 continue
-            if child.resolve() not in declared_dirs:
+            if child.resolve() not in declared_dirs_per_kind[kind]:
                 rel = child.relative_to(REPO_ROOT)
                 errors.append(
-                    f"orphan: directory '{rel}' has no entry in registry.yaml "
+                    f"orphan: directory '{rel}' has no entry in "
+                    f"hub/registry.yaml with kind='{kind}' "
                     f"(add an entry or remove the directory)"
                 )
 
     return errors
 
 
-def validate_unique_names(entries: list[dict]) -> list[str]:
-    errors: list[str] = []
-    seen: dict[str, int] = {}
-    for idx, entry in enumerate(entries):
+# ---------------------------------------------------------------------------
+# Profiles validation
+# ---------------------------------------------------------------------------
+
+
+def _index_components_by_kind(entries: list) -> dict[str, set[str]]:
+    idx: dict[str, set[str]] = {k: set() for k in SUPPORTED_KINDS}
+    for entry in entries:
         if not isinstance(entry, dict):
             continue
         name = entry.get("name")
-        if not isinstance(name, str):
-            continue
-        if name in seen:
-            errors.append(
-                f"duplicate skill name '{name}' at indices {seen[name]} and {idx}"
-            )
-        else:
-            seen[name] = idx
+        kind = entry.get("kind")
+        if isinstance(name, str) and isinstance(kind, str) and kind in SUPPORTED_KINDS:
+            idx[kind].add(name)
+    return idx
+
+
+def validate_profiles_top_level(data: object) -> list[str]:
+    errors: list[str] = []
+    if not isinstance(data, dict):
+        return ["hub/profiles.yaml: top-level must be a mapping"]
+    if "schema_version" not in data:
+        errors.append("hub/profiles.yaml: missing top-level field `schema_version`")
+    elif data["schema_version"] not in SUPPORTED_PROFILES_SCHEMA_VERSIONS:
+        errors.append(
+            f"hub/profiles.yaml: unsupported `schema_version` "
+            f"{data.get('schema_version')} "
+            f"(supported: {sorted(SUPPORTED_PROFILES_SCHEMA_VERSIONS)})"
+        )
+    if "profiles" not in data:
+        errors.append("hub/profiles.yaml: missing top-level field `profiles`")
+    elif not isinstance(data["profiles"], dict):
+        errors.append("hub/profiles.yaml: `profiles` must be a mapping")
     return errors
 
 
+def validate_profile_entry(
+    name: str,
+    profile: object,
+    components_idx: dict[str, set[str]],
+) -> list[str]:
+    if not isinstance(profile, dict):
+        return [f"profiles[{name}]: must be a mapping, got {type(profile).__name__}"]
+    errors: list[str] = []
+    if "description" not in profile:
+        errors.append(f"profiles[{name}]: missing `description`")
+    elif not isinstance(profile["description"], str) or not profile["description"].strip():
+        errors.append(f"profiles[{name}]: `description` must be a non-empty string")
+    if "owner_team" not in profile:
+        errors.append(f"profiles[{name}]: missing `owner_team`")
+    elif not isinstance(profile["owner_team"], str) or not profile["owner_team"].strip():
+        errors.append(f"profiles[{name}]: `owner_team` must be a non-empty string")
+
+    component_lists = {
+        "skill": profile.get("skills", []),
+        "rule": profile.get("rules", []),
+        "agent": profile.get("agents", []),
+        "hook": profile.get("hooks", []),
+    }
+    total_refs = 0
+    for kind, refs in component_lists.items():
+        if not isinstance(refs, list):
+            errors.append(
+                f"profiles[{name}]: `{kind}s` must be a list, "
+                f"got {type(refs).__name__}"
+            )
+            continue
+        for ref in refs:
+            if not isinstance(ref, str):
+                errors.append(
+                    f"profiles[{name}].{kind}s: entries must be strings, "
+                    f"got {type(ref).__name__}"
+                )
+                continue
+            total_refs += 1
+            if ref not in components_idx.get(kind, set()):
+                errors.append(
+                    f"profiles[{name}].{kind}s: references unknown {kind} "
+                    f"'{ref}' (not present in hub/registry.yaml with kind='{kind}')"
+                )
+
+    if total_refs == 0:
+        errors.append(
+            f"profiles[{name}]: must reference at least one component "
+            f"(any of skills/rules/agents/hooks)"
+        )
+
+    return errors
+
+
+# ---------------------------------------------------------------------------
+# Mirror sync check
+# ---------------------------------------------------------------------------
+
+
+def validate_mirror_in_sync() -> list[str]:
+    """Re-import the regen script and use its render to compare."""
+    if not MIRROR_REGISTRY.exists():
+        return ["skills/registry.yaml: mirror file missing — run "
+                "`python tools/regenerate-skills-registry-mirror.py`"]
+    try:
+        import importlib.util
+        spec = importlib.util.spec_from_file_location(
+            "_regen_mirror",
+            REPO_ROOT / "tools" / "regenerate-skills-registry-mirror.py",
+        )
+        if spec is None or spec.loader is None:
+            return ["could not import regenerate-skills-registry-mirror.py"]
+        regen_mod = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(regen_mod)
+        expected = regen_mod.render_mirror()
+        actual = MIRROR_REGISTRY.read_text(encoding="utf-8")
+        if expected != actual:
+            return [
+                "skills/registry.yaml: stale mirror of hub/registry.yaml. "
+                "Run: python tools/regenerate-skills-registry-mirror.py"
+            ]
+        return []
+    except Exception as exc:
+        return [f"mirror sync check failed: {exc}"]
+
+
+# ---------------------------------------------------------------------------
+# Main
+# ---------------------------------------------------------------------------
+
+
+def _fail(errors: list[str]) -> None:
+    for err in errors:
+        print(f"  ✗ {err}", file=sys.stderr)
+    print(f"\nvalidation failed: {len(errors)} error(s)", file=sys.stderr)
+    sys.exit(1)
+
+
 def main() -> int:
-    if not REGISTRY_PATH.exists():
-        print(f"error: {REGISTRY_PATH} does not exist", file=sys.stderr)
+    if not HUB_REGISTRY.exists():
+        print(f"error: {HUB_REGISTRY} does not exist", file=sys.stderr)
         return 2
     try:
-        data = yaml.safe_load(REGISTRY_PATH.read_text(encoding="utf-8"))
+        registry = yaml.safe_load(HUB_REGISTRY.read_text(encoding="utf-8"))
     except yaml.YAMLError as exc:
-        print(f"error: failed to parse {REGISTRY_PATH}: {exc}", file=sys.stderr)
+        print(f"error: failed to parse {HUB_REGISTRY}: {exc}", file=sys.stderr)
         return 2
 
     errors: list[str] = []
-    errors.extend(validate_top_level(data))
+    errors.extend(validate_registry_top_level(registry))
 
-    if isinstance(data, dict) and isinstance(data.get("skills"), list):
-        entries = data["skills"]
-        for idx, entry in enumerate(entries):
-            errors.extend(validate_skill_entry(idx, entry))
-        errors.extend(validate_unique_names(entries))
-        errors.extend(validate_paths_and_orphans(entries))
+    components: list = []
+    if isinstance(registry, dict) and isinstance(registry.get("components"), list):
+        components = registry["components"]
+        for idx, entry in enumerate(components):
+            errors.extend(validate_component_entry(idx, entry))
+        errors.extend(validate_uniqueness_per_kind(components))
+        errors.extend(validate_paths_and_orphans(components))
+
+    # Profiles validation (optional file)
+    if HUB_PROFILES.exists():
+        try:
+            profiles_data = yaml.safe_load(HUB_PROFILES.read_text(encoding="utf-8"))
+        except yaml.YAMLError as exc:
+            errors.append(f"hub/profiles.yaml: failed to parse: {exc}")
+            profiles_data = None
+        if profiles_data is not None:
+            errors.extend(validate_profiles_top_level(profiles_data))
+            if isinstance(profiles_data, dict) and isinstance(
+                profiles_data.get("profiles"), dict
+            ):
+                components_idx = _index_components_by_kind(components)
+                for profile_name, profile in profiles_data["profiles"].items():
+                    errors.extend(
+                        validate_profile_entry(profile_name, profile, components_idx)
+                    )
+
+    # Mirror sync check (only if registry passed top-level validation)
+    if not errors:
+        errors.extend(validate_mirror_in_sync())
 
     if errors:
-        fail(errors)
+        _fail(errors)
 
-    skill_count = len(data.get("skills", [])) if isinstance(data, dict) else 0
-    print(f"registry valid: schema_version={data.get('schema_version')}, "
-          f"hub_version={data.get('hub_version')}, skills={skill_count}")
+    component_count = len(components)
+    by_kind: dict[str, int] = {}
+    for entry in components:
+        if isinstance(entry, dict):
+            k = entry.get("kind")
+            if isinstance(k, str):
+                by_kind[k] = by_kind.get(k, 0) + 1
+    by_kind_str = ", ".join(f"{k}={v}" for k, v in sorted(by_kind.items())) or "none"
+    profiles_count = (
+        len(yaml.safe_load(HUB_PROFILES.read_text(encoding="utf-8")).get("profiles", {}))
+        if HUB_PROFILES.exists()
+        else 0
+    )
+    print(
+        f"registry valid: schema_version={registry.get('schema_version')}, "
+        f"hub_version={registry.get('hub_version')}, "
+        f"components={component_count} ({by_kind_str}), profiles={profiles_count}"
+    )
     return 0
 
 

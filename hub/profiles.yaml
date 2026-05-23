@@ -1,0 +1,50 @@
+# profiles.yaml — curated bundles of hub components.
+#
+# A "profile" is a named bundle of components (skills, rules, agents, hooks)
+# that a consumer can reference from its `.fdh/manifest.yaml` with a single
+# line (`profile: <name>`) instead of enumerating every component.
+#
+# Authored by hub admins (typically `dx-platform`); referenced by consumers.
+#
+# Top-level fields:
+#   schema_version  Integer. Current: 1.
+#   profiles        Mapping of <profile-name> -> profile definition.
+#
+# Profile fields:
+#   description   One-line human-readable summary.
+#   owner_team    Team responsible for curating this profile.
+#   skills        List of component names with `kind: skill` in registry.yaml.
+#                 Optional; default empty.
+#   rules         List of component names with `kind: rule`. Optional.
+#   agents        List of component names with `kind: agent`. Optional.
+#   hooks         List of component names with `kind: hook`. Optional.
+#
+# A profile MUST reference at least one component (sum of skills/rules/agents/
+# hooks >= 1). Each name MUST resolve to an existing entry of the matching
+# kind in registry.yaml — CI validates.
+#
+# Consumers reference a profile and may extend or restrict it:
+#
+#   # consumer .fdh/manifest.yaml
+#   profile: minimal
+#   extends:
+#     add_skills: [i18n-helper]      # add on top of the profile
+#     remove_rules: [no-console-log] # remove from the profile
+
+schema_version: 1
+
+profiles:
+  # Profile `minimal` is the reference implementation of a profile: a curated
+  # bundle that exercises all four primitives end-to-end (skill + rule + agent
+  # + hook). Consumers can reference it from `.fdh/manifest.yaml` with a single
+  # `profile: minimal` line, then extend/restrict via `extends:`.
+  #
+  # It also serves as the smoke-test fixture for the v2 schema — if `minimal`
+  # validates clean, every kind + cross-reference path is exercised.
+  minimal:
+    description: "Starter pack exercising all four hub primitives end-to-end."
+    owner_team: dx-platform
+    skills: [design-system]
+    rules: [no-console-log]
+    agents: [falabella-pr-writer]
+    hooks: [doctor-on-session-start]

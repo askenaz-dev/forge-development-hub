@@ -1,0 +1,4 @@
+# Fixture: manifest references a profile that does not exist in hub/profiles.yaml.
+# Expected: validate-manifest.py exits 1 with error naming the unknown profile.
+schema_version: 1
+profile: does-not-exist

@@ -1,0 +1,4 @@
+# Fixture: manifest using `profile: minimal` without extensions.
+# Expected: validate-manifest.py exits 0.
+schema_version: 1
+profile: minimal

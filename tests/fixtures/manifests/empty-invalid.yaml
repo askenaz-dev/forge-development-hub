@@ -1,0 +1,3 @@
+# Fixture: manifest declares schema_version but no profile/components/extends.
+# Expected: validate-manifest.py exits 1 with error "must declare at least one".
+schema_version: 1

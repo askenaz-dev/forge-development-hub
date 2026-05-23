@@ -1,0 +1,4 @@
+# Fixture: manifest declares an unsupported schema_version.
+# Expected: validate-manifest.py exits 1 with error naming the supported version.
+schema_version: 99
+profile: minimal

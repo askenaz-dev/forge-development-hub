@@ -4,13 +4,34 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## What this repo is
 
-A workflow hub, not an application. There is no application source code here — only an OpenSpec workspace (`openspec/`), the same set of OpenSpec skills mirrored across four AI coding tool ecosystems, and a top-level `skills/` directory holding canonical, agent-agnostic skills (e.g. `skills/design-system/`) that the future `fdh init` CLI will copy into consumer projects. Real work begins by creating a change under `openspec/changes/<name>/`; the codebase the change targets lives elsewhere or is added later.
+A workflow hub, not an application. There is no application source code here — only an OpenSpec workspace (`openspec/`), the same set of OpenSpec skills mirrored across four AI coding tool ecosystems, and four top-level directories of canonical, agent-agnostic **components** (`skills/`, `rules/`, `agents/`, `hooks/`) that the future `fdh` CLI will copy into consumer projects. Real work begins by creating a change under `openspec/changes/<name>/`; the codebase the change targets lives elsewhere or is added later.
 
-## Canonical skills (`skills/`)
+## Canonical components — four primitives
 
-`skills/<name>/` directories at the repo root hold skills designed to be consumed by any AI coding agent. They are NOT mirrored into the four ecosystem directories — the future `fdh init` CLI is responsible for copying and adapting them to the developer's chosen agent (`.claude/skills/`, `.codex/skills/`, `.github/prompts/`, `.opencode/commands/`). See each skill's `README.md` for the manual install path until `fdh init` exists.
+Since `hub-v2-manifest-state-profiles`, the hub publishes **four primitives** discriminated by a `kind` field in the catalog:
 
-The authoritative catalog of published skills lives in `skills/registry.yaml`. Hub admins edit it to declare each skill's metadata (`description`, `owner_team`, `tags`, `default`, `min_fdh_version`, `agents_supported`, `path`). The `default: true|false` flag here is the single source of truth — any `default` declared inside a skill's own `SKILL.md` frontmatter is ignored by `fdh init`. CI validates the registry on every PR (`.github/workflows/validate-registry.yml`, runs `tools/validate-registry.py`); see `skills/README.md` for the "add a new skill" flow.
+| Primitive | Where it lives | What it is | Materialized into the consumer |
+|---|---|---|---|
+| `skill`  | `skills/<name>/SKILL.md` | On-demand workflow guidance (procedures, references) | `.claude/skills/<name>/` (and equivalents) |
+| `rule`   | `rules/<name>/RULE.md`   | Always-on guideline scoped by glob | `.claude/rules/<name>.md` (and equivalents) |
+| `agent`  | `agents/<name>/AGENT.md` | Specialized subagent (system prompt + tools + template) | `.claude/agents/<name>.md` |
+| `hook`   | `hooks/<name>/{HOOK.md, hook.json}` | Event-triggered command (SessionStart, PreToolUse, etc.) | Managed block inside `.claude/settings.json` |
+
+The authoritative catalog lives in **`hub/registry.yaml`** (schema v2). Hub admins edit it to declare each component's metadata (`name`, `kind`, `description`, `owner_team`, `tags`, `default`, `min_fdh_version`, `agents_supported`, `path`). The `default: true|false` flag here is the single source of truth — any `default` declared inside a component's own frontmatter is ignored by `fdh init`. CI validates the registry on every PR (`.github/workflows/validate-registry.yml`, runs `python tools/validate-registry.py`); see `hub/README.md` for the "add a new component" flow.
+
+Curated bundles of components live in **`hub/profiles.yaml`** (a profile references components from one or more kinds). A consumer references a profile from its `.fdh/manifest.yaml` and may extend or restrict it.
+
+`skills/registry.yaml` is a generated mirror of `hub/registry.yaml` kept for 60 days post-`hub-v2-manifest-state-profiles` apply; **do not edit it directly** — edit `hub/registry.yaml` and run `python tools/regenerate-skills-registry-mirror.py`.
+
+## Consumer contract — manifest + lock + state
+
+A consumer project that adopts FDH owns three artifacts (schemas documented in [`hub/CONSUMER-CONTRACT.md`](hub/CONSUMER-CONTRACT.md)):
+
+- **`.fdh/manifest.yaml`** — committed; declarative intent ("I want profile X plus these extras"). Edited by humans.
+- **`.fdh/lock.yaml`** — committed; reproducible snapshot of the last `fdh install` (`hub_commit`, expanded components, integrity hashes). Written by `fdh install`.
+- **`~/.fdh/state.json`** — NOT committed; per-machine inventory enabling `fdh list-installed`, `fdh repair`, `fdh uninstall --dry-run`. Written by every `fdh` command.
+
+Each installed component in a consumer carries a `.fdh-managed.yaml` marker so `fdh doctor` can detect drift between the lockfile, the markers, and the disk. A sectioned block in `.gitignore` (`# >>> fdh:managed-paths >>>` … `# <<< fdh:managed-paths <<<`) automatically excludes materialized component directories from git; everything outside that block is the developer's own.
 
 The four mirrored ecosystems are kept structurally identical:
 
