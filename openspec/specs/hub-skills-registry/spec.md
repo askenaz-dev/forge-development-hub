@@ -2,33 +2,33 @@
 
 ## Purpose
 
-skills/registry.yaml como catálogo autoritativo del hub: schema, validación en CI, default flag controlado por admin, agents_supported, min_fdh_version, paths verificados.
+Catálogo autoritativo del hub (hub/registry.yaml, schema v2) listando componentes de las cuatro primitivas (skills, rules, agents, hooks) discriminados por `kind`. Cubre: schema y campos requeridos, validación en CI (kind ↔ directorio, paths existentes, huérfanos, profiles), default flag controlado por admin, agents_supported, min_fdh_version, registro inicial mínimo, obligatoriedad de `kind`. El archivo legacy `skills/registry.yaml` se mantiene como mirror generado por 60 días post `hub-v2-manifest-state-profiles`.
 
 ## Requirements
 
 ### Requirement: Archivo `skills/registry.yaml` como catálogo autoritativo del hub
 
-El hub SHALL contener un único archivo `skills/registry.yaml` en la raíz del directorio `skills/` que liste todos los skills disponibles, declare la metadata curada por el admin y sirva como única fuente de verdad para `fdh init` y `fdh update`.
+El hub SHALL contener un único archivo de catálogo en la raíz que liste todos los componentes distribuibles (skills, rules, agents, hooks), declare la metadata curada por el admin y sirva como única fuente de verdad para `fdh init`, `fdh install` y `fdh update`. La ubicación final del archivo (`skills/registry.yaml` actual vs `hub/registry.yaml` nuevo) se determina en `design.md` del change `hub-v2-manifest-state-profiles`; ambas ubicaciones SHALL ser soportadas durante una ventana de migración con redirect/symlink.
 
-#### Scenario: Estructura del archivo
+#### Scenario: Estructura del archivo v2
 
-- **WHEN** un admin abre `skills/registry.yaml`
-- **THEN** encuentra los campos top-level `schema_version` (entero), `hub_version` (string semver/calver) y `skills` (lista), donde cada entry de `skills` tiene como mínimo `name`, `description`, `owner_team`, `tags`, `default`, `min_fdh_version`, `agents_supported` y `path`
+- **WHEN** un admin abre el catálogo del hub
+- **THEN** encuentra los campos top-level `schema_version: 2`, `hub_version` (string semver/calver) y una lista de entries donde cada entry tiene como mínimo `name`, `kind` (`skill | rule | agent | hook`), `description`, `owner_team`, `tags`, `default`, `min_fdh_version`, `agents_supported` y `path`
 
-#### Scenario: `name` unico y kebab-case
+#### Scenario: `name` único dentro del mismo `kind`
 
-- **WHEN** dos entries en `skills` tienen el mismo `name`
-- **THEN** la validación del registry falla con un error que identifica el duplicado por `name`
+- **WHEN** dos entries en el catálogo tienen el mismo `name` y el mismo `kind`
+- **THEN** la validación del registry falla con un error que identifica el duplicado por `<kind>:<name>`
 
-#### Scenario: `path` debe existir como directorio bajo `skills/`
+#### Scenario: `path` debe existir como directorio bajo el dir correcto del kind
 
-- **WHEN** un entry declara `path: skills/foo` y el directorio `skills/foo/` no existe
+- **WHEN** un entry declara `kind: rule, name: foo, path: rules/foo` y el directorio `rules/foo/` no existe
 - **THEN** la validación del registry falla nombrando explícitamente la entry y la ruta faltante
 
-#### Scenario: Cada `skills/<name>/` debe tener entry en el registry
+#### Scenario: Cada `<kind-dir>/<name>/` debe tener entry en el registry
 
-- **WHEN** existe `skills/bar/` pero no hay entry con `path: skills/bar` (ni `name: bar`)
-- **THEN** la validación del registry falla nombrando el directorio huérfano
+- **WHEN** existe `rules/bar/` pero no hay entry con `kind: rule, path: rules/bar`
+- **THEN** la validación del registry falla nombrando el directorio huérfano y su kind esperado
 
 ### Requirement: Bandera `default` controlada exclusivamente por `registry.yaml`
 
@@ -79,22 +79,27 @@ Cada entry SHALL declarar `min_fdh_version` (semver); si la versión instalada d
 
 ### Requirement: Validación en CI del hub bloquea merges con registry inválido
 
-El hub SHALL ejecutar en CI una validación del `registry.yaml` (vía `fdh validate-registry` o equivalente) que bloquee el merge de cualquier PR donde el registry no satisfaga las reglas: nombres únicos, paths existentes, directorios huérfanos detectados, schema_version reconocido, listas no vacías donde corresponde.
+El hub SHALL ejecutar en CI una validación del catálogo (vía `fdh validate-registry` o `tools/validate-registry.py` durante migración) que bloquee el merge de cualquier PR donde el catálogo no satisfaga las reglas: nombres únicos por kind, paths existentes y coherentes con el kind, directorios huérfanos detectados en los cuatro dirs (`skills/`, `rules/`, `agents/`, `hooks/`), `schema_version` reconocido, listas no vacías donde corresponde, y validez de profiles referenciados desde `hub/profiles.yaml`.
 
-#### Scenario: PR con duplicado
+#### Scenario: PR con duplicado dentro de un kind
 
-- **WHEN** un PR introduce un `registry.yaml` con dos entries con `name: design-system`
-- **THEN** el CI del hub falla con un error específico nombrando el duplicado, y el merge queda bloqueado
+- **WHEN** un PR introduce un catálogo con dos entries `kind: skill, name: design-system`
+- **THEN** el CI del hub falla con un error específico nombrando el duplicado `skill:design-system`, y el merge queda bloqueado
 
-#### Scenario: PR con directorio huérfano
+#### Scenario: PR con directorio huérfano en cualquiera de los 4 dirs
 
-- **WHEN** un PR agrega `skills/new-skill/` pero olvida agregar el entry correspondiente en `registry.yaml`
-- **THEN** el CI del hub falla nombrando el directorio huérfano, y el merge queda bloqueado
+- **WHEN** un PR agrega `hooks/orphan/` pero olvida agregar el entry correspondiente en el catálogo
+- **THEN** el CI del hub falla nombrando el directorio huérfano y su kind esperado (`hook`), y el merge queda bloqueado
 
 #### Scenario: PR con entry sin directorio
 
-- **WHEN** un PR agrega un entry para `name: ghost` pero no crea `skills/ghost/`
+- **WHEN** un PR agrega un entry `kind: agent, name: ghost, path: agents/ghost` pero no crea `agents/ghost/`
 - **THEN** el CI del hub falla nombrando la entry sin path real, y el merge queda bloqueado
+
+#### Scenario: PR con profile referenciando componente inexistente
+
+- **WHEN** un PR agrega un profile que referencia `rules: [phantom]` pero no existe esa rule
+- **THEN** el CI del hub falla nombrando el profile, el componente faltante y el kind esperado
 
 ### Requirement: `registry.yaml` documenta su propio formato vía comentarios
 
@@ -105,11 +110,20 @@ El archivo `skills/registry.yaml` SHALL incluir comentarios YAML al inicio del a
 - **WHEN** un admin sin contexto previo abre `skills/registry.yaml`
 - **THEN** encuentra al inicio del archivo y/o cerca de cada campo, comentarios que explican el propósito de `schema_version`, `hub_version`, `default`, `min_fdh_version`, `agents_supported`, `path` y `owner_team`
 
-### Requirement: Registro inicial contiene al menos `design-system`
+### Requirement: Registro inicial contiene al menos un componente de cada kind
 
-Al hacer apply de este change, `skills/registry.yaml` SHALL contener al menos una entry para `design-system` apuntando a `skills/design-system/` (creado por el change `add-design-system-skill`), de modo que el catálogo no esté vacío desde el primer commit.
+Al hacer apply del change `hub-v2-manifest-state-profiles`, el catálogo SHALL contener al menos una entry por cada kind: una entry para `design-system` (skill, existente), una para `no-console-log` (rule, nueva), una para `falabella-pr-writer` (agent, nueva), una para `doctor-on-session-start` (hook, nueva). El profile `minimal` en `hub/profiles.yaml` SHALL referenciar las cuatro.
 
 #### Scenario: Registry inicial post-apply
 
-- **WHEN** el apply de este change termina
-- **THEN** `skills/registry.yaml` existe y contiene una entry `design-system` con todos los campos requeridos poblados; el resto del archivo puede contener placeholders comentados para entries futuras
+- **WHEN** el apply del change termina
+- **THEN** el catálogo contiene cuatro entries (una por kind) con todos los campos requeridos poblados; cada entry apunta a un `path` que existe; `hub/profiles.yaml` contiene `profiles.minimal` referenciando las cuatro
+
+### Requirement: Campo `kind` obligatorio en cada entry del catálogo
+
+Toda entry en el catálogo SHALL declarar `kind` con uno de los valores `skill | rule | agent | hook`. Entries sin `kind` SHALL ser rechazadas por la validación; no hay defaulting silencioso a `skill` para forzar la decisión consciente del admin.
+
+#### Scenario: Entry sin kind es rechazada
+
+- **WHEN** un PR introduce una entry sin campo `kind`
+- **THEN** la validación falla con error nombrando la entry y exigiendo `kind` explícito
