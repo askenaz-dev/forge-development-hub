@@ -1,0 +1,31 @@
+# OpenSpec hub — only specs/changes are version controlled.
+# Everything below is intentionally NOT.
+
+# -----------------------------------------------------------------------------
+# Editor / OS
+# -----------------------------------------------------------------------------
+.idea/
+.vscode/
+.DS_Store
+Thumbs.db
+*.swp
+*~
+desktop.ini
+
+# -----------------------------------------------------------------------------
+# Local scratch / sibling installer development
+# -----------------------------------------------------------------------------
+# The OpenSpec hub holds specs only. The implementation lives in the
+# sibling repo `falabella/fdh`. Anything dropped here for local use
+# (notebooks, scratch dirs, screenshots, etc.) stays local.
+scratch/
+notes/
+*.local
+.env
+.env.*
+
+# -----------------------------------------------------------------------------
+# Tool caches
+# -----------------------------------------------------------------------------
+.cache/
+node_modules/
