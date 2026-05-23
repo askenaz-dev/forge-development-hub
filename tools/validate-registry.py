@@ -52,6 +52,12 @@ SUPPORTED_PROFILES_SCHEMA_VERSIONS = {1}
 KEBAB = re.compile(r"^[a-z][a-z0-9]*(-[a-z0-9]+)*$")
 SEMVER = re.compile(r"^\d+\.\d+\.\d+(?:-[\w.]+)?$")
 
+# Banner prefix emitted by `fdh evolve` for uncurated drafts. Hub PRs that
+# try to merge a SKILL.md still containing this banner are blocked here so
+# admins finish curation before publishing. Source of the constant: Go
+# package github.com/falabella/fdh/pkg/instincts (DraftBannerPrefix).
+EVOLVE_DRAFT_BANNER = "> ⚠️ DRAFT"
+
 REQUIRED_COMPONENT_FIELDS = {
     "name": str,
     "kind": str,
@@ -192,6 +198,43 @@ def validate_uniqueness_per_kind(entries: list) -> list[str]:
             )
         else:
             seen[key] = idx
+    return errors
+
+
+def validate_no_evolve_drafts(entries: list) -> list[str]:
+    """Scan every component's entrypoint file for the `fdh evolve` draft banner.
+    Drafts must be curated (banner removed) before they are merged into the hub.
+    Blocks accidental publication of un-reviewed skill drafts."""
+    errors: list[str] = []
+    entrypoint_by_kind = {
+        "skill": "SKILL.md",
+        "rule": "RULE.md",
+        "agent": "AGENT.md",
+        "hook": "HOOK.md",
+    }
+    for entry in entries:
+        if not isinstance(entry, dict):
+            continue
+        name = entry.get("name", "<unnamed>")
+        kind = entry.get("kind")
+        path_str = entry.get("path")
+        if not (isinstance(name, str) and isinstance(kind, str) and isinstance(path_str, str)):
+            continue
+        if kind not in entrypoint_by_kind:
+            continue
+        entrypoint = REPO_ROOT / path_str / entrypoint_by_kind[kind]
+        if not entrypoint.exists():
+            continue
+        try:
+            text = entrypoint.read_text(encoding="utf-8")
+        except OSError:
+            continue
+        if EVOLVE_DRAFT_BANNER in text:
+            errors.append(
+                f"components[{kind}:{name}]: {entrypoint.relative_to(REPO_ROOT)} still contains "
+                f"the `fdh evolve` draft banner ({EVOLVE_DRAFT_BANNER!r}). "
+                f"Review TODOs and remove the banner before merging."
+            )
     return errors
 
 
@@ -413,6 +456,7 @@ def main() -> int:
             errors.extend(validate_component_entry(idx, entry))
         errors.extend(validate_uniqueness_per_kind(components))
         errors.extend(validate_paths_and_orphans(components))
+        errors.extend(validate_no_evolve_drafts(components))
 
     # Profiles validation (optional file)
     if HUB_PROFILES.exists():
