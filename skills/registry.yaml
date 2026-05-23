@@ -1,0 +1,60 @@
+# registry.yaml — authoritative catalog of skills published by this hub.
+#
+# Consumed by the future `fdh` CLI (`fdh init`, `fdh update`) via the
+# `registry.url` config. Edited by hub admins; validated in CI on every PR.
+#
+# Top-level fields:
+#   schema_version  Integer. Bumped on incompatible shape changes (renaming
+#                   or removing fields, changing type semantics). Adding a
+#                   new OPTIONAL field does NOT bump schema_version.
+#                   Current: 1.
+#   hub_version     Free-form release marker for this hub (calver or semver).
+#                   Informational only; `fdh` uses git commit of the hub for
+#                   pinning, not this string.
+#   skills          List of skill entries. Order is informational.
+#
+# Skill entry fields:
+#   name              Unique kebab-case identifier. MUST match the directory
+#                     name under `skills/<name>/`.
+#   description       One-line human-readable summary. Surfaces in the
+#                     `fdh init` wizard and `fdh search` output.
+#   owner_team        Team responsible for the skill. Used for routing
+#                     questions and PR reviews.
+#   tags              List of strings for discovery/filtering. Free-form.
+#   default           true | false. When true, `fdh init` pre-selects this
+#                     skill in the wizard. Authoritative — any `default`
+#                     field in the skill's own SKILL.md frontmatter is ignored.
+#   min_fdh_version   Minimum `fdh` CLI version (semver) that can install
+#                     this skill. `fdh init` refuses to install if its own
+#                     version is lower, and suggests `fdh upgrade`.
+#   agents_supported  Non-empty list. Subset of:
+#                     [claude-code, codex, copilot, opencode].
+#                     Agents not listed are excluded when installing this skill.
+#   path              Repo-relative path to the skill's source directory.
+#                     MUST exist; CI validates.
+
+schema_version: 1
+hub_version: "2026.05"
+
+skills:
+  - name: design-system
+    description: Falabella design system rules, tokens, and component catalog for any UI work.
+    owner_team: design-platform
+    tags: [ui, react, tailwind, accessibility, design-tokens, falabella-identity]
+    default: true
+    min_fdh_version: "0.4.0"
+    agents_supported: [claude-code, codex, copilot, opencode]
+    path: skills/design-system
+
+  # --- Example placeholder (commented out) ---------------------------------
+  # Copy this block, uncomment, and edit when adding a new skill.
+  # Remember: the directory `skills/<name>/` MUST already exist before merging.
+  #
+  # - name: code-review
+  #   description: Standard Falabella code review checklist.
+  #   owner_team: dx-platform
+  #   tags: [review, quality, checklist]
+  #   default: true
+  #   min_fdh_version: "0.4.0"
+  #   agents_supported: [claude-code, codex, copilot, opencode]
+  #   path: skills/code-review

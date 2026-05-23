@@ -1,0 +1,36 @@
+name: validate-registry
+
+# Runs on every PR/push that touches skills/. Blocks merge if
+# skills/registry.yaml is inconsistent with the skills/ directory tree.
+#
+# TODO: replace `python tools/validate-registry.py` with `fdh validate-registry`
+# once the Go implementation lands in the fdh repo.
+
+on:
+  pull_request:
+    paths:
+      - "skills/**"
+      - "tools/validate-registry.py"
+      - ".github/workflows/validate-registry.yml"
+  push:
+    branches: [main]
+    paths:
+      - "skills/**"
+      - "tools/validate-registry.py"
+      - ".github/workflows/validate-registry.yml"
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install PyYAML
+        run: pip install --quiet "pyyaml>=6,<7"
+
+      - name: Validate skills/registry.yaml
+        run: python tools/validate-registry.py

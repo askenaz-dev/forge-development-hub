@@ -1,0 +1,4 @@
+# YAML: pins this skill's references/ snapshot to an exact upstream version. Regenerate with scripts/sync.mjs.
+commit: f9f63a76697d46bfe54b3aa8f380d803b6795644
+package-version: 1.0.1
+sync-date: 2026-05-23

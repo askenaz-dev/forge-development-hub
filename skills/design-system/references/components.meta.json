@@ -1,0 +1,860 @@
+{
+  "$schema": "./components.meta.schema.json",
+  "$description": "Single source of truth for component metadata. Generates COMPONENTS.md and CLI registry.json.",
+  "components": {
+    "button": {
+      "name": "Button",
+      "description": "Interactive button with primary, secondary, and danger variants.",
+      "status": "stable",
+      "file": "components/button.tsx",
+      "exports": [
+        "Button",
+        "buttonVariants",
+        "ButtonProps"
+      ],
+      "dependencies": [
+        "@radix-ui/react-slot"
+      ],
+      "registryDeps": [],
+      "import": "import { Button, buttonVariants } from '@falabella-enablers-genai/ui'",
+      "vanillaTier": "css-only"
+    },
+    "badge": {
+      "name": "Badge",
+      "description": "Compact status pill for short labels and metadata.",
+      "status": "stable",
+      "file": "components/badge.tsx",
+      "exports": [
+        "Badge",
+        "badgeVariants",
+        "BadgeProps"
+      ],
+      "dependencies": [
+        "@radix-ui/react-slot"
+      ],
+      "registryDeps": [],
+      "import": "import { Badge } from '@falabella-enablers-genai/ui'",
+      "vanillaTier": "css-only"
+    },
+    "heading": {
+      "name": "Heading",
+      "description": "Typography primitive for semantic page and section headings.",
+      "status": "stable",
+      "file": "components/heading.tsx",
+      "exports": [
+        "Heading",
+        "headingVariants",
+        "HeadingProps"
+      ],
+      "dependencies": [],
+      "registryDeps": [],
+      "import": "import { Heading } from '@falabella-enablers-genai/ui'",
+      "vanillaTier": "css-only"
+    },
+    "surface": {
+      "name": "Surface",
+      "description": "Composable surface primitive for cards, panels, and interactive containers.",
+      "status": "stable",
+      "file": "components/surface.tsx",
+      "exports": [
+        "Surface",
+        "surfaceVariants",
+        "SurfaceProps"
+      ],
+      "dependencies": [
+        "@radix-ui/react-slot"
+      ],
+      "registryDeps": [],
+      "import": "import { Surface } from '@falabella-enablers-genai/ui'",
+      "vanillaTier": "css-only"
+    },
+    "card": {
+      "name": "Card",
+      "description": "Structured card with header, content, and footer sections.",
+      "status": "stable",
+      "file": "components/card.tsx",
+      "exports": [
+        "Card",
+        "CardHeader",
+        "CardFooter",
+        "CardTitle",
+        "CardDescription",
+        "CardContent"
+      ],
+      "dependencies": [],
+      "registryDeps": [],
+      "import": "import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter } from '@falabella-enablers-genai/ui'",
+      "vanillaTier": "css-only"
+    },
+    "text": {
+      "name": "Text",
+      "description": "Body text primitive with semantic tones and sizes.",
+      "status": "stable",
+      "file": "components/text.tsx",
+      "exports": [
+        "Text",
+        "textVariants",
+        "TextProps"
+      ],
+      "dependencies": [],
+      "registryDeps": [],
+      "import": "import { Text } from '@falabella-enablers-genai/ui'",
+      "vanillaTier": "css-only"
+    },
+    "input": {
+      "name": "Input",
+      "description": "Text input with validation states.",
+      "status": "stable",
+      "file": "components/input.tsx",
+      "exports": [
+        "Input",
+        "inputVariants",
+        "InputProps"
+      ],
+      "dependencies": [],
+      "registryDeps": [
+        "label"
+      ],
+      "import": "import { Input, inputVariants } from '@falabella-enablers-genai/ui'",
+      "vanillaTier": "css-only"
+    },
+    "label": {
+      "name": "Label",
+      "description": "Accessible form label.",
+      "status": "stable",
+      "file": "components/label.tsx",
+      "exports": [
+        "Label",
+        "LabelProps"
+      ],
+      "dependencies": [
+        "@radix-ui/react-label"
+      ],
+      "registryDeps": [],
+      "import": "import { Label } from '@falabella-enablers-genai/ui'",
+      "vanillaTier": "css-only"
+    },
+    "checkbox": {
+      "name": "Checkbox",
+      "description": "Checkbox with checked, unchecked, and indeterminate states.",
+      "status": "stable",
+      "file": "components/checkbox.tsx",
+      "exports": [
+        "Checkbox",
+        "checkboxVariants",
+        "CheckboxProps"
+      ],
+      "dependencies": [
+        "@radix-ui/react-checkbox",
+        "lucide-react"
+      ],
+      "registryDeps": [],
+      "import": "import { Checkbox, checkboxVariants } from '@falabella-enablers-genai/ui'",
+      "vanillaTier": "css-only"
+    },
+    "switch": {
+      "name": "Switch",
+      "description": "Toggle switch control.",
+      "status": "stable",
+      "file": "components/switch.tsx",
+      "exports": [
+        "Switch",
+        "SwitchProps"
+      ],
+      "dependencies": [
+        "@radix-ui/react-switch"
+      ],
+      "registryDeps": [],
+      "import": "import { Switch } from '@falabella-enablers-genai/ui'",
+      "vanillaTier": "css-only"
+    },
+    "select": {
+      "name": "Select",
+      "description": "Dropdown select with grouped options.",
+      "status": "stable",
+      "file": "components/select.tsx",
+      "exports": [
+        "Select",
+        "SelectGroup",
+        "SelectValue",
+        "SelectTrigger",
+        "SelectContent",
+        "SelectLabel",
+        "SelectItem",
+        "SelectSeparator",
+        "SelectScrollUpButton",
+        "SelectScrollDownButton"
+      ],
+      "dependencies": [
+        "@radix-ui/react-select",
+        "lucide-react"
+      ],
+      "registryDeps": [],
+      "import": "import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from '@falabella-enablers-genai/ui'",
+      "vanillaTier": "js-behavior"
+    },
+    "dialog": {
+      "name": "Dialog",
+      "description": "Modal dialog with overlay.",
+      "status": "stable",
+      "file": "components/dialog.tsx",
+      "exports": [
+        "Dialog",
+        "DialogTrigger",
+        "DialogPortal",
+        "DialogOverlay",
+        "DialogContent",
+        "DialogHeader",
+        "DialogFooter",
+        "DialogTitle",
+        "DialogDescription",
+        "DialogClose",
+        "DialogContentProps"
+      ],
+      "dependencies": [
+        "@radix-ui/react-dialog",
+        "lucide-react"
+      ],
+      "registryDeps": [],
+      "import": "import { Dialog, DialogTrigger, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter, DialogClose } from '@falabella-enablers-genai/ui'",
+      "vanillaTier": "js-behavior"
+    },
+    "alert-dialog": {
+      "name": "AlertDialog",
+      "description": "Confirmation dialog for destructive actions.",
+      "status": "stable",
+      "file": "components/alert-dialog.tsx",
+      "exports": [
+        "AlertDialog",
+        "AlertDialogTrigger",
+        "AlertDialogPortal",
+        "AlertDialogOverlay",
+        "AlertDialogContent",
+        "AlertDialogHeader",
+        "AlertDialogFooter",
+        "AlertDialogTitle",
+        "AlertDialogDescription",
+        "AlertDialogAction",
+        "AlertDialogCancel"
+      ],
+      "dependencies": [
+        "@radix-ui/react-alert-dialog"
+      ],
+      "registryDeps": [
+        "button"
+      ],
+      "import": "import { AlertDialog, AlertDialogTrigger, AlertDialogContent, AlertDialogHeader, AlertDialogTitle, AlertDialogDescription, AlertDialogFooter, AlertDialogAction, AlertDialogCancel } from '@falabella-enablers-genai/ui'",
+      "vanillaTier": "js-behavior"
+    },
+    "dropdown-menu": {
+      "name": "DropdownMenu",
+      "description": "Dropdown menu with items, separators, and sub-menus.",
+      "status": "stable",
+      "file": "components/dropdown-menu.tsx",
+      "exports": [
+        "DropdownMenu",
+        "DropdownMenuTrigger",
+        "DropdownMenuContent",
+        "DropdownMenuGroup",
+        "DropdownMenuPortal",
+        "DropdownMenuSub",
+        "DropdownMenuSubTrigger",
+        "DropdownMenuSubContent",
+        "DropdownMenuRadioGroup",
+        "DropdownMenuItem",
+        "DropdownMenuCheckboxItem",
+        "DropdownMenuRadioItem",
+        "DropdownMenuLabel",
+        "DropdownMenuSeparator",
+        "DropdownMenuShortcut"
+      ],
+      "dependencies": [
+        "@radix-ui/react-dropdown-menu",
+        "lucide-react"
+      ],
+      "registryDeps": [],
+      "import": "import { DropdownMenu, DropdownMenuTrigger, DropdownMenuContent, DropdownMenuItem, DropdownMenuSeparator } from '@falabella-enablers-genai/ui'",
+      "vanillaTier": "js-behavior"
+    },
+    "popover": {
+      "name": "Popover",
+      "description": "Floating popover panel.",
+      "status": "stable",
+      "file": "components/popover.tsx",
+      "exports": [
+        "Popover",
+        "PopoverTrigger",
+        "PopoverContent",
+        "PopoverAnchor"
+      ],
+      "dependencies": [
+        "@radix-ui/react-popover"
+      ],
+      "registryDeps": [],
+      "import": "import { Popover, PopoverTrigger, PopoverContent } from '@falabella-enablers-genai/ui'",
+      "vanillaTier": "js-behavior"
+    },
+    "tooltip": {
+      "name": "Tooltip",
+      "description": "Hover tooltip for additional context.",
+      "status": "stable",
+      "file": "components/tooltip.tsx",
+      "exports": [
+        "TooltipProvider",
+        "Tooltip",
+        "TooltipTrigger",
+        "TooltipContent"
+      ],
+      "dependencies": [
+        "@radix-ui/react-tooltip"
+      ],
+      "registryDeps": [],
+      "import": "import { TooltipProvider, Tooltip, TooltipTrigger, TooltipContent } from '@falabella-enablers-genai/ui'",
+      "vanillaTier": "js-behavior"
+    },
+    "tabs": {
+      "name": "Tabs",
+      "description": "Tabbed navigation with underline and pills variants.",
+      "status": "stable",
+      "file": "components/tabs.tsx",
+      "exports": [
+        "Tabs",
+        "TabsList",
+        "TabsTrigger",
+        "TabsContent",
+        "TabsListProps",
+        "TabsTriggerProps"
+      ],
+      "dependencies": [
+        "@radix-ui/react-tabs"
+      ],
+      "registryDeps": [],
+      "import": "import { Tabs, TabsList, TabsTrigger, TabsContent } from '@falabella-enablers-genai/ui'",
+      "vanillaTier": "js-behavior"
+    },
+    "avatar": {
+      "name": "Avatar",
+      "description": "User avatar with image and fallback.",
+      "status": "stable",
+      "file": "components/avatar.tsx",
+      "exports": [
+        "Avatar",
+        "AvatarImage",
+        "AvatarFallback",
+        "avatarVariants",
+        "AvatarProps"
+      ],
+      "dependencies": [
+        "@radix-ui/react-avatar"
+      ],
+      "registryDeps": [],
+      "import": "import { Avatar, AvatarImage, AvatarFallback } from '@falabella-enablers-genai/ui'",
+      "vanillaTier": "css-only"
+    },
+    "scroll-area": {
+      "name": "ScrollArea",
+      "description": "Custom scrollbar container.",
+      "status": "stable",
+      "file": "components/scroll-area.tsx",
+      "exports": [
+        "ScrollArea",
+        "ScrollBar",
+        "ScrollBarThumb"
+      ],
+      "dependencies": [
+        "@radix-ui/react-scroll-area"
+      ],
+      "registryDeps": [],
+      "import": "import { ScrollArea, ScrollBar } from '@falabella-enablers-genai/ui'",
+      "vanillaTier": "js-behavior"
+    },
+    "collapsible": {
+      "name": "Collapsible",
+      "description": "Expandable/collapsible content section.",
+      "status": "stable",
+      "file": "components/collapsible.tsx",
+      "exports": [
+        "Collapsible",
+        "CollapsibleTrigger",
+        "CollapsibleContent"
+      ],
+      "dependencies": [
+        "@radix-ui/react-collapsible"
+      ],
+      "registryDeps": [],
+      "import": "import { Collapsible, CollapsibleTrigger, CollapsibleContent } from '@falabella-enablers-genai/ui'",
+      "vanillaTier": "js-behavior"
+    },
+    "toast": {
+      "name": "Toaster",
+      "description": "Toast notification system.",
+      "status": "stable",
+      "file": "components/toast.tsx",
+      "exports": [
+        "Toaster",
+        "toast",
+        "ToasterProps"
+      ],
+      "dependencies": [
+        "sonner"
+      ],
+      "registryDeps": [],
+      "import": "import { Toaster, toast } from '@falabella-enablers-genai/ui'",
+      "vanillaTier": "library-adapter"
+    },
+    "command": {
+      "name": "Command",
+      "description": "Command palette with search.",
+      "status": "stable",
+      "file": "components/command.tsx",
+      "exports": [
+        "Command",
+        "CommandInput",
+        "CommandList",
+        "CommandEmpty",
+        "CommandGroup",
+        "CommandItem",
+        "CommandSeparator",
+        "CommandShortcut",
+        "CommandDialog"
+      ],
+      "dependencies": [
+        "cmdk",
+        "lucide-react"
+      ],
+      "registryDeps": [
+        "dialog"
+      ],
+      "import": "import { Command, CommandInput, CommandList, CommandEmpty, CommandGroup, CommandItem } from '@falabella-enablers-genai/ui'",
+      "vanillaTier": "library-adapter"
+    },
+    "data-table": {
+      "name": "DataTable",
+      "description": "Data table with sorting, filtering, and pagination.",
+      "status": "stable",
+      "file": "components/data-table.tsx",
+      "exports": [
+        "DataTable",
+        "DataTableProps"
+      ],
+      "dependencies": [
+        "@tanstack/react-table"
+      ],
+      "registryDeps": [
+        "scroll-area"
+      ],
+      "import": "import { DataTable } from '@falabella-enablers-genai/ui'",
+      "vanillaTier": "library-adapter"
+    },
+    "sidebar": {
+      "name": "Sidebar",
+      "description": "Responsive sidebar with collapsible groups, keyboard shortcuts, and mobile support.",
+      "status": "stable",
+      "file": "components/sidebar.tsx",
+      "exports": [
+        "SidebarProvider",
+        "Sidebar",
+        "SidebarTrigger",
+        "SidebarRail",
+        "SidebarHeader",
+        "SidebarFooter",
+        "SidebarContent",
+        "SidebarSeparator",
+        "SidebarGroup",
+        "SidebarGroupLabel",
+        "SidebarGroupContent",
+        "SidebarMenu",
+        "SidebarMenuItem",
+        "SidebarMenuButton",
+        "sidebarMenuButtonVariants",
+        "SidebarMenuSub",
+        "SidebarMenuSubItem",
+        "SidebarMenuSubButton",
+        "SidebarMenuBadge",
+        "useSidebar",
+        "SidebarProps",
+        "SidebarProviderProps",
+        "SidebarMenuButtonProps"
+      ],
+      "dependencies": [
+        "@radix-ui/react-slot",
+        "lucide-react"
+      ],
+      "registryDeps": [],
+      "import": "import { SidebarProvider, Sidebar, SidebarHeader, SidebarContent, SidebarFooter, SidebarGroup, SidebarGroupLabel, SidebarGroupContent, SidebarMenu, SidebarMenuItem, SidebarMenuButton, SidebarTrigger } from '@falabella-enablers-genai/ui'",
+      "vanillaTier": "js-behavior"
+    },
+    "chart-core": {
+      "name": "ChartCore",
+      "description": "Shared ECharts infrastructure: module registration, theme binding, base Chart wrapper, and chart utilities. Required dependency for all individual chart components.",
+      "status": "stable",
+      "file": "components/chart-core.tsx",
+      "exports": [
+        "Chart",
+        "useResolvedTheme",
+        "useChartPalette",
+        "lightenHex",
+        "chartTitle",
+        "ChartProps"
+      ],
+      "dependencies": [
+        "echarts",
+        "echarts-for-react"
+      ],
+      "registryDeps": [],
+      "import": "import { Chart } from '@falabella-enablers-genai/ui'",
+      "vanillaTier": "library-adapter"
+    },
+    "bar-chart": {
+      "name": "BarChart",
+      "description": "Bar chart with vertical and horizontal orientations.",
+      "status": "stable",
+      "file": "components/bar-chart.tsx",
+      "exports": [
+        "BarChart",
+        "BarChartProps"
+      ],
+      "dependencies": [
+        "echarts",
+        "echarts-for-react"
+      ],
+      "registryDeps": [
+        "chart-core"
+      ],
+      "import": "import { BarChart } from '@falabella-enablers-genai/ui'",
+      "vanillaTier": "library-adapter"
+    },
+    "line-chart": {
+      "name": "LineChart",
+      "description": "Line chart with multi-series, smooth curves, and optional area fill.",
+      "status": "stable",
+      "file": "components/line-chart.tsx",
+      "exports": [
+        "LineChart",
+        "LineChartProps",
+        "LineChartSeries"
+      ],
+      "dependencies": [
+        "echarts",
+        "echarts-for-react"
+      ],
+      "registryDeps": [
+        "chart-core"
+      ],
+      "import": "import { LineChart } from '@falabella-enablers-genai/ui'",
+      "vanillaTier": "library-adapter"
+    },
+    "pie-chart": {
+      "name": "PieChart",
+      "description": "Pie chart with optional donut mode.",
+      "status": "stable",
+      "file": "components/pie-chart.tsx",
+      "exports": [
+        "PieChart",
+        "PieChartProps"
+      ],
+      "dependencies": [
+        "echarts",
+        "echarts-for-react"
+      ],
+      "registryDeps": [
+        "chart-core"
+      ],
+      "import": "import { PieChart } from '@falabella-enablers-genai/ui'",
+      "vanillaTier": "library-adapter"
+    },
+    "area-chart": {
+      "name": "AreaChart",
+      "description": "Area chart with stacking and smooth curve support.",
+      "status": "stable",
+      "file": "components/area-chart.tsx",
+      "exports": [
+        "AreaChart",
+        "AreaChartProps"
+      ],
+      "dependencies": [
+        "echarts",
+        "echarts-for-react"
+      ],
+      "registryDeps": [
+        "chart-core"
+      ],
+      "import": "import { AreaChart } from '@falabella-enablers-genai/ui'",
+      "vanillaTier": "library-adapter"
+    },
+    "scatter-chart": {
+      "name": "ScatterChart",
+      "description": "Scatter plot with multi-series and axis labels.",
+      "status": "stable",
+      "file": "components/scatter-chart.tsx",
+      "exports": [
+        "ScatterChart",
+        "ScatterChartProps",
+        "ScatterChartSeriesData",
+        "ScatterChartDataPoint"
+      ],
+      "dependencies": [
+        "echarts",
+        "echarts-for-react"
+      ],
+      "registryDeps": [
+        "chart-core"
+      ],
+      "import": "import { ScatterChart } from '@falabella-enablers-genai/ui'",
+      "vanillaTier": "library-adapter"
+    },
+    "radar-chart": {
+      "name": "RadarChart",
+      "description": "Radar/spider chart with multi-series overlay.",
+      "status": "stable",
+      "file": "components/radar-chart.tsx",
+      "exports": [
+        "RadarChart",
+        "RadarChartProps",
+        "RadarIndicator",
+        "RadarSeriesData"
+      ],
+      "dependencies": [
+        "echarts",
+        "echarts-for-react"
+      ],
+      "registryDeps": [
+        "chart-core"
+      ],
+      "import": "import { RadarChart } from '@falabella-enablers-genai/ui'",
+      "vanillaTier": "library-adapter"
+    },
+    "gauge-chart": {
+      "name": "GaugeChart",
+      "description": "Gauge chart for single-value KPI display.",
+      "status": "stable",
+      "file": "components/gauge-chart.tsx",
+      "exports": [
+        "GaugeChart",
+        "GaugeChartProps"
+      ],
+      "dependencies": [
+        "echarts",
+        "echarts-for-react"
+      ],
+      "registryDeps": [
+        "chart-core"
+      ],
+      "import": "import { GaugeChart } from '@falabella-enablers-genai/ui'",
+      "vanillaTier": "library-adapter"
+    },
+    "treemap-chart": {
+      "name": "TreemapChart",
+      "description": "Treemap chart for hierarchical data visualization.",
+      "status": "stable",
+      "file": "components/treemap-chart.tsx",
+      "exports": [
+        "TreemapChart",
+        "TreemapChartProps",
+        "TreemapNode"
+      ],
+      "dependencies": [
+        "echarts",
+        "echarts-for-react"
+      ],
+      "registryDeps": [
+        "chart-core"
+      ],
+      "import": "import { TreemapChart } from '@falabella-enablers-genai/ui'",
+      "vanillaTier": "library-adapter"
+    },
+    "heatmap-chart": {
+      "name": "HeatmapChart",
+      "description": "Heatmap chart with theme-aware gradient colors.",
+      "status": "stable",
+      "file": "components/heatmap-chart.tsx",
+      "exports": [
+        "HeatmapChart",
+        "HeatmapChartProps"
+      ],
+      "dependencies": [
+        "echarts",
+        "echarts-for-react"
+      ],
+      "registryDeps": [
+        "chart-core"
+      ],
+      "import": "import { HeatmapChart } from '@falabella-enablers-genai/ui'",
+      "vanillaTier": "library-adapter"
+    },
+    "funnel-chart": {
+      "name": "FunnelChart",
+      "description": "Funnel chart with ascending, descending, and none sort modes.",
+      "status": "stable",
+      "file": "components/funnel-chart.tsx",
+      "exports": [
+        "FunnelChart",
+        "FunnelChartProps"
+      ],
+      "dependencies": [
+        "echarts",
+        "echarts-for-react"
+      ],
+      "registryDeps": [
+        "chart-core"
+      ],
+      "import": "import { FunnelChart } from '@falabella-enablers-genai/ui'",
+      "vanillaTier": "library-adapter"
+    },
+    "waterfall-chart": {
+      "name": "WaterfallChart",
+      "description": "Waterfall chart with cumulative increase/decrease visualization.",
+      "status": "stable",
+      "file": "components/waterfall-chart.tsx",
+      "exports": [
+        "WaterfallChart",
+        "WaterfallChartProps",
+        "WaterfallChartItem"
+      ],
+      "dependencies": [
+        "echarts",
+        "echarts-for-react"
+      ],
+      "registryDeps": [
+        "chart-core"
+      ],
+      "import": "import { WaterfallChart } from '@falabella-enablers-genai/ui'",
+      "vanillaTier": "library-adapter"
+    },
+    "sankey-chart": {
+      "name": "SankeyChart",
+      "description": "Sankey diagram for flow and relationship visualization.",
+      "status": "stable",
+      "file": "components/sankey-chart.tsx",
+      "exports": [
+        "SankeyChart",
+        "SankeyChartProps",
+        "SankeyNode",
+        "SankeyLink"
+      ],
+      "dependencies": [
+        "echarts",
+        "echarts-for-react"
+      ],
+      "registryDeps": [
+        "chart-core"
+      ],
+      "import": "import { SankeyChart } from '@falabella-enablers-genai/ui'",
+      "vanillaTier": "library-adapter"
+    },
+    "sunburst-chart": {
+      "name": "SunburstChart",
+      "description": "Sunburst chart for multi-level hierarchical data.",
+      "status": "stable",
+      "file": "components/sunburst-chart.tsx",
+      "exports": [
+        "SunburstChart",
+        "SunburstChartProps",
+        "SunburstNode"
+      ],
+      "dependencies": [
+        "echarts",
+        "echarts-for-react"
+      ],
+      "registryDeps": [
+        "chart-core"
+      ],
+      "import": "import { SunburstChart } from '@falabella-enablers-genai/ui'",
+      "vanillaTier": "library-adapter"
+    },
+    "candlestick-chart": {
+      "name": "CandlestickChart",
+      "description": "Candlestick chart for financial OHLC data.",
+      "status": "stable",
+      "file": "components/candlestick-chart.tsx",
+      "exports": [
+        "CandlestickChart",
+        "CandlestickChartProps",
+        "CandlestickDataPoint"
+      ],
+      "dependencies": [
+        "echarts",
+        "echarts-for-react"
+      ],
+      "registryDeps": [
+        "chart-core"
+      ],
+      "import": "import { CandlestickChart } from '@falabella-enablers-genai/ui'",
+      "vanillaTier": "library-adapter"
+    },
+    "boxplot-chart": {
+      "name": "BoxPlotChart",
+      "description": "Box plot chart for statistical distribution visualization.",
+      "status": "stable",
+      "file": "components/boxplot-chart.tsx",
+      "exports": [
+        "BoxPlotChart",
+        "BoxPlotChartProps",
+        "BoxPlotSeriesData"
+      ],
+      "dependencies": [
+        "echarts",
+        "echarts-for-react"
+      ],
+      "registryDeps": [
+        "chart-core"
+      ],
+      "import": "import { BoxPlotChart } from '@falabella-enablers-genai/ui'",
+      "vanillaTier": "library-adapter"
+    },
+    "parallel-chart": {
+      "name": "ParallelChart",
+      "description": "Parallel coordinates chart for multi-dimensional data comparison.",
+      "status": "stable",
+      "file": "components/parallel-chart.tsx",
+      "exports": [
+        "ParallelChart",
+        "ParallelChartProps",
+        "ParallelDimension"
+      ],
+      "dependencies": [
+        "echarts",
+        "echarts-for-react"
+      ],
+      "registryDeps": [
+        "chart-core"
+      ],
+      "import": "import { ParallelChart } from '@falabella-enablers-genai/ui'",
+      "vanillaTier": "library-adapter"
+    },
+    "logo": {
+      "name": "Logo",
+      "description": "Falabella Tecnología official logo with full, mark, and text variants.",
+      "status": "stable",
+      "file": "components/logo.tsx",
+      "exports": [
+        "Logo",
+        "LogoProps"
+      ],
+      "dependencies": [],
+      "registryDeps": [],
+      "import": "import { Logo } from '@falabella-enablers-genai/ui'",
+      "vanillaTier": "css-only"
+    },
+    "status": {
+      "name": "Status",
+      "description": "Status indicators: dot, badge pill, and inline dot+text variants for success, warning, error, info, and neutral states.",
+      "status": "stable",
+      "file": "components/status.tsx",
+      "exports": [
+        "StatusDot",
+        "StatusBadge",
+        "StatusIndicator",
+        "statusDotVariants",
+        "statusBadgeVariants",
+        "StatusDotProps",
+        "StatusBadgeProps",
+        "StatusIndicatorProps"
+      ],
+      "dependencies": [],
+      "registryDeps": [],
+      "import": "import { StatusDot, StatusBadge, StatusIndicator } from '@falabella-enablers-genai/ui'",
+      "vanillaTier": "css-only"
+    }
+  }
+}

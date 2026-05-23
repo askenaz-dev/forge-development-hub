@@ -4,7 +4,13 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## What this repo is
 
-A workflow hub, not an application. There is no application source code here — only an OpenSpec workspace (`openspec/`) and the same set of OpenSpec skills mirrored across four AI coding tool ecosystems. Real work begins by creating a change under `openspec/changes/<name>/`; the codebase the change targets lives elsewhere or is added later.
+A workflow hub, not an application. There is no application source code here — only an OpenSpec workspace (`openspec/`), the same set of OpenSpec skills mirrored across four AI coding tool ecosystems, and a top-level `skills/` directory holding canonical, agent-agnostic skills (e.g. `skills/design-system/`) that the future `fdh init` CLI will copy into consumer projects. Real work begins by creating a change under `openspec/changes/<name>/`; the codebase the change targets lives elsewhere or is added later.
+
+## Canonical skills (`skills/`)
+
+`skills/<name>/` directories at the repo root hold skills designed to be consumed by any AI coding agent. They are NOT mirrored into the four ecosystem directories — the future `fdh init` CLI is responsible for copying and adapting them to the developer's chosen agent (`.claude/skills/`, `.codex/skills/`, `.github/prompts/`, `.opencode/commands/`). See each skill's `README.md` for the manual install path until `fdh init` exists.
+
+The authoritative catalog of published skills lives in `skills/registry.yaml`. Hub admins edit it to declare each skill's metadata (`description`, `owner_team`, `tags`, `default`, `min_fdh_version`, `agents_supported`, `path`). The `default: true|false` flag here is the single source of truth — any `default` declared inside a skill's own `SKILL.md` frontmatter is ignored by `fdh init`. CI validates the registry on every PR (`.github/workflows/validate-registry.yml`, runs `tools/validate-registry.py`); see `skills/README.md` for the "add a new skill" flow.
 
 The four mirrored ecosystems are kept structurally identical:
 
