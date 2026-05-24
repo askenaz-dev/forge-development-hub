@@ -5,7 +5,7 @@ The canonical catalog of AI coding components (skills, rules, agents, hooks) pub
 ## Try it in 30 seconds
 
 ```sh
-npx @forge/fdh init
+npx @askenaz-dev/fdh init
 ```
 
 That runs a wizard: detects which AI agent(s) you have installed (Claude Code, Codex, Copilot, OpenCode), lets you pick a profile, and materializes the right files into your project. No prior install of `fdh` needed.
@@ -13,10 +13,10 @@ That runs a wizard: detects which AI agent(s) you have installed (Claude Code, C
 To make it permanent:
 
 ```sh
-npm i -g @forge/fdh
+npm i -g @askenaz-dev/fdh
 ```
 
-> **Don't have Node?** The CLI also ships as a POSIX one-liner, PowerShell script, `.deb`/`.rpm` packages, and eventually Homebrew / winget. See [`fdh/docs/quickstart.md`](https://github.com/forge/fdh/blob/main/docs/quickstart.md).
+> **Don't have Node?** The CLI also ships as a POSIX one-liner, PowerShell script, `.deb`/`.rpm` packages, and eventually Homebrew / winget. See [`fdh/docs/quickstart.md`](https://github.com/askenaz-dev/forge-development-hub-cli/blob/main/docs/quickstart.md).
 
 ## What you get
 
@@ -70,9 +70,8 @@ See `hub/README.md` for the full how-to. tl;dr:
 
 ## Sibling repos
 
-- **[`forge/fdh`](https://github.com/forge/fdh)** — the Go CLI + Next.js portal API. Lives in `C:/forge/fdh/`. Houses the `npm/` wrapper that ships `@forge/fdh`.
-- **`forge/FTI00575-design-system`** — upstream design system; snapshotted into `skills/design-system/references/`.
-- **Renaming your local checkout?** See [`docs/operations/rename-checkout.md`](docs/operations/rename-checkout.md) for the step-by-step move from `C:\forge\forge-development-hub` to `C:\forge\forge-development-hub` (and Unix equivalents).
+- **[`askenaz-dev/forge-development-hub-cli`](https://github.com/askenaz-dev/forge-development-hub-cli)** — the Go CLI + Next.js portal API. Lives in `C:/forge/fdh/`. Houses the `npm/` wrapper that ships `@askenaz-dev/fdh`.
+- **Renaming your local checkout?** See [`docs/operations/rename-checkout.md`](docs/operations/rename-checkout.md) for the step-by-step move from `C:\forge\forge-development-hub` to a new location.
 
 ## Specs & changes
 
@@ -98,4 +97,4 @@ CI runs all of these on every PR touching `hub/`, `skills/`, `rules/`, `agents/`
 
 ## License
 
-Internal Forge use only.
+MIT — see [LICENSE](LICENSE) if present, otherwise contact the maintainers.
