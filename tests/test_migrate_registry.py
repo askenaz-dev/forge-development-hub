@@ -31,7 +31,7 @@ V1_SAMPLE = {
     "skills": [
         {
             "name": "design-system",
-            "description": "Falabella design system.",
+            "description": "Forge design system.",
             "owner_team": "design-platform",
             "tags": ["ui", "react"],
             "default": True,
@@ -60,7 +60,7 @@ V2_SAMPLE = {
         {
             "name": "design-system",
             "kind": "skill",
-            "description": "Falabella design system.",
+            "description": "Forge design system.",
             "owner_team": "design-platform",
             "tags": ["ui", "react"],
             "default": True,

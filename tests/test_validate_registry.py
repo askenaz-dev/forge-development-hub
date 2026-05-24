@@ -147,7 +147,7 @@ class TestProfileEntry(unittest.TestCase):
         self.components_idx = {
             "skill": {"design-system", "code-review"},
             "rule": {"no-console-log"},
-            "agent": {"falabella-pr-writer"},
+            "agent": {"forge-pr-writer"},
             "hook": {"doctor-on-session-start"},
         }
 

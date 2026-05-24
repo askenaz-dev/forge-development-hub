@@ -1,12 +1,14 @@
+*Brand strings updated 2026-05-23 by the rebrand-to-forge-development-hub change; original wording used "forge".*
+
 ## Why
 
-Falabella's ~3,000 developers use a mix of AI coding agents (Claude Code, GitHub Copilot, OpenAI Codex, OpenCode) and need a governed, vendor-neutral way to share procedural knowledge as Agent Skills (the open `agentskills.io` standard). Third-party skill registries create vendor lock-in we cannot accept. We need to prove the core distribution rail — a cross-platform CLI that installs spec-compliant skills into the correct location for every supported agent — works end-to-end with a real 30-developer pilot **before** investing in a registry server, web UI, or governance plane. This change delivers that rail; later changes layer the server-side platform on top of the same interfaces.
+Forge's ~3,000 developers use a mix of AI coding agents (Claude Code, GitHub Copilot, OpenAI Codex, OpenCode) and need a governed, vendor-neutral way to share procedural knowledge as Agent Skills (the open `agentskills.io` standard). Third-party skill registries create vendor lock-in we cannot accept. We need to prove the core distribution rail — a cross-platform CLI that installs spec-compliant skills into the correct location for every supported agent — works end-to-end with a real 30-developer pilot **before** investing in a registry server, web UI, or governance plane. This change delivers that rail; later changes layer the server-side platform on top of the same interfaces.
 
 ## What Changes
 
-- Add a new Go-based CLI (`falabella-installer`, working name) shipped as a single statically-linked binary for macOS (arm64/amd64), Linux (arm64/amd64), and Windows (amd64).
+- Add a new Go-based CLI (`fdh`, working name) shipped as a single statically-linked binary for macOS (arm64/amd64), Linux (arm64/amd64), and Windows (amd64).
 - Define a canonical skill bundle layout that is byte-identical across all four agents and strictly conformant to the open Agent Skills specification (`SKILL.md` + optional `scripts/`, `references/`, `assets/`).
-- Introduce a **manifest-driven agent adapter map** (YAML, embedded in the binary, overridable at `~/.config/falabella-installer/adapters.yaml`) that declares each agent's read paths. Adding a new agent is a config change, not a code change.
+- Introduce a **manifest-driven agent adapter map** (YAML, embedded in the binary, overridable at `~/.config/fdh/adapters.yaml`) that declares each agent's read paths. Adding a new agent is a config change, not a code change.
 - Implement **fan-out installation**: the same byte-identical bundle is copied to every path in the union declared by the target agents at the chosen scope. For the full four-agent default this is three paths per scope — project: `.claude/skills/<name>/`, `.agents/skills/<name>/`, `.github/skills/<name>/`; user: `~/.claude/skills/<name>/`, `~/.agents/skills/<name>/`, `~/.copilot/skills/<name>/`. No symlinks. The fan-out is the union of every documented read path across the target agents (belt-and-braces stance for Copilot's three documented locations).
 - Introduce **portability classes** for skills: `portable: true` (the default; restricted to the agentskills.io intersection — `name`, `description`, optional `license`/`metadata`/`compatibility`) installs to all four agents; `portable: false` skills declare a `compatibility:` allowlist and the installer refuses to write them to agents outside that list. A portability lint enforces these rules at install time.
 - Introduce **provenance tracking**: a `.skill-meta.yaml` sidecar next to each installed `SKILL.md` carries rich provenance (registry URL, namespace, version, content hash, installed-by, install timestamp, target agents). A single `installed_from:` line is also injected into the `SKILL.md` frontmatter as a breadcrumb. The bundle's canonical content hash is computed **before** breadcrumb injection so the source-of-truth hash is stable across installs.
@@ -30,9 +32,9 @@ None. This is the first capability-bearing change in the project.
 
 ## Impact
 
-- **New code**: a fresh dedicated `falabella/skill-installer` repository (separate from this OpenSpec hub) containing the Go CLI, adapter manifest, and a unit-plus-integration test suite covering all three target operating systems. The OpenSpec hub continues to hold the specs of record.
+- **New code**: a fresh dedicated `forge/skill-installer` repository (separate from this OpenSpec hub) containing the Go CLI, adapter manifest, and a unit-plus-integration test suite covering all three target operating systems. The OpenSpec hub continues to hold the specs of record.
 
-- **New distribution channel**: release artifacts (tar.gz per platform with adjacent SHA-256 checksum files) published to Falabella's internal package manager (Nexus / JFrog / GitHub Packages — final hosting selection by ops).
+- **New distribution channel**: release artifacts (tar.gz per platform with adjacent SHA-256 checksum files) published to Forge's internal package manager (Nexus / JFrog / GitHub Packages — final hosting selection by ops).
 - **New artifact**: a separate skill registry Git repository — provisioning is out of scope for this change but the layout it must follow is specified here. The pilot team will create and seed it.
 - **CI/CD**: a GitHub Actions workflow (portable to other CI systems) that builds, tests, and produces signed release binaries for the three OS / four architecture combinations.
 - **Pilot rollout**: targets 30 developers; install flow uses a shared Git clone of the registry, not a remote server. Bandwidth and operational impact are negligible.

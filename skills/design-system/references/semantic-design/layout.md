@@ -1,5 +1,7 @@
 # layout.md - Layout, Datos y Charts 1:1
 
+*Brand strings updated 2026-05-23 by the rebrand-to-forge-development-hub change; original wording used "forge".*
+
 > Fuentes canonicas: `ScrollArea`, `Collapsible`, `DataTable`, componentes de charts y tokens de breakpoint/spacing.
 
 ---
@@ -48,7 +50,7 @@ import {
   CollapsibleContent,
   CollapsibleTrigger,
   ScrollArea,
-} from "@falabella-enablers-genai/ui";
+} from "@forge-enablers-genai/ui";
 
 <ScrollArea className="h-72">
   <div className="space-y-4">Contenido</div>
@@ -65,7 +67,7 @@ import {
 ## DataTable
 
 ```tsx
-import { DataTable } from "@falabella-enablers-genai/ui";
+import { DataTable } from "@forge-enablers-genai/ui";
 import type { ColumnDef } from "@tanstack/react-table";
 
 const columns: ColumnDef<User>[] = [
@@ -104,7 +106,7 @@ Todos los charts dependen de `Chart` / `chart-core` y de temas ECharts generados
 | `ParallelChart` | Coordenadas paralelas |
 
 ```tsx
-import { LineChart } from "@falabella-enablers-genai/ui";
+import { LineChart } from "@forge-enablers-genai/ui";
 
 <LineChart
   data={[

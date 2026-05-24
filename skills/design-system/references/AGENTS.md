@@ -1,5 +1,7 @@
 # Design System — Agent Instructions
 
+*Brand strings updated 2026-05-23 by the rebrand-to-forge-development-hub change; original wording used "forge".*
+
 > **Purpose:** This file is the entry point for AI coding agents (Claude Code, Cursor, Copilot, Codex, etc.) when generating, reviewing, or modifying UI code in this project. Read this file FIRST, then follow references to specific sections.
 
 ---
@@ -24,11 +26,11 @@ This is a monorepo with npm workspaces:
 
 | Package | Path | Purpose |
 |---------|------|---------|
-| `@falabella-enablers-genai/ui` | `packages/ui/` | React component library (Radix + CVA + TW4) |
-| `@falabella-enablers-genai/cli` | `packages/cli/` | CLI tool to copy components into projects |
-| `@falabella-enablers-genai/docs` | `apps/docs/` | Next.js 16 documentation site |
+| `@forge-enablers-genai/ui` | `packages/ui/` | React component library (Radix + CVA + TW4) |
+| `@forge-enablers-genai/cli` | `packages/cli/` | CLI tool to copy components into projects |
+| `@forge-enablers-genai/docs` | `apps/docs/` | Next.js 16 documentation site |
 
-**Import components:** `import { Button, Dialog } from '@falabella-enablers-genai/ui'`
+**Import components:** `import { Button, Dialog } from '@forge-enablers-genai/ui'`
 **Build tokens:** `npm run build:tokens`
 **Build UI package:** `npm run build:ui`
 **Dev server:** `npm run dev` (localhost:3333)
@@ -174,7 +176,7 @@ const buttonVariants = cva(
 ```
 
 Always use:
-- `cn()` for class merging (from `@falabella-enablers-genai/ui` or `lib/utils.ts`)
+- `cn()` for class merging (from `@forge-enablers-genai/ui` or `lib/utils.ts`)
 - CVA for variant definitions
 - Tailwind utility classes that map to @theme tokens
 - `React.forwardRef` and `displayName` on all components

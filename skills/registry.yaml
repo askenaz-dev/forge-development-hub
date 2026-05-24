@@ -64,9 +64,9 @@ components:
   # --- skills --------------------------------------------------------------
   - name: design-system
     kind: skill
-    description: Falabella design system rules, tokens, and component catalog for any UI work.
+    description: Forge design system rules, tokens, and component catalog for any UI work.
     owner_team: design-platform
-    tags: [ui, react, tailwind, accessibility, design-tokens, falabella-identity]
+    tags: [ui, react, tailwind, accessibility, design-tokens, forge-identity]
     default: true
     min_fdh_version: "0.4.0"
     agents_supported: [claude-code, codex, copilot, opencode]
@@ -84,15 +84,15 @@ components:
     path: rules/no-console-log
 
   # --- agents --------------------------------------------------------------
-  - name: falabella-pr-writer
+  - name: forge-pr-writer
     kind: agent
-    description: Generates pull request descriptions in Falabella house style from a git diff or list of changed files.
+    description: Generates pull request descriptions in Forge house style from a git diff or list of changed files.
     owner_team: dx-platform
-    tags: [pr, documentation, falabella-style, code-review]
+    tags: [pr, documentation, forge-style, code-review]
     default: true
     min_fdh_version: "0.4.0"
     agents_supported: [claude-code]
-    path: agents/falabella-pr-writer
+    path: agents/forge-pr-writer
 
   # --- hooks ---------------------------------------------------------------
   - name: doctor-on-session-start
@@ -111,7 +111,7 @@ components:
   #
   # - name: code-review
   #   kind: skill
-  #   description: Standard Falabella code review checklist.
+  #   description: Standard Forge code review checklist.
   #   owner_team: dx-platform
   #   tags: [review, quality, checklist]
   #   default: true

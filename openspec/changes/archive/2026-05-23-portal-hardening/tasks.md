@@ -1,3 +1,5 @@
+*Brand strings updated 2026-05-23 by the rebrand-to-forge-development-hub change; original wording used "forge".*
+
 ## 1. MH1 — Locale refactor
 
 - [x] 1.1 Create `web/app/[locale]/` and move every existing page directory into it: `page.tsx` (landing), `install/`, `skills/`, `skills/[namespace]/[name]/`, `profile/`, `admin/`, `auth/signin/`, `auth/signout/`, `onboarding/`.

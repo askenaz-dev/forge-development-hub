@@ -27,7 +27,7 @@ El hub SHALL contener un archivo `hub/profiles.yaml` (ubicación final confirmad
 
 ### Requirement: Profile `minimal` ejercita las cuatro primitivas
 
-Como parte del apply de este change, `hub/profiles.yaml` SHALL contener un profile llamado `minimal` que referencie al menos un componente de cada primitiva (`skills: [design-system]`, `rules: [no-console-log]`, `agents: [falabella-pr-writer]`, `hooks: [doctor-on-session-start]`), sirviendo como ejemplo end-to-end y caso de prueba del schema.
+Como parte del apply de este change, `hub/profiles.yaml` SHALL contener un profile llamado `minimal` que referencie al menos un componente de cada primitiva (`skills: [design-system]`, `rules: [no-console-log]`, `agents: [forge-pr-writer]`, `hooks: [doctor-on-session-start]`), sirviendo como ejemplo end-to-end y caso de prueba del schema.
 
 #### Scenario: Profile minimal completo post-apply
 
@@ -55,7 +55,7 @@ El manifest SHALL permitir extender o restringir un profile vía la clave `exten
 #### Scenario: Manifest extiende con add y remove
 
 - **WHEN** el manifest declara `profile: minimal` + `extends: { add_skills: [i18n-helper], remove_rules: [no-console-log] }`
-- **THEN** el lock incluye `skills: [design-system, i18n-helper]`, `rules: []`, `agents: [falabella-pr-writer]`, `hooks: [doctor-on-session-start]`
+- **THEN** el lock incluye `skills: [design-system, i18n-helper]`, `rules: []`, `agents: [forge-pr-writer]`, `hooks: [doctor-on-session-start]`
 
 #### Scenario: Remove de algo que no estaba
 

@@ -1,13 +1,15 @@
+*Brand strings updated 2026-05-23 by the rebrand-to-forge-development-hub change; original wording used "forge".*
+
 ## Context
 
-`falabella-development-hub` es un workflow hub que actualmente espeja skills de OpenSpec en cuatro ecosistemas de coding agents (`.claude/`, `.codex/`, `.github/`, `.opencode/`). El design system de la compañía vive en un repo separado (`falabella-enablers-genai/FTI00575-design-system`, monorepo privado) y ya publica documentación pensada para LLMs:
+`forge-development-hub` es un workflow hub que actualmente espeja skills de OpenSpec en cuatro ecosistemas de coding agents (`.claude/`, `.codex/`, `.github/`, `.opencode/`). El design system de la compañía vive en un repo separado (`forge-enablers-genai/FTI00575-design-system`, monorepo privado) y ya publica documentación pensada para LLMs:
 
 - `AGENTS.md` — 20 reglas no-negociables agrupadas en Tokens / Colors / Typography / Spacing / Components / Accessibility / Responsive.
 - `COMPONENTS.md` — catálogo LLM-optimizado de 43 componentes (26 UI + 17 chart) sobre Radix + CVA + Tailwind 4.
 - `DESIGN.md` + `semantic-design/*.md` — índice 1:1 que enruta a tokens canónicos.
 - `components.meta.json` — single source of truth de metadata.
 
-A pesar de eso, los agentes que generan UI en proyectos consumidores no leen estos archivos por defecto: el contexto se carga sólo si el agente tropieza con ellos. El consumo del DS además requiere setup no trivial: `.npmrc` con scope `@falabella-enablers-genai`, `GITHUB_PKG_TOKEN` con `read:packages`, y elegir entre el CLI `genai-ds` (copia código fuente al proyecto) o el package `@falabella-enablers-genai/ui` (import directo). Pedirle al developer que cargue manualmente `AGENTS.md` en cada sesión escala mal.
+A pesar de eso, los agentes que generan UI en proyectos consumidores no leen estos archivos por defecto: el contexto se carga sólo si el agente tropieza con ellos. El consumo del DS además requiere setup no trivial: `.npmrc` con scope `@forge-enablers-genai`, `GITHUB_PKG_TOKEN` con `read:packages`, y elegir entre el CLI `genai-ds` (copia código fuente al proyecto) o el package `@forge-enablers-genai/ui` (import directo). Pedirle al developer que cargue manualmente `AGENTS.md` en cada sesión escala mal.
 
 El usuario tiene en mente un CLI futuro `fdh init/update` que permitirá al developer elegir agentes y skills, y que excluirá los directorios de skills del control de versiones del proyecto consumidor (se regeneran on-demand). Este change deja la **fuente del skill** lista para ese consumidor futuro, sin construir el CLI todavía.
 
@@ -28,7 +30,7 @@ El usuario tiene en mente un CLI futuro `fdh init/update` que permitirá al deve
 - **No** publicar nada a GitHub Packages, npm, ni a un registry externo.
 - **No** modificar el repo `FTI00575-design-system`. La sincronización es unidireccional (DS → skill).
 - **No** crear nuevos tokens, componentes ni reglas. El skill es lectura.
-- **No** soportar design systems distintos al de Falabella en este change (extensibilidad futura).
+- **No** soportar design systems distintos al de Forge en este change (extensibilidad futura).
 
 ## Decisions
 
@@ -76,7 +78,7 @@ skills/design-system/
 
 El campo `description` del frontmatter se redacta para que el modelo lo cargue cuando detecte intención de generar UI. Triggers nucleares (versión final se ajustará en apply):
 
-> Use when the user wants to build, design, style, or modify any UI: React/Next/Vue components, screens, forms, buttons, layouts, dashboards, charts, modals, tables, navigation; or when the user mentions Tailwind, CSS, dark mode, accessibility, design tokens, colors, typography, spacing, or any Falabella visual identity. ALWAYS load this skill BEFORE writing UI code so design system rules, tokens, and the component catalog are in context.
+> Use when the user wants to build, design, style, or modify any UI: React/Next/Vue components, screens, forms, buttons, layouts, dashboards, charts, modals, tables, navigation; or when the user mentions Tailwind, CSS, dark mode, accessibility, design tokens, colors, typography, spacing, or any Forge visual identity. ALWAYS load this skill BEFORE writing UI code so design system rules, tokens, and the component catalog are in context.
 
 **Alternativas consideradas:**
 - *Activación explícita vía slash command* — descartado: el usuario eligió auto-detección y es el patrón con mayor recall.
@@ -107,7 +109,7 @@ El script de sincronización toma una ruta a un clon local del DS (default: `../
 
 ### Decision 7: Setup helper en `SKILL.md` orientado al CLI `genai-ds`
 
-La sección "Setup en un proyecto consumidor" del SKILL.md prioriza la ruta CLI (`npx @falabella-enablers-genai/cli init` + `add`) porque le da source ownership al consumidor (componentes copiados al proyecto, no dependencia de runtime), que es la ruta recomendada por el README del DS. Documenta la alternativa npm package en segundo plano.
+La sección "Setup en un proyecto consumidor" del SKILL.md prioriza la ruta CLI (`npx @forge-enablers-genai/cli init` + `add`) porque le da source ownership al consumidor (componentes copiados al proyecto, no dependencia de runtime), que es la ruta recomendada por el README del DS. Documenta la alternativa npm package en segundo plano.
 
 ### Decision 8: Instalación manual documentada en `README.md` (puente hasta `fdh init`)
 
@@ -135,6 +137,6 @@ No hay migración: es contenido nuevo. No se borra ni se cambia nada existente. 
 
 ## Open Questions
 
-- ¿La versión del DS a pinear es `1.0.1` (la del `package.json` del monorepo) o la del package `@falabella-enablers-genai/ui` específicamente? Resolverlo en apply leyendo `packages/ui/package.json`.
+- ¿La versión del DS a pinear es `1.0.1` (la del `package.json` del monorepo) o la del package `@forge-enablers-genai/ui` específicamente? Resolverlo en apply leyendo `packages/ui/package.json`.
 - ¿`scripts/sync.mjs` debe correr en CI del hub cuando el DS publica un nuevo tag? Decisión diferida — fuera del scope de este change.
 - ¿El `README.md` del skill debe incluir instrucciones para los 4 ecosistemas, o sólo Claude Code y referir a `fdh init` para los otros? Decisión: Claude Code completo + nota corta para los otros tres con TODO explícito.

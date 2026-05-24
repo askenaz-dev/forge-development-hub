@@ -112,7 +112,14 @@ function gitSha(source) {
   }
 }
 
-async function readPackageVersion(source) {
+// Canonical and legacy package names. We accept the legacy `@forge-enablers-genai/ui`
+// during the upstream rename transition and normalize to `@forge-enablers-genai/ui` in
+// .ds-version, emitting an informational note so reviewers know the source still uses
+// the old scope.
+const CANONICAL_PKG_NAME = "@forge-enablers-genai/ui";
+const LEGACY_PKG_NAME = "@forge-enablers-genai/ui";
+
+async function readPackageInfo(source) {
   const pkgPath = join(source, "packages", "ui", "package.json");
   if (!(await fileExists(pkgPath))) {
     console.error(`error: missing ${pkgPath}`);
@@ -123,7 +130,10 @@ async function readPackageVersion(source) {
     console.error(`error: 'version' missing in ${pkgPath}`);
     process.exit(1);
   }
-  return pkg.version;
+  const declaredName = pkg.name ?? null;
+  const legacyDetected =
+    declaredName === LEGACY_PKG_NAME || declaredName?.startsWith("@forge-enablers-genai");
+  return { version: pkg.version, legacyDetected };
 }
 
 async function copyRequiredFiles(source) {
@@ -139,12 +149,16 @@ async function copyRequiredFiles(source) {
   }
 }
 
-async function writeDsVersion(commit, version, today) {
+async function writeDsVersion(commit, version, today, legacyDetected) {
+  const noteLine = legacyDetected
+    ? `note: "legacy package name '${LEGACY_PKG_NAME}' detected in source; awaiting upstream rename to '${CANONICAL_PKG_NAME}'"\n`
+    : "";
   const body =
     `# YAML: pins this skill's references/ snapshot to an exact upstream version. Regenerate with scripts/sync.mjs.\n` +
     `commit: ${commit}\n` +
     `package-version: ${version}\n` +
-    `sync-date: ${today}\n`;
+    `sync-date: ${today}\n` +
+    noteLine;
   await writeFile(DS_VERSION_FILE, body, "utf8");
 }
 
@@ -166,13 +180,18 @@ async function main() {
   await copyRequiredFiles(source);
 
   const commit = gitSha(source);
-  const version = await readPackageVersion(source);
-  await writeDsVersion(commit, version, todayIso());
+  const { version, legacyDetected } = await readPackageInfo(source);
+  await writeDsVersion(commit, version, todayIso(), legacyDetected);
 
   console.log(`synced references/ from ${source}`);
   console.log(`  commit: ${commit}`);
   console.log(`  package-version: ${version}`);
   console.log(`  sync-date: ${todayIso()}`);
+  if (legacyDetected) {
+    console.log(
+      `  note: source declares legacy package name ${LEGACY_PKG_NAME}; normalized to ${CANONICAL_PKG_NAME} in .ds-version`,
+    );
+  }
 
   if (previousAgentsHash !== null && previousAgentsHash !== sourceAgentsHash) {
     console.warn(

@@ -1,3 +1,5 @@
+*Brand strings updated 2026-05-23 by the rebrand-to-forge-development-hub change; original wording used "forge".*
+
 ## ADDED Requirements
 
 ### Requirement: Manifest-driven adapter description
@@ -24,7 +26,7 @@ The installer binary SHALL embed a default adapter manifest covering claude-code
 
 ### Requirement: User-level adapter manifest override
 
-The system SHALL load a user-provided adapter manifest from `~/.config/falabella-installer/adapters.yaml` (or the OS-appropriate equivalent on Windows) if it exists, and that file MUST completely replace the embedded default for any agent it redefines. The merge MUST be per-agent: a user file that defines only `claude-code` MUST leave the other three agents from the embedded default untouched.
+The system SHALL load a user-provided adapter manifest from `~/.config/fdh/adapters.yaml` (or the OS-appropriate equivalent on Windows) if it exists, and that file MUST completely replace the embedded default for any agent it redefines. The merge MUST be per-agent: a user file that defines only `claude-code` MUST leave the other three agents from the embedded default untouched.
 
 #### Scenario: Override replaces a single agent
 

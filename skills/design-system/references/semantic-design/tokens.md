@@ -1,5 +1,7 @@
 # tokens.md - CSS Custom Properties Canonicas
 
+*Brand strings updated 2026-05-23 by the rebrand-to-forge-development-hub change; original wording used "forge".*
+
 > Los tokens se generan desde `tokens/tokens.json` y `tokens/semantic/dark.json`.
 > Este archivo no copia valores. Solo documenta como consumirlos 1:1.
 
@@ -8,8 +10,8 @@
 ## Imports Publicos
 
 ```css
-@import "@falabella-enablers-genai/ui/tokens.css";
-@import "@falabella-enablers-genai/ui/styles.css";
+@import "@forge-enablers-genai/ui/tokens.css";
+@import "@forge-enablers-genai/ui/styles.css";
 ```
 
 - `tokens.css` expone `:root` y `.dark`.

@@ -1,3 +1,5 @@
+*Brand strings updated 2026-05-23 by the rebrand-to-forge-development-hub change; original wording used "forge".*
+
 ## Why
 
 The `dev-portal` change shipped 88 of 99 tasks. The remaining gap is a small set of polish items captured in `docs/KNOWN_ISSUES.md` plus two CI gates from M8 (i18n parity + automated accessibility) that the existing `portal-web` spec declares but the implementation hadn't operationalized yet. Closing this gap lets us archive `dev-portal` cleanly and hand the portal to a 30-developer pilot with no documented caveats — and lifts the deferred quality gates from "aspirational" to "enforced in CI", which is a genuine spec-level commitment, not just implementation work.

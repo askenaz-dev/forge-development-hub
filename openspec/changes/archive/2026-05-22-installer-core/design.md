@@ -1,6 +1,8 @@
+*Brand strings updated 2026-05-23 by the rebrand-to-forge-development-hub change; original wording used "forge".*
+
 ## Context
 
-Falabella is replacing a vendor-provided skill registry (SkillHub-equivalent) with an in-house, vendor-neutral system targeting ~3,000 developers eventually and a 30-developer pilot first. The skills themselves follow the open Agent Skills standard at `agentskills.io` and are consumed by four AI coding agents in production use across the org: Anthropic Claude Code, GitHub Copilot, OpenAI Codex, and OpenCode. Each agent reads `SKILL.md` bundles from its own filesystem locations — the four agents do not share a single canonical path.
+Forge is replacing a vendor-provided skill registry (SkillHub-equivalent) with an in-house, vendor-neutral system targeting ~3,000 developers eventually and a 30-developer pilot first. The skills themselves follow the open Agent Skills standard at `agentskills.io` and are consumed by four AI coding agents in production use across the org: Anthropic Claude Code, GitHub Copilot, OpenAI Codex, and OpenCode. Each agent reads `SKILL.md` bundles from its own filesystem locations — the four agents do not share a single canonical path.
 
 Investigation of the four agent docs (links in the change history) surfaced a key simplification: the four agents converge on a small set of read paths. Three of the four (Copilot, Codex, OpenCode) all read from `.agents/skills/` at project scope and `~/.agents/skills/` at user scope. Copilot and OpenCode additionally read from `.claude/skills/` — the same location Claude Code requires. The minimal union covering all four agents could therefore be just two paths per scope, but the team has chosen a deliberately wider belt-and-braces stance for Copilot: write to every path Copilot's documentation lists, not only the convergence path. That yields **three paths per scope** for the full four-agent default: `.claude/skills/`, `.agents/skills/`, and `.github/skills/` at project scope; `~/.claude/skills/`, `~/.agents/skills/`, and `~/.copilot/skills/` at user scope.
 
@@ -53,7 +55,7 @@ This change delivers the first increment — a cross-platform CLI built on these
 
 ### Manifest-driven adapter map (YAML, embedded + override)
 
-**Choice:** A single YAML file embedded into the binary at build time, overridable per-agent by a user file at `~/.config/falabella-installer/adapters.yaml`. Adding a new agent means editing the embedded default in the source tree (a YAML diff) — no Go code change.
+**Choice:** A single YAML file embedded into the binary at build time, overridable per-agent by a user file at `~/.config/fdh/adapters.yaml`. Adding a new agent means editing the embedded default in the source tree (a YAML diff) — no Go code change.
 
 **Why:** This is the most direct expression of the vendor-neutrality requirement. The build prompt's "adapter interface" pattern is fine, but in practice every adapter would have the same shape: declare an ID, declare detection probes, declare paths. Lifting that into data and writing one writer that consumes the data is shorter, more auditable, and easier to extend. Per-agent override lets unusual environments (mono-machine special builds, on-prem agent forks) re-point paths without forking the installer.
 
@@ -140,9 +142,9 @@ The 2x-disk cost on text-only bundles is negligible. If `assets/` grows to inclu
 
 ### Installer source tree and distribution channel
 
-**Choice:** The installer lives in its own dedicated repository (e.g. `falabella/skill-installer`) at Falabella's Git host — separate from this OpenSpec hub. The specs that govern it live here under `openspec/changes/installer-core/` and, after archive, under `openspec/specs/`. Built binaries are published to Falabella's internal package manager (Nexus, JFrog Artifactory, or GitHub Packages — final hosting choice is an ops decision) as standard tar.gz artifacts with adjacent SHA-256 checksum files. For the pilot, binaries ship unsigned; pilot devs verify the checksum after download. Code signing is deferred to the `ops-readiness` change.
+**Choice:** The installer lives in its own dedicated repository (e.g. `forge/skill-installer`) at Forge's Git host — separate from this OpenSpec hub. The specs that govern it live here under `openspec/changes/installer-core/` and, after archive, under `openspec/specs/`. Built binaries are published to Forge's internal package manager (Nexus, JFrog Artifactory, or GitHub Packages — final hosting choice is an ops decision) as standard tar.gz artifacts with adjacent SHA-256 checksum files. For the pilot, binaries ship unsigned; pilot devs verify the checksum after download. Code signing is deferred to the `ops-readiness` change.
 
-**Why:** A separate repo for the implementation keeps the OpenSpec hub focused on workflow and spec authority while letting the installer have its own CI, release cadence, issue tracker, and access controls. The private-package-manager distribution path matches how Falabella distributes its internal tooling today; it avoids a public Homebrew tap and removes the need to manage an apt/yum repo for the pilot. tar.gz + SHA-256 is the lowest-friction artifact shape every major package manager (Nexus raw repo, JFrog Generic, GitHub Packages release assets) can host without per-product packaging work. Signing is real work — keys, attestation, supply-chain — and is correctly scoped to `ops-readiness` rather than blocking pilot.
+**Why:** A separate repo for the implementation keeps the OpenSpec hub focused on workflow and spec authority while letting the installer have its own CI, release cadence, issue tracker, and access controls. The private-package-manager distribution path matches how Forge distributes its internal tooling today; it avoids a public Homebrew tap and removes the need to manage an apt/yum repo for the pilot. tar.gz + SHA-256 is the lowest-friction artifact shape every major package manager (Nexus raw repo, JFrog Generic, GitHub Packages release assets) can host without per-product packaging work. Signing is real work — keys, attestation, supply-chain — and is correctly scoped to `ops-readiness` rather than blocking pilot.
 
 **Alternatives considered:**
 
@@ -154,7 +156,7 @@ The 2x-disk cost on text-only bundles is negligible. If `assets/` grows to inclu
 
 - **Risk: The portability lint over-rejects (false positives) and frustrates authors.** Specifically, a portable skill that quotes `$ARGUMENTS` inside a fenced text/markdown block (e.g. documenting how a Claude-only skill works) trips the lint. → **Mitigation:** the lint message must be precise (file, line, exact rule) and the docs must explicitly cover this case. The conservative "if the token appears, fail" position is intentional for v1; if pilot feedback shows real friction, we add an explicit `# lint-ignore: $ARGUMENTS` opt-out comment in a later change.
 
-- **Risk: `go-git` auth fails in Falabella's corporate network environment.** Internal HTTPS may use proxies or cert pinning that `go-git` does not handle as gracefully as the system `git`. → **Mitigation:** the system-`git` fallback for fetch operations covers this. Pilot's first integration step is verifying `go-git` against the actual corporate Git host; if it works, no fallback is needed in practice.
+- **Risk: `go-git` auth fails in Forge's corporate network environment.** Internal HTTPS may use proxies or cert pinning that `go-git` does not handle as gracefully as the system `git`. → **Mitigation:** the system-`git` fallback for fetch operations covers this. Pilot's first integration step is verifying `go-git` against the actual corporate Git host; if it works, no fallback is needed in practice.
 
 - **Risk: Windows path-length limits (260 chars) bite for deeply nested skills.** A skill like `~/.agents/skills/security/dependency-cve-advisor/references/owasp-top-ten-2023/long-filename.md` can hit the limit. → **Mitigation:** the integration test suite includes a "long-path" case. The installer emits a clear error pointing the user at the Windows long-path setting (registry key + manifest opt-in) rather than failing cryptically.
 
@@ -171,10 +173,10 @@ The 2x-disk cost on text-only bundles is negligible. If `assets/` grows to inclu
 This change is greenfield — there is nothing to migrate **from**. The pilot rollout plan, however, is:
 
 1. **Internal review and approval of this change's artifacts** before any code is written.
-2. **Implement and ship the installer-core binary** to the 30-pilot devs via Falabella's internal package manager (Nexus / JFrog / GitHub Packages — selection made by the ops team). For every release, the build pipeline produces five tar.gz archives (one per platform), each with a sibling SHA-256 checksum file, all published to the same versioned path in the package manager. Pilot devs download the archive for their platform, verify the checksum per the quickstart, and place the binary on `PATH`. macOS Homebrew tap, Linux apt/yum repo, and Windows MSI / Winget are deferred to `ops-readiness`.
-3. **Provision a shared `skill-registry` Git repository** (location TBD by platform team; Falabella's internal GitLab or GitHub Enterprise instance, either is fine — the registry is host-agnostic by design). Seed it with 2–3 portable skills (the `seed-skills` change) so the pilot has something to install.
-4. **Pilot devs run `falabella-installer doctor`** on a fresh checkout to verify the installer detects their installed agents and finds the registry.
-5. **Pilot devs run `falabella-installer install <skill>`** for one of the seed skills and verify that the skill appears in all detected agents' UIs.
+2. **Implement and ship the installer-core binary** to the 30-pilot devs via Forge's internal package manager (Nexus / JFrog / GitHub Packages — selection made by the ops team). For every release, the build pipeline produces five tar.gz archives (one per platform), each with a sibling SHA-256 checksum file, all published to the same versioned path in the package manager. Pilot devs download the archive for their platform, verify the checksum per the quickstart, and place the binary on `PATH`. macOS Homebrew tap, Linux apt/yum repo, and Windows MSI / Winget are deferred to `ops-readiness`.
+3. **Provision a shared `skill-registry` Git repository** (location TBD by platform team; Forge's internal GitLab or GitHub Enterprise instance, either is fine — the registry is host-agnostic by design). Seed it with 2–3 portable skills (the `seed-skills` change) so the pilot has something to install.
+4. **Pilot devs run `fdh doctor`** on a fresh checkout to verify the installer detects their installed agents and finds the registry.
+5. **Pilot devs run `fdh install <skill>`** for one of the seed skills and verify that the skill appears in all detected agents' UIs.
 6. **Collect feedback for one to two weeks** before starting `installer-write-flows` (which adds `update`, `pin`, `remove`, `provision`, and `publish`).
 
 **Rollback:** the installer writes only to known, scoped paths (`~/.claude/skills/`, `~/.agents/skills/`, `.claude/skills/`, `.agents/skills/`). A pilot dev who wants to roll back removes the installed skill directories and uninstalls the binary; nothing else on their machine is touched. There is no system-level state, no daemon, no PATH manipulation, no registry write.
@@ -183,7 +185,7 @@ This change is greenfield — there is nothing to migrate **from**. The pilot ro
 
 All four open questions raised in earlier drafts have been resolved by the team. They are recorded here for the change history; see the corresponding Decision section above for the codified outcome.
 
-- **Q1. Installer source tree location.** *Resolved:* dedicated repository (e.g. `falabella/skill-installer`) at Falabella's Git host; binaries distributed via an internal package manager (Nexus / JFrog / GitHub Packages — final hosting selection by ops). See decision "Installer source tree and distribution channel" above.
+- **Q1. Installer source tree location.** *Resolved:* dedicated repository (e.g. `forge/skill-installer`) at Forge's Git host; binaries distributed via an internal package manager (Nexus / JFrog / GitHub Packages — final hosting selection by ops). See decision "Installer source tree and distribution channel" above.
 
 - **Q2. Code-signing for pilot binaries.** *Resolved:* the pilot ships unsigned binaries paired with SHA-256 checksum files. Pilot devs verify the checksum after download per the quickstart. Code signing is in scope for the `ops-readiness` change, not for this one.
 

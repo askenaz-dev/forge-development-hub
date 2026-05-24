@@ -1,3 +1,5 @@
+*Brand strings updated 2026-05-23 by the rebrand-to-forge-development-hub change; original wording used "forge".*
+
 > **NOTA — BORRADOR (no es un change formal todavía).**
 > Este archivo vive bajo `openspec/changes/_drafts/` para revisión humana antes de
 > ejecutar `/opsx:propose`. Cuando se apruebe, el contenido se mueve al directorio
@@ -10,7 +12,7 @@ El hub publica hoy una sola primitiva ("skill") y un solo archivo de catálogo (
 Mirando ECC (https://github.com/affaan-m/ECC) — el ecosistema cross-harness más maduro del espacio — quedan claras cinco brechas que se vuelven caras cuanto más grande sea el catálogo:
 
 1. **No hay separación entre rules y skills.** El `skills/design-system/SKILL.md` mezcla 20 reglas siempre-encendidas con workflows on-demand. Cambiarlo después de tener 50 skills es refactor masivo; cambiarlo hoy con 1 skill es cosmético.
-2. **No hay primitivas para agents ni hooks.** Falabella ya tiene patrones tribales ("cómo escribir un PR description", "qué chequear en una migration Postgres") que naturalmente serían agents distribuibles. Hoy se forzarían como "skills raros".
+2. **No hay primitivas para agents ni hooks.** Forge ya tiene patrones tribales ("cómo escribir un PR description", "qué chequear en una migration Postgres") que naturalmente serían agents distribuibles. Hoy se forzarían como "skills raros".
 3. **No hay manifest committeado en el consumidor.** Reproducibilidad entre developers depende de correr `fdh init` con los mismos flags. Equivalente conceptual: no tener `package.json`.
 4. **No hay lockfile.** Versionado del hub avanza, pero cada `fdh install` puede resolver distinto. Equivalente conceptual: no tener `package-lock.json`.
 5. **No hay ledger per-máquina.** `fdh list-installed`, `fdh repair`, `fdh uninstall --dry-run` no son posibles sin un inventario global del usuario.
@@ -29,7 +31,7 @@ Este change introduce las primitivas, los contratos declarativos y la capability
 - **Nuevo archivo `hub/profiles.yaml`** con bundles curados. Estructura:
   ```yaml
   profiles:
-    falabella-frontend:
+    forge-frontend:
       description: "Starter pack para devs frontend"
       skills: [design-system, code-review]
       rules:  [no-console-log]
@@ -62,7 +64,7 @@ Este change introduce las primitivas, los contratos declarativos y la capability
 Cada una de las tres primitivas nuevas ship con **al menos una entry real y funcional** — no stubs ni placeholders. Son ejemplos minimalistas pero ejecutables, que sirven como referencia para futuras entries y son seguras de remover/modificar:
 
 - **`rules/no-console-log/RULE.md`** — regla simple, alto valor: prohibe `console.log()` en código committed. Scope: `*.{ts,tsx,js,jsx}`. Real, materializable a `.claude/rules/no-console-log.md` (y target equivalentes en otros agentes), referenciable desde el profile `minimal`.
-- **`agents/falabella-pr-writer/AGENT.md`** — agent simple: genera descripciones de PR en formato Falabella (template + tono). System prompt corto, herramientas mínimas (`Read`, `Grep`, `Bash`). Real, materializable a `.claude/agents/falabella-pr-writer.md`.
+- **`agents/forge-pr-writer/AGENT.md`** — agent simple: genera descripciones de PR en formato Forge (template + tono). System prompt corto, herramientas mínimas (`Read`, `Grep`, `Bash`). Real, materializable a `.claude/agents/forge-pr-writer.md`.
 - **`hooks/doctor-on-session-start/HOOK.md` + `hook.json`** — hook simple, demuestra el flujo end-to-end: evento `SessionStart`, comando `fdh doctor --quiet`. Real, materializable como bloque managed en `.claude/settings.json`. La ejecución del hook es responsabilidad del agente (Claude Code lo invoca al iniciar sesión); FDH sólo lo instala.
 
 **Importante sobre runtime**: estos tres primitivos no requieren runtime FDH propio porque los agentes (Claude Code, Codex, etc.) ya tienen su mecanismo nativo para ejecutar/cargar rules, agents y hooks. FDH escribe los archivos en los paths que cada agente espera; el agente hace el resto. Esto es coherente con cómo funciona ya el primitivo `skill`.
@@ -92,7 +94,7 @@ Cada una de las tres primitivas nuevas ship con **al menos una entry real y func
 - `installation-state-ledger`: schema y semántica de `~/.fdh/state.json`. Comandos `fdh list-installed`, `fdh repair`, `fdh uninstall --dry-run`. Distinción minimal v1 vs full.
 - `consumer-managed-paths`: contrato de `.fdh-managed.yaml`, gestión de `.gitignore` sectionada, bloque managed en `.claude/settings.json` para hooks. Detección de drift.
 - `hub-rules-primitive`: contrato de rules como primitiva separada de skills. Formato, scope por glob, materialización per-agente. **Ship con 1 entry real funcional** (`rules/no-console-log/`).
-- `hub-agents-primitive`: contrato de agents como primitiva. Formato, target dirs per-agente. **Ship con 1 entry real funcional** (`agents/falabella-pr-writer/`).
+- `hub-agents-primitive`: contrato de agents como primitiva. Formato, target dirs per-agente. **Ship con 1 entry real funcional** (`agents/forge-pr-writer/`).
 - `hub-hooks-primitive`: contrato de hooks como primitiva. Formato, matchers, profiles. **Ship con 1 entry real funcional** (`hooks/doctor-on-session-start/`).
 - `fdh-scan-security`: comando `fdh scan` con detección rule-based de secrets, command injection en hooks, riesgo de MCPs, permisos de agents.
 
@@ -113,9 +115,9 @@ Cada una de las tres primitivas nuevas ship con **al menos una entry real y func
 
 - **Nuevos directorios root con su primera entry real:**
   - `rules/no-console-log/` (RULE.md + frontmatter completo)
-  - `agents/falabella-pr-writer/` (AGENT.md + frontmatter + system prompt + template)
+  - `agents/forge-pr-writer/` (AGENT.md + frontmatter + system prompt + template)
   - `hooks/doctor-on-session-start/` (HOOK.md + hook.json)
-- `hub/profiles.yaml` nuevo. Mínimo: 1 profile `minimal` que ejercita las 4 primitivas (incluye `design-system` skill + `no-console-log` rule + `falabella-pr-writer` agent + `doctor-on-session-start` hook). Sirve como ejemplo end-to-end de cómo se compone un profile.
+- `hub/profiles.yaml` nuevo. Mínimo: 1 profile `minimal` que ejercita las 4 primitivas (incluye `design-system` skill + `no-console-log` rule + `forge-pr-writer` agent + `doctor-on-session-start` hook). Sirve como ejemplo end-to-end de cómo se compone un profile.
 - `skills/design-system/` queda igual; sólo gana `kind: skill` en su entrada del registry.
 
 ### Consumer repos
@@ -138,7 +140,7 @@ Cada una de las tres primitivas nuevas ship con **al menos una entry real y func
 ### Sets up future changes
 
 - `add-more-rules`: catálogo de rules adicionales (`prefer-named-exports`, `use-ds-button`, `no-fmt-print` para Go, etc.). El camino ya está hecho con `no-console-log` como referencia.
-- `add-more-agents`: agents adicionales (`falabella-security-auditor`, `falabella-postgres-dba`, `falabella-i18n-reviewer`). Mismo patrón.
+- `add-more-agents`: agents adicionales (`forge-security-auditor`, `forge-postgres-dba`, `forge-i18n-reviewer`). Mismo patrón.
 - `add-more-hooks`: hooks adicionales con eventos PreToolUse/PostToolUse/Stop. La pieza de SessionStart ya está demostrada.
 - `evolve-scan-to-adversarial`: `fdh scan` pasa de rule-based a pipeline 3-agente.
 - `add-instinct-sync-service`: backend de sincronización de instincts entre devs (parte 2 de `add-instinct-collaboration`).

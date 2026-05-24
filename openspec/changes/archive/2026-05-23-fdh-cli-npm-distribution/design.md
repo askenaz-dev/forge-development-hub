@@ -1,13 +1,15 @@
+*Brand strings updated 2026-05-23 by the rebrand-to-forge-development-hub change; original wording used "forge".*
+
 ## Context
 
-El binario `fdh` existe hoy en `C:/falabella/fdh` como CLI Go de ~13k LOC + portal HTTP API. El plan archivado `add-fdh-cli-distribution-and-interactive-init` definió distribución vía tres canales (one-liner install.sh/ps1 + brew tap interno + winget source interno) con `FDH_PKG_HOST` como variable de entorno para apuntar al endpoint corporativo. La Decision 6 del archive aceptó binarios sin firmar Day 1 con warnings, dado que el cert corporativo Falabella toma semanas/meses de gestión.
+El binario `fdh` existe hoy en `C:/forge/fdh` como CLI Go de ~13k LOC + portal HTTP API. El plan archivado `add-fdh-cli-distribution-and-interactive-init` definió distribución vía tres canales (one-liner install.sh/ps1 + brew tap interno + winget source interno) con `FDH_PKG_HOST` como variable de entorno para apuntar al endpoint corporativo. La Decision 6 del archive aceptó binarios sin firmar Day 1 con warnings, dado que el cert corporativo Forge toma semanas/meses de gestión.
 
 El ecosistema JavaScript moderno convergió en un patrón para herramientas con core Go/Rust: distribuir el binario nativo dentro de un paquete npm wrapper. Ejemplos en producción: esbuild (Go), biome (Rust), swc (Rust), tailwindcss-cli v4 (Rust), prisma (TS + Rust engines), vscode-ripgrep (Rust). Este change adopta ese patrón para `fdh`.
 
-**Premisa clave**: la mayoría de devs Falabella ya tiene Node instalado porque Claude Code corre en Node, VS Code embebe Node, y el frontend toolchain entero es Node. "Requiere Node" deja de ser barrera real en 2026.
+**Premisa clave**: la mayoría de devs Forge ya tiene Node instalado porque Claude Code corre en Node, VS Code embebe Node, y el frontend toolchain entero es Node. "Requiere Node" deja de ser barrera real en 2026.
 
 **Stakeholders:**
-- Devs Falabella adoptando `fdh` (pilot 30 → target 500).
+- Devs Forge adoptando `fdh` (pilot 30 → target 500).
 - Equipo plataforma operando Artifactory (o fallback aprobado).
 - Equipo seguridad revisando flujo postinstall.
 - Equipo `fdh` Go que implementará el wrapper y actualizará la pipeline de release.
@@ -25,8 +27,8 @@ El ecosistema JavaScript moderno convergió en un patrón para herramientas con 
 
 **Goals:**
 
-- Habilitar `npx @falabella/fdh init` como camino de adopción cero-fricción.
-- Habilitar `npm i -g @falabella/fdh` como instalación persistente, con `fdh upgrade` trivial (`npm update -g`).
+- Habilitar `npx @forge/fdh init` como camino de adopción cero-fricción.
+- Habilitar `npm i -g @forge/fdh` como instalación persistente, con `fdh upgrade` trivial (`npm update -g`).
 - Sidestep del signing pain para el canal primary (npm).
 - Honrar proxies corporativos en el postinstall sin código custom.
 - Soportar npm/pnpm/yarn sin matrices de testing exponenciales.
@@ -36,7 +38,7 @@ El ecosistema JavaScript moderno convergió en un patrón para herramientas con 
 **Non-Goals:**
 
 - **No** reescribir `fdh` Go a TypeScript — sólo agregamos un wrapper TS. El core Go permanece intacto.
-- **No** publicar a npm público — sólo a registry interno Falabella.
+- **No** publicar a npm público — sólo a registry interno Forge.
 - **No** soportar el modelo "lazy install" (descargar binario en primer uso) — descartado por latencia impredecible y falla offline.
 - **No** implementar el registry interno en este change — Artifactory provisioning es coordinación con plataforma.
 - **No** generar autocompletes shell en este change — defer a `fdh-completion-via-npm-postinstall`.
@@ -52,20 +54,20 @@ Razones:
 - **Polyglot real**: npm hoy, futuro Go modules + Docker + Helm + PyPI + Maven en un solo sistema. Evita N registries paralelos.
 - **JFrog Xray integrado**: security scanning de paquetes alineado con `fdh-scan-security` (change hub-v2).
 - **Mejor UX/UI 2026** + REST APIs maduras + build promotion (dev → staging → prod) + federación multi-DC.
-- **Standard de facto** en retailers/enterprises del tamaño de Falabella.
+- **Standard de facto** en retailers/enterprises del tamaño de Forge.
 
 **Fallback budget-conscious documentado**: Sonatype Nexus 3 Repository OSS — gratis, polyglot (npm + Maven + Docker + PyPI + Helm + Go + RubyGems + APT/YUM + NuGet + Conan + R), mature, miles de enterprises usándolo. Si plataforma rechaza costo de Artifactory Pro, fallback a Nexus 3 OSS NO cambia el contrato de este change.
 
-**Tercera opción si aplica**: GitLab Package Registry si Falabella ya tiene GitLab Enterprise (incluido sin costo extra, soporta npm).
+**Tercera opción si aplica**: GitLab Package Registry si Forge ya tiene GitLab Enterprise (incluido sin costo extra, soporta npm).
 
 **Alternativas descartadas:**
-- *Verdaccio*: liviano y open source, pero sólo npm. Falabella va a necesitar más registries pronto; mejor empezar con polyglot.
+- *Verdaccio*: liviano y open source, pero sólo npm. Forge va a necesitar más registries pronto; mejor empezar con polyglot.
 - *Cloudsmith / Bytesafe SaaS*: descartado por restricción interna (no SaaS externo).
 - *GitHub Packages*: depende de licencias enterprise que no se confirma que existan.
 
 ### Decision 2: Sub-directorio `npm/` del repo `fdh`, no repo separado
 
-El código TS del wrapper vive en `C:/falabella/fdh/npm/` como sub-directorio del repo Go existente.
+El código TS del wrapper vive en `C:/forge/fdh/npm/` como sub-directorio del repo Go existente.
 
 **Razones:**
 - **Versionado trivialmente sincronizado**: un solo `git tag` dispara build Go + build TS + publish.
@@ -78,7 +80,7 @@ El código TS del wrapper vive en `C:/falabella/fdh/npm/` como sub-directorio de
 - CI cross-language ligeramente más complejo. Aceptable: gana mucho en simplicidad de release.
 
 **Alternativas descartadas:**
-- *Repo separado `@falabella/fdh-npm`*: descartado por overhead de sincronización de versiones y posibilidad de drift.
+- *Repo separado `@forge/fdh-npm`*: descartado por overhead de sincronización de versiones y posibilidad de drift.
 - *Mono-repo nuevo*: descartado, scope creep.
 
 ### Decision 3: Postinstall síncrono, no lazy
@@ -98,7 +100,7 @@ Un solo `git tag v0.7.2` en el repo `fdh` dispara una pipeline atómica que:
 1. Cross-compila el binario Go para los 5 targets soportados.
 2. Sube binarios + SHA-256 + manifest a `${FDH_PKG_HOST}/fdh/0.7.2/`.
 3. Builda el paquete TS bajo `npm/`, bumpea `package.json` a `0.7.2`, runea tests.
-4. Publica `@falabella/fdh@0.7.2` a Artifactory.
+4. Publica `@forge/fdh@0.7.2` a Artifactory.
 
 **Ventajas:**
 - Imposible que el wrapper npm apunte a una versión del binario que no existe.
@@ -125,21 +127,21 @@ El postinstall lee proxy config en este orden:
 
 Tests del wrapper SHALL pasar con los tres package managers. El postinstall detecta el package manager activo vía `npm_config_user_agent` y adapta paths cuando difieren (pnpm symlinks, yarn classic vs yarn berry).
 
-**Razón**: cualquiera de los tres puede ser el preferido del dev. pnpm en particular gana adopción en frontend Falabella (probable).
+**Razón**: cualquiera de los tres puede ser el preferido del dev. pnpm en particular gana adopción en frontend Forge (probable).
 
 **Trade-off**: matriz de CI crece 3x. Aceptable porque el smoke test es rápido (<10s).
 
-### Decision 7: Alias `falabella-installer` en el mismo paquete
+### Decision 7: Alias `fdh` en el mismo paquete
 
-`package.json` declara `bin: { fdh, falabella-installer }` apuntando al mismo wrapper. `falabella-installer` imprime one-liner de deprecation y delega a `fdh`.
+`package.json` declara `bin: { fdh, fdh }` apuntando al mismo wrapper. `fdh` imprime one-liner de deprecation y delega a `fdh`.
 
-**Razón**: simetría con el stub `cmd/falabella-installer-stub` del repo Go (introducido por `dev-portal` para 90 días). Mantener el alias en el paquete npm previene rupturas en scripts/docs que aún referencien el nombre viejo.
+**Razón**: simetría con el stub `cmd/fdh-stub` del repo Go (introducido por `dev-portal` para 90 días). Mantener el alias en el paquete npm previene rupturas en scripts/docs que aún referencien el nombre viejo.
 
-**Alternativa descartada**: paquete separado `@falabella/falabella-installer-stub`. Overhead de mantener dos paquetes para básicamente la misma cosa.
+**Alternativa descartada**: paquete separado `@forge/fdh-stub`. Overhead de mantener dos paquetes para básicamente la misma cosa.
 
 ### Decision 8: Cache del binario en `node_modules/`, no en `~/.cache/fdh-npm/`
 
-El postinstall extrae el binario a `node_modules/@falabella/fdh/bin/`. NO usa un cache global per-user.
+El postinstall extrae el binario a `node_modules/@forge/fdh/bin/`. NO usa un cache global per-user.
 
 **Razón:**
 - Filesystem layout estándar de npm — herramientas existentes (npm rebuild, npm uninstall) funcionan sin tratamiento especial.
@@ -156,7 +158,7 @@ Soporte oficial:
 No soportados (fallan con error accionable):
 - `freebsd-*`, `linux-mips*`, `windows-arm64` (a evaluar si demanda corporativa lo justifica).
 
-**Razón**: cubre 99%+ de laptops/servers Falabella. Targets exóticos pueden compilar desde source vía Go toolchain.
+**Razón**: cubre 99%+ de laptops/servers Forge. Targets exóticos pueden compilar desde source vía Go toolchain.
 
 ## Risks / Trade-offs
 
@@ -172,7 +174,7 @@ No soportados (fallan con error accionable):
 
 - **Devs sin Node en entornos restrictivos** → no afecta — usan canal fallback `install.sh` o `.deb`/`.rpm`. Documentado.
 
-- **Cert corporativo Falabella eventualmente disponible pero binario subyacente sigue sin firmar** → aceptado, canal npm sidesteps; canal fallback usa firma cuando esté.
+- **Cert corporativo Forge eventualmente disponible pero binario subyacente sigue sin firmar** → aceptado, canal npm sidesteps; canal fallback usa firma cuando esté.
 
 - **npm package privado en Artifactory requiere autenticación que el dev no tiene configurada** → mitigado documentando `.npmrc` corporativo template + `fdh doctor` que detecta y reporta auth faltante.
 
@@ -181,7 +183,7 @@ No soportados (fallan con error accionable):
 ## Migration Plan
 
 Pre-GA:
-1. **Plataforma**: provisionar Artifactory Pro (o fallback aprobado). Crear repo virtual npm `npm-internal` con scope `@falabella/`.
+1. **Plataforma**: provisionar Artifactory Pro (o fallback aprobado). Crear repo virtual npm `npm-internal` con scope `@forge/`.
 2. **Seguridad**: whitelist en proxies corporativos para `${FDH_PKG_HOST}`. Revisión del flujo postinstall.
 3. **Repo `fdh`**: implementar `npm/` sub-directorio + extender CI pipeline.
 4. **Tests**: smoke test cross-package-manager (npm/pnpm/yarn) cross-OS (Linux/macOS/Windows).
@@ -189,8 +191,8 @@ Pre-GA:
 
 GA:
 1. Publicar primer release atómico (binario Go + paquete npm).
-2. Comunicación interna anunciando `npx @falabella/fdh init` como camino primario.
-3. Release notes claros: pilot existentes pueden migrar con `npm i -g @falabella/fdh`; tarball install sigue funcionando.
+2. Comunicación interna anunciando `npx @forge/fdh init` como camino primario.
+3. Release notes claros: pilot existentes pueden migrar con `npm i -g @forge/fdh`; tarball install sigue funcionando.
 
 Rollback (si npm causa problemas inesperados):
 - El paquete npm es independiente del binario Go publicado. Si hay bug en el wrapper, `npm unpublish` (en Artifactory) lo remueve sin afectar canales fallback.
@@ -205,7 +207,7 @@ Resueltas en este design:
 - ✅ Versionado: 1:1 atómico.
 - ✅ Proxies: cascada npm_config → env vars → NO_PROXY.
 - ✅ Cross-package-manager: npm + pnpm + yarn soportados.
-- ✅ Alias `falabella-installer`: mismo paquete con deprecation warning.
+- ✅ Alias `fdh`: mismo paquete con deprecation warning.
 - ✅ Cache: en `node_modules/`, no global.
 - ✅ Matriz de targets: 5 combos (darwin/linux arm64+amd64, windows amd64).
 
@@ -213,4 +215,4 @@ Quedan abiertas para apply / changes futuros:
 - **¿`NPM_CONFIG_CAFILE` y `NODE_EXTRA_CA_CERTS` son suficientes para proxies con cert inspection corporativo?** A confirmar con seguridad durante implementation.
 - **¿windows-arm64 entra en la matriz oficial o queda excluido por demanda baja?** A confirmar con base de hardware del pilot.
 - **¿El `fdh doctor` extendido reporta `npm` vs `install.sh` como método de instalación?** Útil para soporte; refinable en apply.
-- **¿Auto-update de `@falabella/fdh` se ofrece via comando custom o se confía 100% en `npm update -g`?** Defer a `fdh-upgrade-command` future change.
+- **¿Auto-update de `@forge/fdh` se ofrece via comando custom o se confía 100% en `npm update -g`?** Defer a `fdh-upgrade-command` future change.

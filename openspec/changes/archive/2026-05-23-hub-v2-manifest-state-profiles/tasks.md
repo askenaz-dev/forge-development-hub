@@ -1,3 +1,5 @@
+*Brand strings updated 2026-05-23 by the rebrand-to-forge-development-hub change; original wording used "forge".*
+
 ## 1. Estructura del hub y schema v2
 
 - [x] 1.1 Crear directorio `hub/` en la raíz del repo
@@ -30,10 +32,10 @@
 - [x] 4.3 Agregar entry correspondiente en `hub/registry.yaml`
 - [x] 4.4 Verificar que `tools/validate-registry.py` pasa después de la inclusión
 
-## 5. Primera entry real: agent `falabella-pr-writer`
+## 5. Primera entry real: agent `forge-pr-writer`
 
-- [x] 5.1 Crear directorio `agents/falabella-pr-writer/`
-- [x] 5.2 Crear `agents/falabella-pr-writer/AGENT.md` con frontmatter completo (`name: falabella-pr-writer`, `kind: agent`, `description`, `agents_supported: [claude-code]`, `tools: [Read, Grep, Bash]`) + system prompt describiendo el rol + template con secciones `## What`, `## Why`, `## Test plan`, `## Risk`
+- [x] 5.1 Crear directorio `agents/forge-pr-writer/`
+- [x] 5.2 Crear `agents/forge-pr-writer/AGENT.md` con frontmatter completo (`name: forge-pr-writer`, `kind: agent`, `description`, `agents_supported: [claude-code]`, `tools: [Read, Grep, Bash]`) + system prompt describiendo el rol + template con secciones `## What`, `## Why`, `## Test plan`, `## Risk`
 - [x] 5.3 Agregar entry correspondiente en `hub/registry.yaml`
 - [x] 5.4 Verificar que `tools/validate-registry.py` pasa después de la inclusión
 
@@ -47,7 +49,7 @@
 
 ## 7. Poblar profile `minimal`
 
-- [x] 7.1 Actualizar `hub/profiles.yaml` con el profile `minimal` referenciando los cuatro componentes reales: `skills: [design-system]`, `rules: [no-console-log]`, `agents: [falabella-pr-writer]`, `hooks: [doctor-on-session-start]`
+- [x] 7.1 Actualizar `hub/profiles.yaml` con el profile `minimal` referenciando los cuatro componentes reales: `skills: [design-system]`, `rules: [no-console-log]`, `agents: [forge-pr-writer]`, `hooks: [doctor-on-session-start]`
 - [x] 7.2 Agregar `description` y `owner_team: dx-platform` al profile
 - [x] 7.3 Verificar que `tools/validate-registry.py` pasa después de la inclusión (referencias del profile resuelven correctamente)
 
@@ -60,7 +62,7 @@
 
 ## 9. Documentación cross-ecosistema
 
-- [x] 9.1 Actualizar root `CLAUDE.md` (`C:\falabella\falabella-development-hub\CLAUDE.md`) para mencionar el nuevo `hub/` directory, las cuatro primitivas y el modelo manifest/lock/state
+- [x] 9.1 Actualizar root `CLAUDE.md` (`C:\forge\forge-development-hub\CLAUDE.md`) para mencionar el nuevo `hub/` directory, las cuatro primitivas y el modelo manifest/lock/state
 - [x] 9.2 Crear `hub/CONSUMER-CONTRACT.md` documentando los schemas de `.fdh/manifest.yaml`, `.fdh/lock.yaml` y `~/.fdh/state.json` (con ejemplos) y los markers `.fdh-managed.yaml` y `.gitignore` sectionado
 - [x] 9.3 Verificar que la documentación referencie correctamente los specs nuevos (links a `openspec/specs/<capability>/spec.md`)
 

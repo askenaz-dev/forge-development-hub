@@ -1,8 +1,10 @@
+*Brand strings updated 2026-05-23 by the rebrand-to-forge-development-hub change; original wording used "forge".*
+
 ## MODIFIED Requirements
 
 ### Requirement: Firma de binarios opcional con warning explícito si está ausente
 
-El sistema MAY distribuir binarios firmados con el certificado corporativo Falabella (Authenticode para Windows, Developer ID + notarization para macOS); cuando la firma no esté disponible y se use el canal fallback (`install.sh`/`install.ps1`/tarball/`.deb`/`.rpm`), el instalador SHALL imprimir un warning visible que nombre la ausencia de firma, confirme la verificación SHA-256, y continúe la instalación sin fallar. Para el canal **primary npm** (`@falabella/fdh`), el binario se ejecuta desde `node_modules/` y Windows SmartScreen / macOS Gatekeeper no disparan los mismos checks, por lo que la firma deja de ser bloqueante para el rollout principal.
+El sistema MAY distribuir binarios firmados con el certificado corporativo Forge (Authenticode para Windows, Developer ID + notarization para macOS); cuando la firma no esté disponible y se use el canal fallback (`install.sh`/`install.ps1`/tarball/`.deb`/`.rpm`), el instalador SHALL imprimir un warning visible que nombre la ausencia de firma, confirme la verificación SHA-256, y continúe la instalación sin fallar. Para el canal **primary npm** (`@forge/fdh`), el binario se ejecuta desde `node_modules/` y Windows SmartScreen / macOS Gatekeeper no disparan los mismos checks, por lo que la firma deja de ser bloqueante para el rollout principal.
 
 #### Scenario: Binario firmado disponible (canal fallback)
 
@@ -16,19 +18,19 @@ El sistema MAY distribuir binarios firmados con el certificado corporativo Falab
 
 #### Scenario: Canal npm sin warning de signing
 
-- **WHEN** un developer instala vía `npx @falabella/fdh init` o `npm i -g @falabella/fdh` con binario subyacente no firmado
+- **WHEN** un developer instala vía `npx @forge/fdh init` o `npm i -g @forge/fdh` con binario subyacente no firmado
 - **THEN** no aparece warning de SmartScreen/Gatekeeper porque el binario se ejecuta desde `node_modules/`; la instalación es transparente
 
 ## ADDED Requirements
 
 ### Requirement: Canal npm como distribución primary
 
-El canal npm (`@falabella/fdh`) SHALL ser el canal primary de distribución del binario `fdh` para devs con Node ya instalado (mayoría en 2026 dada la dependencia de Claude Code, VS Code, frontend toolchain). Toda documentación oficial SHALL presentar `npx @falabella/fdh init` y `npm i -g @falabella/fdh` como comandos canónicos antes que cualquier otra alternativa.
+El canal npm (`@forge/fdh`) SHALL ser el canal primary de distribución del binario `fdh` para devs con Node ya instalado (mayoría en 2026 dada la dependencia de Claude Code, VS Code, frontend toolchain). Toda documentación oficial SHALL presentar `npx @forge/fdh init` y `npm i -g @forge/fdh` como comandos canónicos antes que cualquier otra alternativa.
 
 #### Scenario: Quickstart lidera con npm
 
 - **WHEN** un nuevo dev abre `docs/quickstart.md` del repo `fdh`
-- **THEN** las primeras dos secciones explican `npx @falabella/fdh init` y `npm i -g @falabella/fdh`; brew/install.sh aparecen después como alternativas para entornos Node-less
+- **THEN** las primeras dos secciones explican `npx @forge/fdh init` y `npm i -g @forge/fdh`; brew/install.sh aparecen después como alternativas para entornos Node-less
 
 #### Scenario: Portal `/install` por defecto
 
@@ -61,4 +63,4 @@ Los canales brew tap interno y winget source interno SHALL ser opcionales y SHAL
 #### Scenario: Brew tap publicado posteriormente
 
 - **WHEN** plataforma activa el tap interno semanas después de GA
-- **THEN** la documentación se actualiza para listar `brew tap falabella-internal/tools && brew install fdh` como alternativa adicional sin desplazar al canal npm primary
+- **THEN** la documentación se actualiza para listar `brew tap forge-internal/tools && brew install fdh` como alternativa adicional sin desplazar al canal npm primary

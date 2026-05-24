@@ -1,11 +1,11 @@
-# Falabella Development Hub
+# Forge Development Hub
 
-The canonical catalog of AI coding components (skills, rules, agents, hooks) published for Falabella developers. Discovered, installed, and updated via the `fdh` CLI.
+The canonical catalog of AI coding components (skills, rules, agents, hooks) published for Forge developers. Discovered, installed, and updated via the `fdh` CLI.
 
 ## Try it in 30 seconds
 
 ```sh
-npx @falabella/fdh init
+npx @forge/fdh init
 ```
 
 That runs a wizard: detects which AI agent(s) you have installed (Claude Code, Codex, Copilot, OpenCode), lets you pick a profile, and materializes the right files into your project. No prior install of `fdh` needed.
@@ -13,10 +13,10 @@ That runs a wizard: detects which AI agent(s) you have installed (Claude Code, C
 To make it permanent:
 
 ```sh
-npm i -g @falabella/fdh
+npm i -g @forge/fdh
 ```
 
-> **Don't have Node?** The CLI also ships as a POSIX one-liner, PowerShell script, `.deb`/`.rpm` packages, and eventually Homebrew / winget. See [`fdh/docs/quickstart.md`](https://github.com/falabella/fdh/blob/main/docs/quickstart.md).
+> **Don't have Node?** The CLI also ships as a POSIX one-liner, PowerShell script, `.deb`/`.rpm` packages, and eventually Homebrew / winget. See [`fdh/docs/quickstart.md`](https://github.com/forge/fdh/blob/main/docs/quickstart.md).
 
 ## What you get
 
@@ -26,9 +26,9 @@ Four primitives, all listed in one catalog:
 
 | Primitive | What it does | Example |
 |---|---|---|
-| `skill` | On-demand workflow guidance | `design-system` — Falabella DS rules + component catalog |
+| `skill` | On-demand workflow guidance | `design-system` — Forge DS rules + component catalog |
 | `rule` | Always-on guideline scoped by glob | `no-console-log` — prohibits `console.log` in TS/JS |
-| `agent` | Specialized subagent + tools | `falabella-pr-writer` — generates PR descriptions in house style |
+| `agent` | Specialized subagent + tools | `forge-pr-writer` — generates PR descriptions in house style |
 | `hook` | Event-triggered command | `doctor-on-session-start` — runs `fdh doctor --quiet` at session start |
 
 Curated bundles (`profiles.yaml`) let you grab a set with a single line:
@@ -70,8 +70,9 @@ See `hub/README.md` for the full how-to. tl;dr:
 
 ## Sibling repos
 
-- **[`falabella/fdh`](https://github.com/falabella/fdh)** — the Go CLI + Next.js portal API. Lives in `C:/falabella/fdh/`. Houses the `npm/` wrapper that ships `@falabella/fdh`.
-- **`falabella/FTI00575-design-system`** — upstream design system; snapshotted into `skills/design-system/references/`.
+- **[`forge/fdh`](https://github.com/forge/fdh)** — the Go CLI + Next.js portal API. Lives in `C:/forge/fdh/`. Houses the `npm/` wrapper that ships `@forge/fdh`.
+- **`forge/FTI00575-design-system`** — upstream design system; snapshotted into `skills/design-system/references/`.
+- **Renaming your local checkout?** See [`docs/operations/rename-checkout.md`](docs/operations/rename-checkout.md) for the step-by-step move from `C:\forge\forge-development-hub` to `C:\forge\forge-development-hub` (and Unix equivalents).
 
 ## Specs & changes
 
@@ -97,4 +98,4 @@ CI runs all of these on every PR touching `hub/`, `skills/`, `rules/`, `agents/`
 
 ## License
 
-Internal Falabella use only.
+Internal Forge use only.

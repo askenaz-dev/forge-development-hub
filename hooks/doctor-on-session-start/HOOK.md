@@ -20,7 +20,7 @@ The intent: **catch broken setups within seconds of opening the editor, rather t
 In a multi-machine, multi-project workflow, the state of a developer's hub-managed components can drift silently:
 
 - A teammate edited the manifest and the developer pulled without re-running `fdh install`.
-- An OS update wiped `node_modules/@falabella/fdh/bin/` and the wrapper can't find the binary.
+- An OS update wiped `node_modules/@forge/fdh/bin/` and the wrapper can't find the binary.
 - The developer cloned a repo on a fresh laptop and forgot the install step.
 - Someone hand-edited a managed skill, breaking its hash.
 
@@ -44,7 +44,7 @@ Field reference:
 
 - **`event: "SessionStart"`** — fires when Claude Code starts a new session in this workspace. Other supported events for future hooks: `PreToolUse`, `PostToolUse`, `Stop`.
 - **`matcher: "*"`** — applies to every session, no per-tool filtering.
-- **`command: "fdh doctor --quiet"`** — the binary installed via the `@falabella/fdh` npm package (or via brew/install.sh fallback).
+- **`command: "fdh doctor --quiet"`** — the binary installed via the `@forge/fdh` npm package (or via brew/install.sh fallback).
 - **`timeout_seconds: 10`** — generous upper bound; doctor normally returns in <1s. Sessions never block longer than this on hook execution.
 - **`_fdh_managed: "doctor-on-session-start"`** — marker so `fdh uninstall doctor-on-session-start` removes this entry without touching the developer's own hooks. **Do not remove this field manually.**
 

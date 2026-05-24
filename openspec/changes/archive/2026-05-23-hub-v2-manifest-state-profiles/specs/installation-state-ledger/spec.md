@@ -1,3 +1,5 @@
+*Brand strings updated 2026-05-23 by the rebrand-to-forge-development-hub change; original wording used "forge".*
+
 ## ADDED Requirements
 
 ### Requirement: Archivo `~/.fdh/state.json` registra inventario per-máquina

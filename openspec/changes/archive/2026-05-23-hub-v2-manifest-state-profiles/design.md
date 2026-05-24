@@ -1,3 +1,5 @@
+*Brand strings updated 2026-05-23 by the rebrand-to-forge-development-hub change; original wording used "forge".*
+
 ## Context
 
 El hub publica hoy una única primitiva (`skill`) con un único archivo de catálogo (`skills/registry.yaml` schema v1, 1 entrada: `design-system`). El plan archivado `add-fdh-cli-distribution-and-interactive-init` definió `fdh init` interactivo, `fdh update` y el concepto de catálogo via `registry.yaml`, pero apoyado en un único marker `.skill-version` por directorio instalado y sin contrato declarativo en el consumer repo.
@@ -5,13 +7,13 @@ El hub publica hoy una única primitiva (`skill`) con un único archivo de catá
 Tras revisar ECC (https://github.com/affaan-m/ECC) — el ecosistema cross-harness más maduro del espacio — se identificaron cinco brechas estructurales (descritas en `proposal.md`) que se vuelven costosas cuanto más grande es el catálogo. Este design resuelve las decisiones de implementación clave que el proposal dejó abiertas.
 
 **Stakeholders:**
-- Devs Falabella consumiendo el hub (pilot actual: 30; target: 500).
+- Devs Forge consumiendo el hub (pilot actual: 30; target: 500).
 - Admins del hub curando catálogo y profiles.
 - Equipo plataforma operando registry interno y CI del hub.
 - Seguridad corporativa aprobando rollout (requirente de `fdh scan`).
 
 **Constraints duras:**
-- CLI `fdh` existente en Go (`C:/falabella/fdh`, 13k LOC, portal API incluido). Cambios al CLI tracking separado.
+- CLI `fdh` existente en Go (`C:/forge/fdh`, 13k LOC, portal API incluido). Cambios al CLI tracking separado.
 - Distribución 100% interna (sin npm/Homebrew público). Internal npm registry (Artifactory) provisioning es change paralelo `fdh-cli-npm-distribution`.
 - Compatibilidad con pilot existente: migración automática sin reinstalls manuales.
 - Cuatro ecosistemas espejo (`.claude/`, `.codex/`, `.github/`, `.opencode/`) actualizados en lockstep.
@@ -130,7 +132,7 @@ Hooks viven en `.claude/settings.json` (no en archivos propios). Como el archivo
 
 ### Decision 9: `hub/profiles.yaml` SHALL incluir al menos profile `minimal` post-apply
 
-Ship con un profile real ejercita el schema end-to-end y da ejemplo concreto a futuros curadores. `minimal` referencia las cuatro primitivas (skill `design-system`, rule `no-console-log`, agent `falabella-pr-writer`, hook `doctor-on-session-start`), todas las cuales también shippea este change como entries reales.
+Ship con un profile real ejercita el schema end-to-end y da ejemplo concreto a futuros curadores. `minimal` referencia las cuatro primitivas (skill `design-system`, rule `no-console-log`, agent `forge-pr-writer`, hook `doctor-on-session-start`), todas las cuales también shippea este change como entries reales.
 
 ## Risks / Trade-offs
 
@@ -160,7 +162,7 @@ Migración interna al repo del hub (no afecta consumers en este change):
 
 1. **Pre-apply**: snapshot del estado actual (`skills/registry.yaml` v1 con 1 entrada + `tools/validate-registry.py` v1).
 2. **Apply de este change**:
-   - Crear directorios nuevos `rules/no-console-log/`, `agents/falabella-pr-writer/`, `hooks/doctor-on-session-start/`.
+   - Crear directorios nuevos `rules/no-console-log/`, `agents/forge-pr-writer/`, `hooks/doctor-on-session-start/`.
    - Crear `hub/` con `registry.yaml` (v2, 4 entries) y `profiles.yaml` (1 profile `minimal`).
    - Generar symlink/redirect `skills/registry.yaml` → `hub/registry.yaml`.
    - Extender `tools/validate-registry.py` para schema v2 + cuatro dirs.
@@ -182,7 +184,7 @@ Resueltas en este design:
 - ✅ HOME compartido vía namespace opt-in por hostname (Decision 5).
 
 Quedan abiertas para el apply / changes futuros:
-- **¿Qué CI pipeline ejecuta `fdh scan` post-implementación Go?** Probablemente GitHub Actions / equivalente Falabella. A confirmar en apply una vez `fdh scan` esté implementado.
+- **¿Qué CI pipeline ejecuta `fdh scan` post-implementación Go?** Probablemente GitHub Actions / equivalente Forge. A confirmar en apply una vez `fdh scan` esté implementado.
 - **¿La migración de `.skill-version` legacy genera notificación al developer o es completamente silenciosa?** Hoy spec dice silenciosa; podríamos agregar one-liner informativo. Refinable en apply.
 - **¿`hub/profiles.yaml` soporta herencia entre profiles (`extends: another-profile`)?** No en v1. Defer hasta tener >5 profiles y ver patrón real.
 - **¿Notificación push cuando admin cambia un profile que un consumer usa?** Hoy no — el consumer ve el cambio al correr `fdh update`. Posible enhancement futuro con webhooks.

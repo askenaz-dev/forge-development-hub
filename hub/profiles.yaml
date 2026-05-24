@@ -46,5 +46,5 @@ profiles:
     owner_team: dx-platform
     skills: [design-system]
     rules: [no-console-log]
-    agents: [falabella-pr-writer]
+    agents: [forge-pr-writer]
     hooks: [doctor-on-session-start]

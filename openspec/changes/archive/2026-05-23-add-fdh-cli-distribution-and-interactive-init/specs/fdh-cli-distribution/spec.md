@@ -1,3 +1,5 @@
+*Brand strings updated 2026-05-23 by the rebrand-to-forge-development-hub change; original wording used "forge".*
+
 ## ADDED Requirements
 
 ### Requirement: One-liner universal de instalación per-OS
@@ -31,11 +33,11 @@ El sistema SHALL proveer scripts oficiales `install.sh` (POSIX) e `install.ps1` 
 
 ### Requirement: Distribución vía Homebrew tap interno
 
-El sistema SHALL publicar una formula Homebrew en un tap interno Falabella (`falabella-internal/tools`) que permita instalar `fdh` con `brew tap falabella-internal/tools && brew install fdh` en macOS y Linux.
+El sistema SHALL publicar una formula Homebrew en un tap interno Forge (`forge-internal/tools`) que permita instalar `fdh` con `brew tap forge-internal/tools && brew install fdh` en macOS y Linux.
 
 #### Scenario: Install vía brew
 
-- **WHEN** un developer ejecuta `brew tap falabella-internal/tools && brew install fdh`
+- **WHEN** un developer ejecuta `brew tap forge-internal/tools && brew install fdh`
 - **THEN** Homebrew descarga el bottle/tarball desde el host interno, lo instala bajo el prefix de brew, hace symlink a `fdh` en `$(brew --prefix)/bin/`, y `fdh --version` responde con la versión instalada sin pasos manuales adicionales
 
 #### Scenario: Upgrade vía brew
@@ -45,16 +47,16 @@ El sistema SHALL publicar una formula Homebrew en un tap interno Falabella (`fal
 
 ### Requirement: Distribución vía winget source interno
 
-El sistema SHALL publicar manifests winget en un source interno Falabella que permita instalar `fdh` con `winget install Falabella.FDH` tras agregar el source.
+El sistema SHALL publicar manifests winget en un source interno Forge que permita instalar `fdh` con `winget install Forge.FDH` tras agregar el source.
 
 #### Scenario: Install vía winget
 
-- **WHEN** un developer con el source interno agregado ejecuta `winget install Falabella.FDH`
+- **WHEN** un developer con el source interno agregado ejecuta `winget install Forge.FDH`
 - **THEN** winget descarga el instalador desde el source interno, instala el binario en una ruta de usuario, registra `fdh.exe` en el PATH y `fdh --version` responde sin reiniciar la sesión
 
 ### Requirement: Paquetes nativos `.deb` y `.rpm` para Linux corporativo
 
-El sistema SHALL proveer paquetes `.deb` (Debian/Ubuntu) y `.rpm` (RHEL/Fedora) en repositorios internos Falabella que instalen `fdh` con el package manager nativo.
+El sistema SHALL proveer paquetes `.deb` (Debian/Ubuntu) y `.rpm` (RHEL/Fedora) en repositorios internos Forge que instalen `fdh` con el package manager nativo.
 
 #### Scenario: Install vía apt
 
@@ -68,17 +70,17 @@ El sistema SHALL proveer paquetes `.deb` (Debian/Ubuntu) y `.rpm` (RHEL/Fedora) 
 
 ### Requirement: Endpoint de distribución configurable via `FDH_PKG_HOST`
 
-Los scripts `install.sh` y `install.ps1` SHALL leer el host de descarga desde la variable de entorno `FDH_PKG_HOST` (no hardcodearlo), permitiendo que el endpoint corporativo real (Artifactory, Nexus, S3 interno, GitHub Enterprise Releases, etc.) se inyecte sin modificar los scripts. El default placeholder es `pkg.falabella.internal` hasta que el equipo de plataforma confirme el host real.
+Los scripts `install.sh` y `install.ps1` SHALL leer el host de descarga desde la variable de entorno `FDH_PKG_HOST` (no hardcodearlo), permitiendo que el endpoint corporativo real (Artifactory, Nexus, S3 interno, GitHub Enterprise Releases, etc.) se inyecte sin modificar los scripts. El default placeholder es `pkg.forge.internal` hasta que el equipo de plataforma confirme el host real.
 
 #### Scenario: Override vía env var
 
-- **WHEN** un developer ejecuta `FDH_PKG_HOST=falabella.jfrog.io/artifactory/fdh-generic-local curl -fsSL https://falabella.jfrog.io/artifactory/fdh-generic-local/fdh/install.sh | bash`
+- **WHEN** un developer ejecuta `FDH_PKG_HOST=forge.jfrog.io/artifactory/fdh-generic-local curl -fsSL https://forge.jfrog.io/artifactory/fdh-generic-local/fdh/install.sh | bash`
 - **THEN** el script usa el host pasado en `FDH_PKG_HOST` para resolver todas las URLs (binario, manifest, SHA-256) sin modificar el script
 
 #### Scenario: Default placeholder cuando env var no está
 
 - **WHEN** un developer ejecuta el one-liner sin setear `FDH_PKG_HOST`
-- **THEN** el script usa `pkg.falabella.internal` como default y emite un warning indicando que se está usando el placeholder; si ese host no responde, sale con error accionable nombrando la env var como override
+- **THEN** el script usa `pkg.forge.internal` como default y emite un warning indicando que se está usando el placeholder; si ese host no responde, sale con error accionable nombrando la env var como override
 
 ### Requirement: Manifest público de versiones disponibles
 
@@ -96,7 +98,7 @@ El sistema SHALL publicar en `https://${FDH_PKG_HOST}/fdh/manifest.json` un mani
 
 ### Requirement: Firma de binarios opcional con warning explícito si está ausente
 
-El sistema MAY distribuir binarios firmados con el certificado corporativo Falabella (Authenticode para Windows, Developer ID + notarization para macOS); cuando la firma no esté disponible, el instalador SHALL imprimir un warning visible que nombre la ausencia de firma, confirme la verificación SHA-256, y continúe la instalación sin fallar.
+El sistema MAY distribuir binarios firmados con el certificado corporativo Forge (Authenticode para Windows, Developer ID + notarization para macOS); cuando la firma no esté disponible, el instalador SHALL imprimir un warning visible que nombre la ausencia de firma, confirme la verificación SHA-256, y continúe la instalación sin fallar.
 
 #### Scenario: Binario firmado disponible
 

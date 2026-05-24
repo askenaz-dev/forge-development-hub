@@ -1,3 +1,5 @@
+*Brand strings updated 2026-05-23 by the rebrand-to-forge-development-hub change; original wording used "forge".*
+
 ## Context
 
 Tras `hub-v2-manifest-state-profiles` (que introduce las 4 primitivas, manifest/lock/state, fdh-scan y profiles), el hub tiene un modelo top-down funcional: equipo plataforma cura skills/rules/agents/hooks → devs los consumen. Lo que falta para escalar a 500 devs sin que plataforma sea bottleneck es un **bucle inverso**: dev genera conocimiento → equipo plataforma cura → se vuelve catálogo formal.
@@ -5,7 +7,7 @@ Tras `hub-v2-manifest-state-profiles` (que introduce las 4 primitivas, manifest/
 El concepto `continuous-learning-v2` de ECC (https://github.com/affaan-m/ECC) propone instincts: pequeñas notas de dominio que un dev captura sobre la marcha, con confidence scoring y contexto, que pueden compartirse y eventualmente convertirse en skills curados. Este change adopta ese modelo en su variante más simple: **file-based local, sin backend, sin LLM**.
 
 **Stakeholders:**
-- Devs Falabella: consumen el bucle como flujo opcional para capturar/compartir patrones tribales.
+- Devs Forge: consumen el bucle como flujo opcional para capturar/compartir patrones tribales.
 - Admins del hub: corren `fdh evolve` sobre instincts agregados para proponer nuevos skills.
 - Equipo seguridad: revisa el modelo de privacidad y el safety-check pre-export.
 - Equipo `fdh` Go: implementa los nuevos comandos.
@@ -63,7 +65,7 @@ El campo `confidence` (float 0.0-1.0) en el frontmatter del instinct es **input 
 `fdh instinct capture` SHALL inferir un `domain` sugerido desde el contexto del cwd: si el `cwd` corresponde a un proyecto registrado en `~/.fdh/state.json` bajo `projects:`, lee el `manifest.profile` (si declarado) o un primer tag de los componentes instalados para sugerir un domain. El dev puede aceptar (Enter) o sobreescribir.
 
 **Ejemplos:**
-- Cwd es `~/work/checkout-service`, su manifest declara `profile: falabella-backend-go` → domain sugerido: `backend-services-go` (o el slug del profile).
+- Cwd es `~/work/checkout-service`, su manifest declara `profile: forge-backend-go` → domain sugerido: `backend-services-go` (o el slug del profile).
 - Cwd no está en state → no hay sugerencia, dev escribe libre.
 
 **Razones:**
@@ -100,7 +102,7 @@ Los archivos en `~/.fdh/instincts/` NO se cifran en v1. Quedan bajo la protecci�
 - `fdh scan` corre pre-export para evitar exfiltración accidental de secrets.
 - Encryption at rest requiere key management (per-user keys, recovery, rotación) que es un proyecto en sí mismo.
 
-**Trigger para reconsiderar**: si seguridad Falabella declara los archivos `~/.fdh/instincts/` como "datos clasificados", future change `add-instinct-encryption-at-rest` se prioriza.
+**Trigger para reconsiderar**: si seguridad Forge declara los archivos `~/.fdh/instincts/` como "datos clasificados", future change `add-instinct-encryption-at-rest` se prioriza.
 
 ### Decision 6: Bundle de export soporta tres formatos según volumen
 
@@ -114,7 +116,7 @@ Detección automática por extensión del output file.
 
 ### Decision 7: Stopwords para Jaccard incluyen inglés y español
 
-Para el cálculo de keywords del title en clustering, el filtro de stopwords SHALL incluir las listas estándar de **inglés y español** (Falabella es regional LATAM con devs bilingües). Lista hardcodeada en el binario, ~100 palabras por idioma.
+Para el cálculo de keywords del title en clustering, el filtro de stopwords SHALL incluir las listas estándar de **inglés y español** (Forge es regional LATAM con devs bilingües). Lista hardcodeada en el binario, ~100 palabras por idioma.
 
 **Razón**: instincts pueden escribirse en cualquiera de los dos idiomas. Filtrar sólo inglés deja palabras como "el", "la", "para", "que" como keywords, distorsionando los clusters.
 

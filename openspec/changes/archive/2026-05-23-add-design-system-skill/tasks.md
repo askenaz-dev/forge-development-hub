@@ -1,3 +1,5 @@
+*Brand strings updated 2026-05-23 by the rebrand-to-forge-development-hub change; original wording used "forge".*
+
 ## 1. Skill scaffolding
 
 - [x] 1.1 Create directory `skills/design-system/` at repo root
@@ -7,7 +9,7 @@
 
 ## 2. DS reference snapshot
 
-- [x] 2.1 Identify the exact upstream version to pin: read `tmp/FTI00575-design-system/packages/ui/package.json` for the `@falabella-enablers-genai/ui` semver, and capture the HEAD commit SHA of the clone
+- [x] 2.1 Identify the exact upstream version to pin: read `tmp/FTI00575-design-system/packages/ui/package.json` for the `@forge-enablers-genai/ui` semver, and capture the HEAD commit SHA of the clone
 - [x] 2.2 Copy `tmp/FTI00575-design-system/AGENTS.md` → `skills/design-system/references/AGENTS.md` (verbatim)
 - [x] 2.3 Copy `tmp/FTI00575-design-system/COMPONENTS.md` → `skills/design-system/references/COMPONENTS.md` (verbatim)
 - [x] 2.4 Copy `tmp/FTI00575-design-system/DESIGN.md` → `skills/design-system/references/DESIGN.md` (verbatim)
@@ -22,11 +24,11 @@
 
 ## 4. SKILL.md authoring
 
-- [x] 4.1 Write `skills/design-system/SKILL.md` frontmatter with `name: design-system`, `description` containing UI-generation triggers across component creation, styling, accessibility, and Falabella visual identity, plus `version: 0.1.0` and `ds-version: <semver from .ds-version>`
+- [x] 4.1 Write `skills/design-system/SKILL.md` frontmatter with `name: design-system`, `description` containing UI-generation triggers across component creation, styling, accessibility, and Forge visual identity, plus `version: 0.1.0` and `ds-version: <semver from .ds-version>`
 - [x] 4.2 Write "Purpose" section in body that names the upstream DS and instructs the agent to treat `references/` as canonical
 - [x] 4.3 Write "Rules" section embedding the 20 non-negotiable rules from `references/AGENTS.md`, grouped into Tokens, Colors, Typography, Spacing, Components, Accessibility, Responsive — keep verbatim wording where possible
 - [x] 4.4 Write "How to access the DS" section that lists `references/AGENTS.md`, `references/COMPONENTS.md`, `references/DESIGN.md`, `references/semantic-design/*.md`, and explains when to read each
-- [x] 4.5 Write "Setup in consumer project" section with: (a) `.npmrc` block, (b) PAT instructions (link to GitHub settings), (c) recommended CLI flow (`npx @falabella-enablers-genai/cli init`, then `cli add <component>`), (d) alternative npm package flow with `@import "@falabella-enablers-genai/ui/tokens.css"`. Mark CLI as "recommended"
+- [x] 4.5 Write "Setup in consumer project" section with: (a) `.npmrc` block, (b) PAT instructions (link to GitHub settings), (c) recommended CLI flow (`npx @forge-enablers-genai/cli init`, then `cli add <component>`), (d) alternative npm package flow with `@import "@forge-enablers-genai/ui/tokens.css"`. Mark CLI as "recommended"
 - [x] 4.6 Write "Drift detection" section instructing the agent to: (a) re-read `references/COMPONENTS.md` if a requested component is absent, (b) warn when `.ds-version` `sync-date` is > 60 days old, (c) refuse to invent tokens or components and instead surface the gap
 - [x] 4.7 Audit `SKILL.md` body: search for "Claude Code", "Codex", "Copilot", "OpenCode" — they MUST NOT appear in the body (frontmatter is allowed)
 - [x] 4.8 Verify `SKILL.md` size is under 8 KB; if larger, move detail into `references/` and reduce

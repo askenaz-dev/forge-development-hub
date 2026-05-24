@@ -1,3 +1,5 @@
+*Brand strings updated 2026-05-23 by the rebrand-to-forge-development-hub change; original wording used "forge".*
+
 ## Why
 
 El hub publica hoy una sola primitiva (`skill`) y un único archivo de catálogo (`skills/registry.yaml` v1, una entrada: `design-system`). El plan ya proyecta crecimiento: `add-fdh-cli-distribution-and-interactive-init` (archivado) contempla catálogo de skills, `fdh init` interactivo y `fdh update`, pero apoyado en un único marker `.skill-version` por directorio instalado y sin contrato declarativo en el repo del consumidor.
@@ -32,7 +34,7 @@ Este change introduce las primitivas, los contratos declarativos y la capability
 Cada primitiva nueva ship con una entry real funcional — no stubs:
 
 - **`rules/no-console-log/RULE.md`** — prohibe `console.log()` en TypeScript/JavaScript committed. Scope `*.{ts,tsx,js,jsx}`.
-- **`agents/falabella-pr-writer/AGENT.md`** — genera descripciones de PR en formato Falabella (template + tono).
+- **`agents/forge-pr-writer/AGENT.md`** — genera descripciones de PR en formato Forge (template + tono).
 - **`hooks/doctor-on-session-start/HOOK.md` + `hook.json`** — evento `SessionStart`, comando `fdh doctor --quiet`.
 
 Las tres entries no requieren runtime FDH propio: los agentes (Claude Code, etc.) ya tienen su mecanismo nativo para ejecutar/cargar rules/agents/hooks. FDH sólo materializa los archivos en los paths que cada agente espera.
@@ -58,7 +60,7 @@ Las tres entries no requieren runtime FDH propio: los agentes (Claude Code, etc.
 - `installation-state-ledger`: schema y semántica de `~/.fdh/state.json`. Comandos `fdh list-installed`, `fdh repair`, `fdh uninstall --dry-run`.
 - `consumer-managed-paths`: contrato de `.fdh-managed.yaml`, `.gitignore` sectionado, bloque managed en `.claude/settings.json`. Detección de drift.
 - `hub-rules-primitive`: contrato de rules como primitiva separada de skills. Formato, scope por glob, materialización per-agente. Ship con `rules/no-console-log/`.
-- `hub-agents-primitive`: contrato de agents como primitiva. Formato, target dirs per-agente. Ship con `agents/falabella-pr-writer/`.
+- `hub-agents-primitive`: contrato de agents como primitiva. Formato, target dirs per-agente. Ship con `agents/forge-pr-writer/`.
 - `hub-hooks-primitive`: contrato de hooks como primitiva. Formato, matchers, profiles. Ship con `hooks/doctor-on-session-start/`.
 - `fdh-scan-security`: comando `fdh scan` con detección rule-based de secrets, command injection en hooks, riesgo de MCPs, permisos de agents.
 
@@ -77,7 +79,7 @@ Las tres entries no requieren runtime FDH propio: los agentes (Claude Code, etc.
 
 ### Estructura del hub (post-apply)
 
-- Nuevos directorios root con su primera entry real: `rules/no-console-log/`, `agents/falabella-pr-writer/`, `hooks/doctor-on-session-start/`.
+- Nuevos directorios root con su primera entry real: `rules/no-console-log/`, `agents/forge-pr-writer/`, `hooks/doctor-on-session-start/`.
 - `hub/profiles.yaml` con profile `minimal` que ejercita las cuatro primitivas end-to-end.
 - `skills/design-system/` queda igual; sólo gana `kind: skill` en su entrada del registry.
 

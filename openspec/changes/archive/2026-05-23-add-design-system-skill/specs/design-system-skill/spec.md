@@ -1,8 +1,10 @@
+*Brand strings updated 2026-05-23 by the rebrand-to-forge-development-hub change; original wording used "forge".*
+
 ## ADDED Requirements
 
 ### Requirement: Canonical skill location at repo root
 
-The skill SHALL live at `skills/design-system/` at the root of `falabella-development-hub`, OUTSIDE of any of the four ecosystem mirror directories (`.claude/`, `.codex/`, `.github/`, `.opencode/`). The directory MUST contain, at minimum, `SKILL.md`, `README.md`, `.ds-version`, `scripts/sync.mjs`, and a `references/` subdirectory.
+The skill SHALL live at `skills/design-system/` at the root of `forge-development-hub`, OUTSIDE of any of the four ecosystem mirror directories (`.claude/`, `.codex/`, `.github/`, `.opencode/`). The directory MUST contain, at minimum, `SKILL.md`, `README.md`, `.ds-version`, `scripts/sync.mjs`, and a `references/` subdirectory.
 
 #### Scenario: Skill directory is created at the canonical location
 - **WHEN** the change is applied
@@ -14,11 +16,11 @@ The skill SHALL live at `skills/design-system/` at the root of `falabella-develo
 
 ### Requirement: SKILL.md auto-activates on UI generation intent
 
-The `description` field of the `SKILL.md` frontmatter SHALL be written so that the coding agent loads the skill automatically when the user expresses intent to build, design, style, or modify UI. The description MUST include at least one verb-led trigger phrase for each of: (a) component creation, (b) styling/theming, (c) accessibility, (d) Falabella visual identity. The description MUST instruct the agent to load the skill BEFORE writing UI code.
+The `description` field of the `SKILL.md` frontmatter SHALL be written so that the coding agent loads the skill automatically when the user expresses intent to build, design, style, or modify UI. The description MUST include at least one verb-led trigger phrase for each of: (a) component creation, (b) styling/theming, (c) accessibility, (d) Forge visual identity. The description MUST instruct the agent to load the skill BEFORE writing UI code.
 
 #### Scenario: Description includes UI-generation triggers
 - **WHEN** a reviewer reads the `description` field in `SKILL.md` frontmatter
-- **THEN** it MUST contain explicit triggers for component creation (e.g., "build component", "create form"), styling (e.g., "style", "Tailwind", "CSS"), accessibility (e.g., "accessibility", "WCAG"), and Falabella visual identity (e.g., "Falabella design", "design tokens")
+- **THEN** it MUST contain explicit triggers for component creation (e.g., "build component", "create form"), styling (e.g., "style", "Tailwind", "CSS"), accessibility (e.g., "accessibility", "WCAG"), and Forge visual identity (e.g., "Forge design", "design tokens")
 
 #### Scenario: Agent loads skill before generating UI code
 - **WHEN** a user asks an AI coding agent in a consumer project to "create a Button component"
@@ -50,7 +52,7 @@ The `references/` subdirectory SHALL contain offline-readable copies of the foll
 
 ### Requirement: DS version pinning via .ds-version
 
-The file `.ds-version` SHALL record the exact version of the `FTI00575-design-system` source the references were synced from. It MUST contain at least: (a) the upstream `git` commit SHA, (b) the `@falabella-enablers-genai/ui` package version, (c) the ISO 8601 sync date. `SKILL.md` MUST reference `.ds-version` so the agent knows the snapshot age.
+The file `.ds-version` SHALL record the exact version of the `FTI00575-design-system` source the references were synced from. It MUST contain at least: (a) the upstream `git` commit SHA, (b) the `@forge-enablers-genai/ui` package version, (c) the ISO 8601 sync date. `SKILL.md` MUST reference `.ds-version` so the agent knows the snapshot age.
 
 #### Scenario: .ds-version contains the required fields
 - **WHEN** a reviewer reads `.ds-version`
@@ -78,7 +80,7 @@ The file `.ds-version` SHALL record the exact version of the `FTI00575-design-sy
 
 ### Requirement: Setup guidance covers registry auth and both consumption paths
 
-`SKILL.md` SHALL include a "Setup in consumer project" section that documents: (a) creating an `.npmrc` with `@falabella-enablers-genai:registry=https://npm.pkg.github.com` and `_authToken=${GITHUB_PKG_TOKEN}`, (b) generating a GitHub PAT with `read:packages` scope, (c) the recommended CLI path (`npx @falabella-enablers-genai/cli init` then `cli add <component>`), and (d) the alternative package import path (`npm install @falabella-enablers-genai/ui` with `@import "@falabella-enablers-genai/ui/tokens.css"`). The recommended path MUST be visibly marked as such.
+`SKILL.md` SHALL include a "Setup in consumer project" section that documents: (a) creating an `.npmrc` with `@forge-enablers-genai:registry=https://npm.pkg.github.com` and `_authToken=${GITHUB_PKG_TOKEN}`, (b) generating a GitHub PAT with `read:packages` scope, (c) the recommended CLI path (`npx @forge-enablers-genai/cli init` then `cli add <component>`), and (d) the alternative package import path (`npm install @forge-enablers-genai/ui` with `@import "@forge-enablers-genai/ui/tokens.css"`). The recommended path MUST be visibly marked as such.
 
 #### Scenario: Setup section is present and complete
 - **WHEN** a reviewer reads `SKILL.md`

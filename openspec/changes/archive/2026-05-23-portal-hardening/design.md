@@ -1,3 +1,5 @@
+*Brand strings updated 2026-05-23 by the rebrand-to-forge-development-hub change; original wording used "forge".*
+
 ## Context
 
 `dev-portal` delivered the portal MVP — Next.js 14 frontend, Go HTTP API, Keycloak OIDC integration, docker-compose stack, Helm chart, and 88 of 99 implementation tasks. Three known issues remained when the live smoke test wrapped:
@@ -37,7 +39,7 @@ Each of these is a small, contained fix. Bundling them in one change keeps the c
 **Alternatives considered:**
 
 - **Static export per locale with no middleware.** Loses RSC freshness for the catalog pages. Rejected.
-- **Subdomain-per-locale (`es.fdh.falabella.internal`, `en.fdh.falabella.internal`).** Cleaner separation but doubles the TLS cert work and requires DNS coordination. Out of proportion for two languages.
+- **Subdomain-per-locale (`es.fdh.forge.internal`, `en.fdh.forge.internal`).** Cleaner separation but doubles the TLS cert work and requires DNS coordination. Out of proportion for two languages.
 
 ### Docker web build: switch the install layer to npm + keep pnpm for local dev
 
@@ -94,6 +96,6 @@ The change sequences as five milestones, executed in order:
 
 ## Open Questions
 
-- **Q1.** Does Falabella's CI runner have enough memory to run Playwright + a Chromium download in addition to the existing Go + Next build? If not, the a11y job needs its own runner or has to run on a self-hosted agent. **Pragmatic default:** assume GitHub Actions hosted runners suffice (they do for most projects this size); switch to self-hosted if the job times out in real CI.
+- **Q1.** Does Forge's CI runner have enough memory to run Playwright + a Chromium download in addition to the existing Go + Next build? If not, the a11y job needs its own runner or has to run on a self-hosted agent. **Pragmatic default:** assume GitHub Actions hosted runners suffice (they do for most projects this size); switch to self-hosted if the job times out in real CI.
 - **Q2.** Keep both `pnpm-lock.yaml` and `package-lock.json` in the repo, or drop the pnpm one entirely? Keeping both lets local devs choose; dropping pnpm simplifies the story. **Default:** keep both for the pilot, revisit after one quarter of pilot use.
 - **Q3.** Should this change also lift the deferred Lighthouse check from observation to gating? **Default:** no — the gate needs a stable runner profile we don't have yet. Observe in this change, gate in `ops-readiness`.

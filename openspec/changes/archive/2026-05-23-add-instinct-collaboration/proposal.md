@@ -1,8 +1,10 @@
+*Brand strings updated 2026-05-23 by the rebrand-to-forge-development-hub change; original wording used "forge".*
+
 ## Why
 
-`hub-v2-manifest-state-profiles` deja al hub con 4 primitivas distribuibles (skills, rules, agents, hooks) y al consumidor con un contrato declarativo (manifest + lock + state). Pero el flujo de conocimiento sigue siendo top-down: equipo plataforma escribe → devs consumen. A escala de 500 devs Falabella, esto convierte al equipo plataforma en bottleneck eterno de curación y desperdicia el conocimiento tribal que cada dev genera cada día en sesiones con su agente IA.
+`hub-v2-manifest-state-profiles` deja al hub con 4 primitivas distribuibles (skills, rules, agents, hooks) y al consumidor con un contrato declarativo (manifest + lock + state). Pero el flujo de conocimiento sigue siendo top-down: equipo plataforma escribe → devs consumen. A escala de 500 devs Forge, esto convierte al equipo plataforma en bottleneck eterno de curación y desperdicia el conocimiento tribal que cada dev genera cada día en sesiones con su agente IA.
 
-El concepto `continuous-learning-v2` de ECC (https://github.com/affaan-m/ECC) introduce un bucle bottom-up de aprendizaje: cada sesión de dev captura "instincts" (patrones de dominio con confidence scoring), pueden compartirse via export/import, y un admin los "evoluciona" en skills formales con `fdh evolve`. Para Falabella, esto significa que el conocimiento de devs senior de fulfillment sobre integración SAP (o del equipo de pricing sobre corner cases de descuentos, o del checkout sobre timeouts de pasarelas) deja de ser tribal y se vuelve input al catálogo. Sin este bucle, el catálogo crece lineal con la capacidad de plataforma; con el bucle, crece exponencial con el uso.
+El concepto `continuous-learning-v2` de ECC (https://github.com/affaan-m/ECC) introduce un bucle bottom-up de aprendizaje: cada sesión de dev captura "instincts" (patrones de dominio con confidence scoring), pueden compartirse via export/import, y un admin los "evoluciona" en skills formales con `fdh evolve`. Para Forge, esto significa que el conocimiento de devs senior de fulfillment sobre integración SAP (o del equipo de pricing sobre corner cases de descuentos, o del checkout sobre timeouts de pasarelas) deja de ser tribal y se vuelve input al catálogo. Sin este bucle, el catálogo crece lineal con la capacidad de plataforma; con el bucle, crece exponencial con el uso.
 
 **Dependencia**: este change asume que `hub-v2-manifest-state-profiles` ya hizo apply. Se beneficia de `~/.fdh/state.json` y del contrato de `~/.fdh/` como home del CLI. Diseñado para correr inmediatamente después de hub-v2.
 
@@ -68,13 +70,13 @@ Sin modificaciones a specs existentes. Las extensiones de `fdh-scan-security` (u
 ### Sin dependencias externas en v1
 
 - No requiere Artifactory (file-based local).
-- No requiere backend Falabella (intercambio manual via archivos `.tar.gz`).
+- No requiere backend Forge (intercambio manual via archivos `.tar.gz`).
 - No requiere LLM (clustering rule-based).
 - No requiere hook runtime (captura es manual).
 
 ### Habilita future changes
 
-- `add-instinct-sync-service`: backend HTTP Falabella para sync automático push/pull entre devs.
+- `add-instinct-sync-service`: backend HTTP Forge para sync automático push/pull entre devs.
 - `add-instinct-auto-capture-via-hooks`: integración con Stop-phase hooks para captura automática al finalizar sesiones.
 - `evolve-instincts-with-llm`: `fdh evolve` pasa de clustering rule-based a semántico via embeddings.
 - `add-instinct-team-curation`: workflows de revisión multi-stakeholder antes de proponerse como skills.

@@ -1,6 +1,6 @@
 # design-system skill
 
-Canonical, agent-agnostic skill that loads the Falabella design system rules into any AI coding agent before it generates UI. The upstream source of truth is the `@falabella-enablers-genai/ui` package (repo `FTI00575-design-system`); this directory holds a pinned snapshot in `references/` and the rules in `SKILL.md`.
+Canonical, agent-agnostic skill that loads the Forge design system rules into any AI coding agent before it generates UI. The upstream source of truth is the `@forge-enablers-genai/ui` package (repo `FTI00575-design-system`); this directory holds a pinned snapshot in `references/` and the rules in `SKILL.md`.
 
 Until `fdh init` exists, install this skill manually following the steps below.
 
@@ -8,14 +8,14 @@ Until `fdh init` exists, install this skill manually following the steps below.
 
 1. Clone this hub:
    ```bash
-   git clone <hub-url> falabella-development-hub
+   git clone <hub-url> forge-development-hub
    ```
 2. Copy the skill into your project (project scope):
    ```bash
    # macOS / Linux
-   cp -r falabella-development-hub/skills/design-system <your-project>/.claude/skills/design-system
+   cp -r forge-development-hub/skills/design-system <your-project>/.claude/skills/design-system
    # Windows PowerShell
-   Copy-Item -Recurse falabella-development-hub\skills\design-system <your-project>\.claude\skills\design-system
+   Copy-Item -Recurse forge-development-hub\skills\design-system <your-project>\.claude\skills\design-system
    ```
    For user scope, copy to `~/.claude/skills/design-system/` instead.
 3. (Optional) Add `.claude/skills/` to your project's `.gitignore` so installed skills are not committed — re-install by re-running step 2.

@@ -1,3 +1,5 @@
+*Brand strings updated 2026-05-23 by the rebrand-to-forge-development-hub change; original wording used "forge".*
+
 ## ADDED Requirements
 
 ### Requirement: Formato de `agents/<name>/AGENT.md` con frontmatter normativo
@@ -6,8 +8,8 @@ El hub SHALL distribuir agents como directorios `agents/<name>/` cuyo archivo en
 
 #### Scenario: AGENT.md válido
 
-- **WHEN** un admin abre `agents/falabella-pr-writer/AGENT.md`
-- **THEN** encuentra frontmatter con `name: falabella-pr-writer`, `kind: agent`, `description`, `agents_supported: [claude-code]`, `tools: [Read, Grep, Bash]`, y un cuerpo markdown que contiene el system prompt + template
+- **WHEN** un admin abre `agents/forge-pr-writer/AGENT.md`
+- **THEN** encuentra frontmatter con `name: forge-pr-writer`, `kind: agent`, `description`, `agents_supported: [claude-code]`, `tools: [Read, Grep, Bash]`, y un cuerpo markdown que contiene el system prompt + template
 
 #### Scenario: Tools vacío es inválido
 
@@ -20,24 +22,24 @@ El hub SHALL distribuir agents como directorios `agents/<name>/` cuyo archivo en
 
 #### Scenario: Materialización en Claude Code
 
-- **WHEN** `fdh install` materializa `falabella-pr-writer` para Claude Code en scope project
-- **THEN** existe `<cwd>/.claude/agents/falabella-pr-writer.md` con el contenido completo del `AGENT.md` y la entrada correspondiente en `.gitignore` managed
+- **WHEN** `fdh install` materializa `forge-pr-writer` para Claude Code en scope project
+- **THEN** existe `<cwd>/.claude/agents/forge-pr-writer.md` con el contenido completo del `AGENT.md` y la entrada correspondiente en `.gitignore` managed
 
 #### Scenario: Agente target sin soporte para agents
 
 - **WHEN** un agent declara `agents_supported: [claude-code]` y el manifest selecciona también Codex
 - **THEN** la materialización ocurre sólo para Claude Code; `fdh install` imprime una nota informativa sobre Codex
 
-### Requirement: Primera entry real `agents/falabella-pr-writer/`
+### Requirement: Primera entry real `agents/forge-pr-writer/`
 
-Como parte del apply de este change, el hub SHALL contener `agents/falabella-pr-writer/AGENT.md` con frontmatter completo, un system prompt que describa el rol ("genera descripciones de PR en formato Falabella"), y un template que defina las secciones esperadas (`## What`, `## Why`, `## Test plan`, `## Risk`).
+Como parte del apply de este change, el hub SHALL contener `agents/forge-pr-writer/AGENT.md` con frontmatter completo, un system prompt que describa el rol ("genera descripciones de PR en formato Forge"), y un template que defina las secciones esperadas (`## What`, `## Why`, `## Test plan`, `## Risk`).
 
 #### Scenario: Agent shipped post-apply
 
 - **WHEN** termina el apply del change
-- **THEN** existe `agents/falabella-pr-writer/AGENT.md` con `name: falabella-pr-writer`, `kind: agent`, `agents_supported: [claude-code]`, `tools: [Read, Grep, Bash]`, system prompt + template, listo para ser materializado por `fdh install`
+- **THEN** existe `agents/forge-pr-writer/AGENT.md` con `name: forge-pr-writer`, `kind: agent`, `agents_supported: [claude-code]`, `tools: [Read, Grep, Bash]`, system prompt + template, listo para ser materializado por `fdh install`
 
 #### Scenario: Agent referenciado desde profile minimal
 
 - **WHEN** se inspecciona `hub/profiles.yaml` después del apply
-- **THEN** el profile `minimal` incluye `agents: [falabella-pr-writer]`
+- **THEN** el profile `minimal` incluye `agents: [forge-pr-writer]`

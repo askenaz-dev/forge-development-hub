@@ -55,7 +55,7 @@ SEMVER = re.compile(r"^\d+\.\d+\.\d+(?:-[\w.]+)?$")
 # Banner prefix emitted by `fdh evolve` for uncurated drafts. Hub PRs that
 # try to merge a SKILL.md still containing this banner are blocked here so
 # admins finish curation before publishing. Source of the constant: Go
-# package github.com/falabella/fdh/pkg/instincts (DraftBannerPrefix).
+# package github.com/forge/fdh/pkg/instincts (DraftBannerPrefix).
 EVOLVE_DRAFT_BANNER = "> ⚠️ DRAFT"
 
 REQUIRED_COMPONENT_FIELDS = {

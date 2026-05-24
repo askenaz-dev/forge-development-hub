@@ -1,5 +1,7 @@
 # navigation.md - Navegacion 1:1
 
+*Brand strings updated 2026-05-23 by the rebrand-to-forge-development-hub change; original wording used "forge".*
+
 > Fuentes canonicas: `Tabs`, `DropdownMenu`, `Command`, `Sidebar`, `Avatar`, `ScrollArea` y `Collapsible`.
 
 ---
@@ -23,7 +25,7 @@ No existe `Breadcrumb` como componente del DS original. Si hace falta, compone H
 ## Tabs
 
 ```tsx
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@falabella-enablers-genai/ui";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@forge-enablers-genai/ui";
 
 <Tabs defaultValue="general">
   <TabsList variant="underline">
@@ -48,7 +50,7 @@ import {
   DropdownMenuItem,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from "@falabella-enablers-genai/ui";
+} from "@forge-enablers-genai/ui";
 
 <DropdownMenu>
   <DropdownMenuTrigger asChild>
@@ -74,7 +76,7 @@ import {
   CommandInput,
   CommandItem,
   CommandList,
-} from "@falabella-enablers-genai/ui";
+} from "@forge-enablers-genai/ui";
 
 <Command>
   <CommandInput placeholder="Buscar..." />
@@ -103,7 +105,7 @@ import {
   SidebarMenuItem,
   SidebarProvider,
   SidebarTrigger,
-} from "@falabella-enablers-genai/ui";
+} from "@forge-enablers-genai/ui";
 
 <SidebarProvider>
   <Sidebar>
@@ -131,7 +133,7 @@ import {
 ## Avatar
 
 ```tsx
-import { Avatar, AvatarFallback, AvatarImage } from "@falabella-enablers-genai/ui";
+import { Avatar, AvatarFallback, AvatarImage } from "@forge-enablers-genai/ui";
 
 <Avatar size="md">
   <AvatarImage src="/user.png" alt="Usuario" />

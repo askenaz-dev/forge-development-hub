@@ -222,7 +222,7 @@ Exclude materialized components from git without preventing the developer from c
 # Auto-managed by `fdh install`. Do not edit by hand.
 .claude/skills/design-system/
 .claude/rules/no-console-log.md
-.claude/agents/falabella-pr-writer.md
+.claude/agents/forge-pr-writer.md
 .codex/skills/design-system/
 .github/prompts/design-system.prompt.md
 .opencode/commands/design-system.md

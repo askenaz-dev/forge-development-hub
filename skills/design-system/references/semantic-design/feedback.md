@@ -1,5 +1,7 @@
 # feedback.md - Feedback 1:1
 
+*Brand strings updated 2026-05-23 by the rebrand-to-forge-development-hub change; original wording used "forge".*
+
 > Fuentes canonicas: `Badge`, `Status`, `Toaster` y `Tooltip`.
 
 ---
@@ -8,12 +10,12 @@
 
 | Componente | Import | Uso |
 |------------|--------|-----|
-| `Badge` | `import { Badge } from "@falabella-enablers-genai/ui"` | Etiquetas compactas |
-| `StatusDot` | `import { StatusDot } from "@falabella-enablers-genai/ui"` | Indicador visual puntual |
-| `StatusBadge` | `import { StatusBadge } from "@falabella-enablers-genai/ui"` | Estado con pill y dot opcional |
-| `StatusIndicator` | `import { StatusIndicator } from "@falabella-enablers-genai/ui"` | Dot + texto inline |
-| `Toaster`, `toast` | `import { Toaster, toast } from "@falabella-enablers-genai/ui"` | Notificaciones |
-| `Tooltip` | `import { TooltipProvider, Tooltip, TooltipTrigger, TooltipContent } from "@falabella-enablers-genai/ui"` | Ayuda contextual |
+| `Badge` | `import { Badge } from "@forge-enablers-genai/ui"` | Etiquetas compactas |
+| `StatusDot` | `import { StatusDot } from "@forge-enablers-genai/ui"` | Indicador visual puntual |
+| `StatusBadge` | `import { StatusBadge } from "@forge-enablers-genai/ui"` | Estado con pill y dot opcional |
+| `StatusIndicator` | `import { StatusIndicator } from "@forge-enablers-genai/ui"` | Dot + texto inline |
+| `Toaster`, `toast` | `import { Toaster, toast } from "@forge-enablers-genai/ui"` | Notificaciones |
+| `Tooltip` | `import { TooltipProvider, Tooltip, TooltipTrigger, TooltipContent } from "@forge-enablers-genai/ui"` | Ayuda contextual |
 
 No existe `Alert` como componente del DS original. Compone con `Surface` + `Status` o propone RFC si se repite.
 
@@ -22,7 +24,7 @@ No existe `Alert` como componente del DS original. Compone con `Surface` + `Stat
 ## Badge
 
 ```tsx
-import { Badge } from "@falabella-enablers-genai/ui";
+import { Badge } from "@forge-enablers-genai/ui";
 
 <Badge variant="default">Default</Badge>
 <Badge variant="muted">Borrador</Badge>
@@ -42,7 +44,7 @@ Variantes canonicas: `default`, `muted`, `primary`, `success`, `warning`, `error
 ## Status
 
 ```tsx
-import { StatusBadge, StatusDot, StatusIndicator } from "@falabella-enablers-genai/ui";
+import { StatusBadge, StatusDot, StatusIndicator } from "@forge-enablers-genai/ui";
 
 <StatusDot status="success" />
 <StatusBadge status="warning">Pendiente</StatusBadge>
@@ -56,7 +58,7 @@ Statuses canonicos: `success`, `warning`, `error`, `info`, `neutral`.
 ## Toast
 
 ```tsx
-import { Toaster, toast } from "@falabella-enablers-genai/ui";
+import { Toaster, toast } from "@forge-enablers-genai/ui";
 
 <Toaster />
 
@@ -77,7 +79,7 @@ import {
   TooltipContent,
   TooltipProvider,
   TooltipTrigger,
-} from "@falabella-enablers-genai/ui";
+} from "@forge-enablers-genai/ui";
 
 <TooltipProvider>
   <Tooltip>

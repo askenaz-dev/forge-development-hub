@@ -1,12 +1,14 @@
+*Brand strings updated 2026-05-23 by the rebrand-to-forge-development-hub change; original wording used "forge".*
+
 ## Context
 
-El CLI `fdh` ya existe en el repo hermano `C:/falabella/fdh` (Go + cobra + viper). Su comando `init` (ver `internal/cli/init.go`) hoy configura registry + scope y corre `doctor`, pero es **no interactivo y no consume skills** — sólo escribe `<userConfigDir>/fdh/config.yaml`. La detección de agentes IA existe parcialmente dentro de `doctor` (vía `rc.Adapters.DetectAll`), pero no se expone como elección al usuario.
+El CLI `fdh` ya existe en el repo hermano `C:/forge/fdh` (Go + cobra + viper). Su comando `init` (ver `internal/cli/init.go`) hoy configura registry + scope y corre `doctor`, pero es **no interactivo y no consume skills** — sólo escribe `<userConfigDir>/fdh/config.yaml`. La detección de agentes IA existe parcialmente dentro de `doctor` (vía `rc.Adapters.DetectAll`), pero no se expone como elección al usuario.
 
-El hub `falabella-development-hub` actualmente espeja OpenSpec skills en cuatro ecosistemas (`.claude/`, `.codex/`, `.github/`, `.opencode/`). El change `add-design-system-skill` introdujo un directorio top-level `skills/` con la primera skill canónica (`skills/design-system/`) — pensada explícitamente para que un `fdh init` futuro la copie al ecosistema elegido por el developer. Este change es ese `fdh init` futuro.
+El hub `forge-development-hub` actualmente espeja OpenSpec skills en cuatro ecosistemas (`.claude/`, `.codex/`, `.github/`, `.opencode/`). El change `add-design-system-skill` introdujo un directorio top-level `skills/` con la primera skill canónica (`skills/design-system/`) — pensada explícitamente para que un `fdh init` futuro la copie al ecosistema elegido por el developer. Este change es ese `fdh init` futuro.
 
-Existe ya un snapshot de catálogo en `C:/falabella/fdh-registry-snapshot/index.json` generado por `C:/falabella/fdh/scripts/build-fixture-registry/main.go` — útil para E2E tests, pero **no autoritativo**. Hoy no hay registry real que un admin pueda editar.
+Existe ya un snapshot de catálogo en `C:/forge/fdh-registry-snapshot/index.json` generado por `C:/forge/fdh/scripts/build-fixture-registry/main.go` — útil para E2E tests, pero **no autoritativo**. Hoy no hay registry real que un admin pueda editar.
 
-Stakeholders: developers Falabella que instalan agentes IA (Claude Code, Codex, Copilot, OpenCode); admins del hub que curan qué skills son base; equipo de plataforma que opera Artifactory/Nexus interno y el repo `fdh`.
+Stakeholders: developers Forge que instalan agentes IA (Claude Code, Codex, Copilot, OpenCode); admins del hub que curan qué skills son base; equipo de plataforma que opera Artifactory/Nexus interno y el repo `fdh`.
 
 Constraints duras:
 - Distribución 100% interna: no podemos publicar a Homebrew público, npm público ni Chocolatey Community.
@@ -31,7 +33,7 @@ Constraints duras:
 - **No** implementar el código Go en el repo `fdh` durante este change — el spec describe el contrato; el apply en el hub crea el `registry.yaml` y los specs, no toca Go.
 - **No** publicar a registries externos (Homebrew/Chocolatey/winget public, npm).
 - **No** introducir un servidor de registry (HTTP API). El hub sigue siendo un git remote + archivos planos; `fdh` los lee vía clone/pull, como ya hace con `registry.url`.
-- **No** soportar skills "privadas por proyecto" en este change — el catálogo es uno solo, global Falabella.
+- **No** soportar skills "privadas por proyecto" en este change — el catálogo es uno solo, global Forge.
 - **No** firmar paquetes/binarios en este change. Decisión de firma queda en Decision 6.
 - **No** migrar el snapshot `fdh-registry-snapshot/` al hub. Sigue siendo fixture local para tests; el registro autoritativo es `skills/registry.yaml`.
 - **No** mirrorear `skills/design-system/` a los 4 ecosistemas en el hub. El mirror lo hace `fdh init` en el proyecto del developer, no en el hub.
@@ -45,11 +47,11 @@ Tres canales primarios, escalonados por complejidad de adopción:
 1. **One-liner universal (entrega inmediata):**
    - macOS/Linux: `curl -fsSL https://${FDH_PKG_HOST}/fdh/install.sh | bash`
    - Windows PowerShell: `iwr -useb https://${env:FDH_PKG_HOST}/fdh/install.ps1 | iex`
-   - El host se resuelve vía la env var `FDH_PKG_HOST` (default placeholder `pkg.falabella.internal` hasta que plataforma confirme el real). Los scripts detectan OS + arch, descargan el tarball/zip correcto, verifican SHA-256, lo extraen a `$HOME/.fdh/bin/` y agregan ese directorio al `PATH` editando `~/.zshrc` / `~/.bashrc` (Unix) o el `Path` de usuario en el registro (Windows). Idempotente — re-ejecutar actualiza.
+   - El host se resuelve vía la env var `FDH_PKG_HOST` (default placeholder `pkg.forge.internal` hasta que plataforma confirme el real). Los scripts detectan OS + arch, descargan el tarball/zip correcto, verifican SHA-256, lo extraen a `$HOME/.fdh/bin/` y agregan ese directorio al `PATH` editando `~/.zshrc` / `~/.bashrc` (Unix) o el `Path` de usuario en el registro (Windows). Idempotente — re-ejecutar actualiza.
 
 2. **Package managers nativos (escala media):**
-   - macOS/Linux: tap interno de Homebrew (`brew tap falabella-internal/tools && brew install fdh`). Se publica vía repo git interno con formulas Ruby.
-   - Windows: paquete winget en source interno (`winget source add falabella-internal https://${FDH_PKG_HOST}/winget`). Manifest YAML versionado.
+   - macOS/Linux: tap interno de Homebrew (`brew tap forge-internal/tools && brew install fdh`). Se publica vía repo git interno con formulas Ruby.
+   - Windows: paquete winget en source interno (`winget source add forge-internal https://${FDH_PKG_HOST}/winget`). Manifest YAML versionado.
 
 3. **Paquetes nativos (Linux corporativo):**
    - `.deb` y `.rpm` con post-install que crea symlinks en `/usr/local/bin/fdh`.
@@ -60,7 +62,7 @@ Tres canales primarios, escalonados por complejidad de adopción:
 - *Sólo tarballs en docs (status quo)* — descartado: es exactamente el problema que estamos resolviendo.
 - *Homebrew público + Chocolatey Community* — descartado: el binario es interno; publicar el manifest leak nombres internos y obliga a un release público antes de cada update.
 - *MSI con instalador GUI* — descartado por costo de mantenimiento (WiX) y porque devs corporativos prefieren CLI; un MSI silencioso desde MDM se puede agregar después usando el mismo binario que distribuye winget.
-- *`go install github.com/falabella/fdh/cmd/fdh@latest`* — descartado: requiere Go toolchain en el host del developer y exposición pública del módulo.
+- *`go install github.com/forge/fdh/cmd/fdh@latest`* — descartado: requiere Go toolchain en el host del developer y exposición pública del módulo.
 
 ### Decision 2: `fdh init` detecta TTY y decide modo interactivo vs flags
 
@@ -81,10 +83,10 @@ Step 1/3 — Detected AI coding agents on this machine:
   [ ] OpenCode (.opencode/)            <not detected — listed but unchecked>
   Space to toggle, Enter to confirm.
 
-Step 2/3 — Skills available in the Falabella hub:
+Step 2/3 — Skills available in the Forge hub:
   Defaults (recommended for all developers):
   [x] design-system           Design system rules, tokens, components
-  [x] code-review             Standard Falabella code review checklist
+  [x] code-review             Standard Forge code review checklist
   Extras:
   [ ] security-owasp          OWASP top-10 review prompts
   [ ] pr-description-writer   Generate PR descriptions from diffs
@@ -141,7 +143,7 @@ schema_version: 1
 hub_version: "2026.05"                  # tag semver/calver del hub
 skills:
   - name: design-system
-    description: "Falabella design system rules, tokens, components."
+    description: "Forge design system rules, tokens, components."
     owner_team: design-platform
     tags: [ui, react, tailwind, accessibility]
     default: true
@@ -149,7 +151,7 @@ skills:
     agents_supported: [claude-code, codex, copilot, opencode]
     path: skills/design-system          # ruta relativa al hub, source de copia
   - name: code-review
-    description: "Standard Falabella code review checklist."
+    description: "Standard Forge code review checklist."
     owner_team: dx-platform
     tags: [review, quality]
     default: true
@@ -204,12 +206,12 @@ En todos los casos, `references/`, `scripts/`, `.ds-version` y cualquier directo
 
 ### Decision 6: Firma de binarios — cert corporativo deseable, degradación con warning aceptable hoy
 
-**Estado ideal:** binarios firmados con cert corporativo Falabella (Authenticode para Windows, Developer ID + notarization para macOS). El install.ps1 y install.sh verifican la firma antes de mover a PATH.
+**Estado ideal:** binarios firmados con cert corporativo Forge (Authenticode para Windows, Developer ID + notarization para macOS). El install.ps1 y install.sh verifican la firma antes de mover a PATH.
 
 **Estado degradado aceptable (Day 1):** binarios no firmados, install.ps1 hace `Unblock-File`, install.sh verifica sólo SHA-256. Se imprime warning durante install:
 
 ```
-WARNING: This build of fdh is not yet signed with the Falabella corporate certificate.
+WARNING: This build of fdh is not yet signed with the Forge corporate certificate.
 SHA-256 of the binary has been verified against ${FDH_PKG_HOST}.
 If your security policy requires signed binaries, postpone install until
 the next signed release. Tracking: <internal-ticket>.
@@ -253,7 +255,7 @@ Si un skill local fue editado a mano por el developer (hash de algún archivo no
 
 ### Decision 8: Compat con `fdh init` actual — el modo wizard es additive
 
-El `fdh init` actual ([`internal/cli/init.go:32`](C:/falabella/fdh/internal/cli/init.go)) acepta flags y escribe `config.yaml`. Este change extiende sin romper:
+El `fdh init` actual ([`internal/cli/init.go:32`](C:/forge/fdh/internal/cli/init.go)) acepta flags y escribe `config.yaml`. Este change extiende sin romper:
 
 - El "core" actual de init (resolver registry + scope, escribir config, correr doctor) se mantiene textual.
 - El wizard de selección de agentes/skills corre **después** de doctor, sólo si doctor pasó y stdin es TTY + sin flags resolvedoras de selección.

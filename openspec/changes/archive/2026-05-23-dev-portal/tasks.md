@@ -1,14 +1,16 @@
-## 1. CLI rename — `falabella-installer` → `fdh`
+*Brand strings updated 2026-05-23 by the rebrand-to-forge-development-hub change; original wording used "forge".*
 
-- [x] 1.1 Create new repository `falabella/fdh` at the Git host; mirror branch protection and CI variables from `falabella/skill-installer`.
-- [x] 1.2 Initial commit: copy the current `falabella/skill-installer` tree into the new repo unchanged so history is preserved by `git push --mirror` (alternative: fresh init — pick one and justify in the new repo's README).
-- [x] 1.3 Rename Go module: `go mod edit -module github.com/falabella/fdh` and run a tree-wide find/replace from `github.com/falabella/skill-installer` to `github.com/falabella/fdh`.
-- [x] 1.4 Rename the binary directory: `cmd/falabella-installer/` → `cmd/fdh/`. Update `Taskfile.yml` `BINARY` variable, `go build` paths, and the `release.yml` workflow's artifact names to `fdh-<version>-<os>-<arch>.tar.gz`.
-- [x] 1.5 Move config directory defaults: change `defaultConfigDir()` in `internal/cli/root.go` to return `<user-config>/fdh` instead of `<user-config>/falabella-installer`.
-- [x] 1.6 Implement legacy config read fallback: `defaultConfigDir()` callers also check `<user-config>/falabella-installer/<file>` when the new path is absent; emit a one-line deprecation warning to stderr on use.
-- [x] 1.7 Add `fdh config migrate` subcommand that copies `~/.config/falabella-installer/*` to `~/.config/fdh/*`, preserving values, idempotent on re-run.
-- [x] 1.8 Build the stub binary `cmd/falabella-installer-stub/main.go`: 30-line program that prints the deprecation notice, looks up `fdh` on PATH, forwards args and exit code, or exits 127 with install hint if missing.
-- [x] 1.9 Update `release.yml` to publish BOTH `fdh` (primary) and `falabella-installer` (stub) binaries for 90 days; document the sunset date in `docs/release.md`.
+## 1. CLI rename — `fdh` → `fdh`
+
+- [x] 1.1 Create new repository `forge/fdh` at the Git host; mirror branch protection and CI variables from `forge/skill-installer`.
+- [x] 1.2 Initial commit: copy the current `forge/skill-installer` tree into the new repo unchanged so history is preserved by `git push --mirror` (alternative: fresh init — pick one and justify in the new repo's README).
+- [x] 1.3 Rename Go module: `go mod edit -module github.com/forge/fdh` and run a tree-wide find/replace from `github.com/forge/skill-installer` to `github.com/forge/fdh`.
+- [x] 1.4 Rename the binary directory: `cmd/fdh/` → `cmd/fdh/`. Update `Taskfile.yml` `BINARY` variable, `go build` paths, and the `release.yml` workflow's artifact names to `fdh-<version>-<os>-<arch>.tar.gz`.
+- [x] 1.5 Move config directory defaults: change `defaultConfigDir()` in `internal/cli/root.go` to return `<user-config>/fdh` instead of `<user-config>/fdh`.
+- [x] 1.6 Implement legacy config read fallback: `defaultConfigDir()` callers also check `<user-config>/fdh/<file>` when the new path is absent; emit a one-line deprecation warning to stderr on use.
+- [x] 1.7 Add `fdh config migrate` subcommand that copies `~/.config/fdh/*` to `~/.config/fdh/*`, preserving values, idempotent on re-run.
+- [x] 1.8 Build the stub binary `cmd/fdh-stub/main.go`: 30-line program that prints the deprecation notice, looks up `fdh` on PATH, forwards args and exit code, or exits 127 with install hint if missing.
+- [x] 1.9 Update `release.yml` to publish BOTH `fdh` (primary) and `fdh` (stub) binaries for 90 days; document the sunset date in `docs/release.md`.
 - [x] 1.10 Update every doc under `docs/` to reference `fdh` and the new config directory; preserve a single `docs/migration.md` page explaining the rename.
 - [x] 1.11 Update README, CHANGELOG, and the OpenSpec hub's CLAUDE.md (if it references the binary name).
 - [x] 1.12 Run the full test suite on the renamed module and binary; confirm all 97+ tests pass.
@@ -42,11 +44,11 @@
 
 ## 4. Frontend scaffolding
 
-- [x] 4.1 Create the `web/` directory at the repo root (or in a separate `falabella/fdh-portal-web` repo — decide and document). `pnpm create next-app` with TypeScript, Tailwind, ESLint, App Router.
+- [x] 4.1 Create the `web/` directory at the repo root (or in a separate `forge/fdh-portal-web` repo — decide and document). `pnpm create next-app` with TypeScript, Tailwind, ESLint, App Router.
 - [x] 4.2 Configure `tsconfig.json` with `strict: true`, `noUncheckedIndexedAccess: true`. CI runs `tsc --noEmit`.
 - [x] 4.3 Configure ESLint with `next/core-web-vitals` plus a small custom rule set (no console.log in production code, sorted imports).
 - [x] 4.4 Vendor shadcn/ui: run `npx shadcn-ui init`, copy the core components (button, card, input, dialog, tabs, dropdown-menu, sheet, scroll-area) into `components/ui/`.
-- [x] 4.5 Author Falabella theme tokens in `tailwind.config.ts`: primary/secondary/accent/neutral/semantic colors, the brand font family (Geist or the org font), spacing scale.
+- [x] 4.5 Author Forge theme tokens in `tailwind.config.ts`: primary/secondary/accent/neutral/semantic colors, the brand font family (Geist or the org font), spacing scale.
 - [x] 4.6 Implement the navigation shell: header with logo, primary nav, search box, locale switcher, theme toggle, sign-in CTA / user menu.
 - [x] 4.7 Implement the footer: build version, links to docs, terms, accessibility statement.
 - [x] 4.8 Implement the layout root with `<html lang>` driven by locale, `<main>` landmark, skip-to-content link.
@@ -110,7 +112,7 @@
 
 - [x] 11.1 Create `deploy/helm/fdh-portal/` with `Chart.yaml`, `values.yaml`, and templates.
 - [x] 11.2 Define two Deployments: `fdh-portal-api` (Go) and `fdh-portal-web` (Next.js Node runtime). HPA on CPU. Resource requests/limits in `values.yaml` defaults.
-- [x] 11.3 Define one Ingress fronting both at `https://fdh.falabella.internal`: `/api/*` → API service, all other paths → Web service.
+- [x] 11.3 Define one Ingress fronting both at `https://fdh.forge.internal`: `/api/*` → API service, all other paths → Web service.
 - [x] 11.4 Define the Keycloak client secret as a Kubernetes Secret referenced from the API deployment; document the platform-team handoff in `docs/deploy.md`.
 - [x] 11.5 Define a Prometheus ServiceMonitor scraping `/metrics` from the API.
 - [x] 11.6 Define an OpenTelemetry collector connection via `OTEL_EXPORTER_OTLP_ENDPOINT` env var bound from a values setting.
@@ -119,9 +121,9 @@
 
 ## 12. Documentation
 
-- [x] 12.1 Update `docs/getting-started.md` to use `fdh` everywhere and add a "Where the portal lives" section pointing at `https://fdh.falabella.internal`.
+- [x] 12.1 Update `docs/getting-started.md` to use `fdh` everywhere and add a "Where the portal lives" section pointing at `https://fdh.forge.internal`.
 - [x] 12.2 Add `docs/portal-admin.md`: covers admin-shell features, role mappings, refresh procedure, activation log inspection.
-- [x] 12.3 Add `docs/migration.md`: explains the `falabella-installer` → `fdh` rename, the 90-day stub, and the `fdh config migrate` command with examples.
+- [x] 12.3 Add `docs/migration.md`: explains the `fdh` → `fdh` rename, the 90-day stub, and the `fdh config migrate` command with examples.
 - [x] 12.4 Update `docs/quickstart.md` to mention the portal as the recommended discovery path, with the CLI install commands also presented inline for advanced users.
 - [x] 12.5 Author `docs/keycloak-setup.md`: the one-page handoff for the platform identity team — realm name, client ID, redirect URIs, required claims, role mapping examples.
 

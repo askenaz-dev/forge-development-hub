@@ -112,7 +112,7 @@ El archivo `skills/registry.yaml` SHALL incluir comentarios YAML al inicio del a
 
 ### Requirement: Registro inicial contiene al menos un componente de cada kind
 
-Al hacer apply del change `hub-v2-manifest-state-profiles`, el catálogo SHALL contener al menos una entry por cada kind: una entry para `design-system` (skill, existente), una para `no-console-log` (rule, nueva), una para `falabella-pr-writer` (agent, nueva), una para `doctor-on-session-start` (hook, nueva). El profile `minimal` en `hub/profiles.yaml` SHALL referenciar las cuatro.
+Al hacer apply del change `hub-v2-manifest-state-profiles`, el catálogo SHALL contener al menos una entry por cada kind: una entry para `design-system` (skill, existente), una para `no-console-log` (rule, nueva), una para `forge-pr-writer` (agent, nueva), una para `doctor-on-session-start` (hook, nueva). El profile `minimal` en `hub/profiles.yaml` SHALL referenciar las cuatro.
 
 #### Scenario: Registry inicial post-apply
 

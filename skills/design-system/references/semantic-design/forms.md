@@ -1,5 +1,7 @@
 # forms.md - Formularios 1:1
 
+*Brand strings updated 2026-05-23 by the rebrand-to-forge-development-hub change; original wording used "forge".*
+
 > Fuentes canonicas: `Input`, `Label`, `Checkbox`, `Switch` y `Select` en `packages/ui/src/components/`.
 
 ---
@@ -8,11 +10,11 @@
 
 | Componente | Import | Props/partes clave |
 |------------|--------|--------------------|
-| `Input` | `import { Input } from "@falabella-enablers-genai/ui"` | `size="sm" | "md" | "lg"`, `error?: boolean` |
-| `Label` | `import { Label } from "@falabella-enablers-genai/ui"` | `required?: boolean` |
-| `Checkbox` | `import { Checkbox } from "@falabella-enablers-genai/ui"` | `size="sm" | "md"` |
-| `Switch` | `import { Switch } from "@falabella-enablers-genai/ui"` | `size="sm" | "md"` |
-| `Select` | `import { Select, SelectTrigger, SelectContent, SelectItem, SelectValue } from "@falabella-enablers-genai/ui"` | `error?: boolean` en `SelectTrigger` |
+| `Input` | `import { Input } from "@forge-enablers-genai/ui"` | `size="sm" | "md" | "lg"`, `error?: boolean` |
+| `Label` | `import { Label } from "@forge-enablers-genai/ui"` | `required?: boolean` |
+| `Checkbox` | `import { Checkbox } from "@forge-enablers-genai/ui"` | `size="sm" | "md"` |
+| `Switch` | `import { Switch } from "@forge-enablers-genai/ui"` | `size="sm" | "md"` |
+| `Select` | `import { Select, SelectTrigger, SelectContent, SelectItem, SelectValue } from "@forge-enablers-genai/ui"` | `error?: boolean` en `SelectTrigger` |
 
 No existe `Radio` como componente del DS original. Si se repite en tres contextos, propone RFC.
 
@@ -31,7 +33,7 @@ import {
   SelectTrigger,
   SelectValue,
   Switch,
-} from "@falabella-enablers-genai/ui";
+} from "@forge-enablers-genai/ui";
 
 <div className="flex flex-col gap-2">
   <Label htmlFor="email" required>Correo</Label>

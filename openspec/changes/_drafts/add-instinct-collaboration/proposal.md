@@ -1,3 +1,5 @@
+*Brand strings updated 2026-05-23 by the rebrand-to-forge-development-hub change; original wording used "forge".*
+
 > **NOTA — BORRADOR (no es un change formal todavía).**
 > Este archivo vive bajo `openspec/changes/_drafts/` para revisión humana antes de
 > ejecutar `/opsx:propose`.
@@ -8,7 +10,7 @@
 
 ## Why
 
-`hub-v2-manifest-state-profiles` deja al hub con 4 primitivas distribuibles (skills, rules, agents, hooks) y al consumidor con un contrato declarativo (manifest + lock + state). Pero el **flujo de conocimiento sigue siendo top-down**: equipo plataforma escribe → devs consumen. A escala de 500 devs Falabella, esto convierte al equipo plataforma en bottleneck eterno de curación, y desperdicia el conocimiento tribal que cada dev genera cada día en sesiones con su agente IA.
+`hub-v2-manifest-state-profiles` deja al hub con 4 primitivas distribuibles (skills, rules, agents, hooks) y al consumidor con un contrato declarativo (manifest + lock + state). Pero el **flujo de conocimiento sigue siendo top-down**: equipo plataforma escribe → devs consumen. A escala de 500 devs Forge, esto convierte al equipo plataforma en bottleneck eterno de curación, y desperdicia el conocimiento tribal que cada dev genera cada día en sesiones con su agente IA.
 
 El concepto `continuous-learning-v2` de ECC (ver `https://github.com/affaan-m/ECC`) introduce un **bucle bottom-up de aprendizaje**:
 
@@ -38,7 +40,7 @@ El concepto `continuous-learning-v2` de ECC (ver `https://github.com/affaan-m/EC
 └──────────────────────────────────────────────────────────────────┘
 ```
 
-El valor para Falabella: el conocimiento de los devs senior del equipo de fulfillment sobre integración SAP (o el del equipo de pricing sobre los corner cases de descuentos, o el del equipo de checkout sobre los timeouts de pasarelas) deja de ser tribal y se vuelve un input al catálogo que cura plataforma. Sin este bucle, el catálogo crece lineal con la capacidad de plataforma; con el bucle, crece exponencial con el uso.
+El valor para Forge: el conocimiento de los devs senior del equipo de fulfillment sobre integración SAP (o el del equipo de pricing sobre los corner cases de descuentos, o el del equipo de checkout sobre los timeouts de pasarelas) deja de ser tribal y se vuelve un input al catálogo que cura plataforma. Sin este bucle, el catálogo crece lineal con la capacidad de plataforma; con el bucle, crece exponencial con el uso.
 
 Este change introduce **la versión file-based del bucle** (sin backend, intercambio manual via archivos). El backend HTTP para sync automático entre devs queda como future change `add-instinct-sync-service` cuando volumen lo justifique.
 
@@ -54,7 +56,7 @@ id: 01HXY7K2QZ3M5R9TPVNBJ8D6F4         # ULID
 title: "Al refactorizar services Go, verificar IDs de traza OTel"
 confidence: 0.8                          # 0.0-1.0, manual en v1
 domain: backend-services-go              # taxonomía libre, normalizable después
-captured_by: guillmar.ortiz@falabella.com  # del ~/.fdh/config.yaml
+captured_by: guillmar.ortiz@forge.com  # del ~/.fdh/config.yaml
 captured_at: 2026-05-24T10:15:00Z
 context:
   project_hint: "checkout-service"       # path-agnostic, hash del cwd opcional
@@ -141,7 +143,7 @@ Si el service no participa en flows distribuidos...
 ### Sin dependencias externas en v1
 
 - No requiere Artifactory (es file-based local).
-- No requiere backend Falabella (intercambio es manual via archivos `.tar.gz`).
+- No requiere backend Forge (intercambio es manual via archivos `.tar.gz`).
 - No requiere LLM (clustering rule-based).
 - No requiere hook runtime (captura es manual).
 
@@ -153,7 +155,7 @@ Si el service no participa en flows distribuidos...
 
 ### Sets up future changes
 
-- `add-instinct-sync-service`: backend HTTP Falabella para sync automático push/pull entre devs. Resuelve la fricción del intercambio manual cuando el volumen lo justifique.
+- `add-instinct-sync-service`: backend HTTP Forge para sync automático push/pull entre devs. Resuelve la fricción del intercambio manual cuando el volumen lo justifique.
 - `add-instinct-auto-capture-via-hooks`: integración con Stop-phase hooks para captura automática al finalizar sesiones. Depende de que hooks tengan un mecanismo más rico de event payload.
 - `evolve-instincts-with-llm`: `fdh evolve` pasa de clustering rule-based a semántico via embeddings. Mejora calidad de los drafts generados.
 - `add-instinct-team-curation`: workflows de revisión multi-stakeholder para instincts antes de proponerse como skills. Útil cuando varios equipos contribuyen al mismo dominio.
@@ -164,4 +166,4 @@ Si el service no participa en flows distribuidos...
 - ¿`fdh instinct capture` puede inferir el dominio automáticamente desde el cwd o el state.json? Probablemente sí — si `state.json` registra projects, el dominio puede sugerirse desde el manifest del proyecto activo.
 - ¿`fdh evolve` corre sólo sobre instincts locales o también sobre bundles importados de otros equipos? Probable: ambos via `--from <file>` y `--include-local`.
 - ¿Hay un comando `fdh instinct review` para que un dev marque instincts de otros como útiles/no-útiles antes de que admin haga evolve? Puede ser future change `add-instinct-review-loop`.
-- ¿Encryption at rest en `~/.fdh/instincts/` requerido por security Falabella? Defer hasta tener requerimiento explícito.
+- ¿Encryption at rest en `~/.fdh/instincts/` requerido por security Forge? Defer hasta tener requerimiento explícito.

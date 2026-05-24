@@ -1,3 +1,5 @@
+*Brand strings updated 2026-05-23 by the rebrand-to-forge-development-hub change; original wording used "forge".*
+
 ## MODIFIED Requirements
 
 ### Requirement: Archivo `skills/registry.yaml` como catálogo autoritativo del hub
@@ -50,7 +52,7 @@ El hub SHALL ejecutar en CI una validación del catálogo (vía `fdh validate-re
 
 ### Requirement: Registro inicial contiene al menos un componente de cada kind
 
-Al hacer apply del change `hub-v2-manifest-state-profiles`, el catálogo SHALL contener al menos una entry por cada kind: una entry para `design-system` (skill, existente), una para `no-console-log` (rule, nueva), una para `falabella-pr-writer` (agent, nueva), una para `doctor-on-session-start` (hook, nueva). El profile `minimal` en `hub/profiles.yaml` SHALL referenciar las cuatro.
+Al hacer apply del change `hub-v2-manifest-state-profiles`, el catálogo SHALL contener al menos una entry por cada kind: una entry para `design-system` (skill, existente), una para `no-console-log` (rule, nueva), una para `forge-pr-writer` (agent, nueva), una para `doctor-on-session-start` (hook, nueva). El profile `minimal` en `hub/profiles.yaml` SHALL referenciar las cuatro.
 
 #### Scenario: Registry inicial post-apply
 

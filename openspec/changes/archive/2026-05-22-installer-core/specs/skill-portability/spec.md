@@ -1,3 +1,5 @@
+*Brand strings updated 2026-05-23 by the rebrand-to-forge-development-hub change; original wording used "forge".*
+
 ## ADDED Requirements
 
 ### Requirement: Skill portability declaration
@@ -96,12 +98,12 @@ The installer SHALL enforce a skill's `compatibility` declaration when computing
 
 #### Scenario: Install to incompatible agent refused
 
-- **WHEN** a skill declares `portable: false` and `compatibility: [claude-code]`, and a developer runs `falabella-installer install <skill> --agent copilot`
+- **WHEN** a skill declares `portable: false` and `compatibility: [claude-code]`, and a developer runs `fdh install <skill> --agent copilot`
 - **THEN** the command exits with code 4 and the message names the violation; no files are written to copilot's paths
 
 #### Scenario: Default-all-agents narrows to compatibility list
 
-- **WHEN** a skill declares `portable: false` and `compatibility: [claude-code, opencode]`, and a developer runs `falabella-installer install <skill>` without an `--agent` flag on a host where all four agents are detected
+- **WHEN** a skill declares `portable: false` and `compatibility: [claude-code, opencode]`, and a developer runs `fdh install <skill>` without an `--agent` flag on a host where all four agents are detected
 - **THEN** the bundle is written only to the paths required by `claude-code` and `opencode`; `copilot` and `codex` are skipped and reported in the output as `not-compatible`
 
 #### Scenario: Portable skill installs to every detected agent

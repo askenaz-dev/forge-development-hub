@@ -1,5 +1,7 @@
 # actions.md - Acciones Clicables 1:1
 
+*Brand strings updated 2026-05-23 by the rebrand-to-forge-development-hub change; original wording used "forge".*
+
 > Fuente canonica: [`packages/ui/src/components/button.tsx`](../packages/ui/src/components/button.tsx) y tokens `button.*`.
 
 ---
@@ -7,7 +9,7 @@
 ## React Primero
 
 ```tsx
-import { Button } from "@falabella-enablers-genai/ui";
+import { Button } from "@forge-enablers-genai/ui";
 
 <Button variant="primary" size="md">Guardar</Button>
 <Button variant="secondary" size="sm">Cancelar</Button>

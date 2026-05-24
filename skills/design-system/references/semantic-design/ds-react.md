@@ -1,6 +1,8 @@
 # ds-react.md - Design System React 1:1
 
-> Referencia rapida del paquete `@falabella-enablers-genai/ui`.
+*Brand strings updated 2026-05-23 by the rebrand-to-forge-development-hub change; original wording used "forge".*
+
+> Referencia rapida del paquete `@forge-enablers-genai/ui`.
 > La API completa vive en [`COMPONENTS.md`](../COMPONENTS.md) y la metadata fuente en [`components.meta.json`](../components.meta.json).
 
 ---
@@ -8,12 +10,12 @@
 ## Instalacion
 
 ```bash
-npm install @falabella-enablers-genai/ui
+npm install @forge-enablers-genai/ui
 ```
 
 ```css
-@import "@falabella-enablers-genai/ui/tokens.css";
-@import "@falabella-enablers-genai/ui/styles.css";
+@import "@forge-enablers-genai/ui/tokens.css";
+@import "@forge-enablers-genai/ui/styles.css";
 ```
 
 Dark mode se activa con `class="dark"` en `<html>`. `tokens.css` ya incluye los overrides `.dark`.
@@ -60,7 +62,7 @@ Esta tabla debe permanecer sincronizada con `components.meta.json`.
 ### Button
 
 ```tsx
-import { Button } from "@falabella-enablers-genai/ui";
+import { Button } from "@forge-enablers-genai/ui";
 
 <Button variant="primary" size="md">Guardar</Button>
 <Button variant="secondary" size="sm">Cancelar</Button>
@@ -89,7 +91,7 @@ import {
   SelectTrigger,
   SelectValue,
   Switch,
-} from "@falabella-enablers-genai/ui";
+} from "@forge-enablers-genai/ui";
 
 <div className="flex flex-col gap-2">
   <Label htmlFor="email" required>Correo</Label>
@@ -120,7 +122,7 @@ import {
   CardHeader,
   CardTitle,
   Surface,
-} from "@falabella-enablers-genai/ui";
+} from "@forge-enablers-genai/ui";
 
 <Surface variant="interactive" padding="lg">
   <Card>
@@ -145,7 +147,7 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from "@falabella-enablers-genai/ui";
+} from "@forge-enablers-genai/ui";
 
 <Dialog>
   <DialogTrigger asChild>
@@ -169,7 +171,7 @@ import {
 ### Feedback
 
 ```tsx
-import { Badge, StatusBadge, Toaster, toast } from "@falabella-enablers-genai/ui";
+import { Badge, StatusBadge, Toaster, toast } from "@forge-enablers-genai/ui";
 
 <Badge variant="success">Activo</Badge>
 <Badge variant="warning">Pendiente</Badge>
@@ -183,7 +185,7 @@ toast.success("Guardado correctamente");
 ### Navegacion
 
 ```tsx
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@falabella-enablers-genai/ui";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@forge-enablers-genai/ui";
 
 <Tabs defaultValue="general">
   <TabsList variant="pills">
@@ -200,7 +202,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@falabella-enablers-ge
 ### DataTable
 
 ```tsx
-import { Badge, DataTable } from "@falabella-enablers-genai/ui";
+import { Badge, DataTable } from "@forge-enablers-genai/ui";
 import type { ColumnDef } from "@tanstack/react-table";
 
 const columns: ColumnDef<User>[] = [
@@ -223,7 +225,7 @@ const columns: ColumnDef<User>[] = [
 ### Charts
 
 ```tsx
-import { BarChart } from "@falabella-enablers-genai/ui";
+import { BarChart } from "@forge-enablers-genai/ui";
 
 <BarChart
   data={[
@@ -240,7 +242,7 @@ Para props completas, lee `COMPONENTS.md` y `packages/ui/src/components/{chart}.
 ## Convenciones de Codigo
 
 ```tsx
-import { cn } from "@falabella-enablers-genai/ui";
+import { cn } from "@forge-enablers-genai/ui";
 
 <div className={cn("bg-card text-card-foreground", className)} />;
 ```

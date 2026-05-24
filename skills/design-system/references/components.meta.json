@@ -16,7 +16,7 @@
         "@radix-ui/react-slot"
       ],
       "registryDeps": [],
-      "import": "import { Button, buttonVariants } from '@falabella-enablers-genai/ui'",
+      "import": "import { Button, buttonVariants } from '@forge-enablers-genai/ui'",
       "vanillaTier": "css-only"
     },
     "badge": {
@@ -33,7 +33,7 @@
         "@radix-ui/react-slot"
       ],
       "registryDeps": [],
-      "import": "import { Badge } from '@falabella-enablers-genai/ui'",
+      "import": "import { Badge } from '@forge-enablers-genai/ui'",
       "vanillaTier": "css-only"
     },
     "heading": {
@@ -48,7 +48,7 @@
       ],
       "dependencies": [],
       "registryDeps": [],
-      "import": "import { Heading } from '@falabella-enablers-genai/ui'",
+      "import": "import { Heading } from '@forge-enablers-genai/ui'",
       "vanillaTier": "css-only"
     },
     "surface": {
@@ -65,7 +65,7 @@
         "@radix-ui/react-slot"
       ],
       "registryDeps": [],
-      "import": "import { Surface } from '@falabella-enablers-genai/ui'",
+      "import": "import { Surface } from '@forge-enablers-genai/ui'",
       "vanillaTier": "css-only"
     },
     "card": {
@@ -83,7 +83,7 @@
       ],
       "dependencies": [],
       "registryDeps": [],
-      "import": "import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter } from '@falabella-enablers-genai/ui'",
+      "import": "import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter } from '@forge-enablers-genai/ui'",
       "vanillaTier": "css-only"
     },
     "text": {
@@ -98,7 +98,7 @@
       ],
       "dependencies": [],
       "registryDeps": [],
-      "import": "import { Text } from '@falabella-enablers-genai/ui'",
+      "import": "import { Text } from '@forge-enablers-genai/ui'",
       "vanillaTier": "css-only"
     },
     "input": {
@@ -115,7 +115,7 @@
       "registryDeps": [
         "label"
       ],
-      "import": "import { Input, inputVariants } from '@falabella-enablers-genai/ui'",
+      "import": "import { Input, inputVariants } from '@forge-enablers-genai/ui'",
       "vanillaTier": "css-only"
     },
     "label": {
@@ -131,7 +131,7 @@
         "@radix-ui/react-label"
       ],
       "registryDeps": [],
-      "import": "import { Label } from '@falabella-enablers-genai/ui'",
+      "import": "import { Label } from '@forge-enablers-genai/ui'",
       "vanillaTier": "css-only"
     },
     "checkbox": {
@@ -149,7 +149,7 @@
         "lucide-react"
       ],
       "registryDeps": [],
-      "import": "import { Checkbox, checkboxVariants } from '@falabella-enablers-genai/ui'",
+      "import": "import { Checkbox, checkboxVariants } from '@forge-enablers-genai/ui'",
       "vanillaTier": "css-only"
     },
     "switch": {
@@ -165,7 +165,7 @@
         "@radix-ui/react-switch"
       ],
       "registryDeps": [],
-      "import": "import { Switch } from '@falabella-enablers-genai/ui'",
+      "import": "import { Switch } from '@forge-enablers-genai/ui'",
       "vanillaTier": "css-only"
     },
     "select": {
@@ -190,7 +190,7 @@
         "lucide-react"
       ],
       "registryDeps": [],
-      "import": "import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from '@falabella-enablers-genai/ui'",
+      "import": "import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from '@forge-enablers-genai/ui'",
       "vanillaTier": "js-behavior"
     },
     "dialog": {
@@ -216,7 +216,7 @@
         "lucide-react"
       ],
       "registryDeps": [],
-      "import": "import { Dialog, DialogTrigger, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter, DialogClose } from '@falabella-enablers-genai/ui'",
+      "import": "import { Dialog, DialogTrigger, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter, DialogClose } from '@forge-enablers-genai/ui'",
       "vanillaTier": "js-behavior"
     },
     "alert-dialog": {
@@ -243,7 +243,7 @@
       "registryDeps": [
         "button"
       ],
-      "import": "import { AlertDialog, AlertDialogTrigger, AlertDialogContent, AlertDialogHeader, AlertDialogTitle, AlertDialogDescription, AlertDialogFooter, AlertDialogAction, AlertDialogCancel } from '@falabella-enablers-genai/ui'",
+      "import": "import { AlertDialog, AlertDialogTrigger, AlertDialogContent, AlertDialogHeader, AlertDialogTitle, AlertDialogDescription, AlertDialogFooter, AlertDialogAction, AlertDialogCancel } from '@forge-enablers-genai/ui'",
       "vanillaTier": "js-behavior"
     },
     "dropdown-menu": {
@@ -273,7 +273,7 @@
         "lucide-react"
       ],
       "registryDeps": [],
-      "import": "import { DropdownMenu, DropdownMenuTrigger, DropdownMenuContent, DropdownMenuItem, DropdownMenuSeparator } from '@falabella-enablers-genai/ui'",
+      "import": "import { DropdownMenu, DropdownMenuTrigger, DropdownMenuContent, DropdownMenuItem, DropdownMenuSeparator } from '@forge-enablers-genai/ui'",
       "vanillaTier": "js-behavior"
     },
     "popover": {
@@ -291,7 +291,7 @@
         "@radix-ui/react-popover"
       ],
       "registryDeps": [],
-      "import": "import { Popover, PopoverTrigger, PopoverContent } from '@falabella-enablers-genai/ui'",
+      "import": "import { Popover, PopoverTrigger, PopoverContent } from '@forge-enablers-genai/ui'",
       "vanillaTier": "js-behavior"
     },
     "tooltip": {
@@ -309,7 +309,7 @@
         "@radix-ui/react-tooltip"
       ],
       "registryDeps": [],
-      "import": "import { TooltipProvider, Tooltip, TooltipTrigger, TooltipContent } from '@falabella-enablers-genai/ui'",
+      "import": "import { TooltipProvider, Tooltip, TooltipTrigger, TooltipContent } from '@forge-enablers-genai/ui'",
       "vanillaTier": "js-behavior"
     },
     "tabs": {
@@ -329,7 +329,7 @@
         "@radix-ui/react-tabs"
       ],
       "registryDeps": [],
-      "import": "import { Tabs, TabsList, TabsTrigger, TabsContent } from '@falabella-enablers-genai/ui'",
+      "import": "import { Tabs, TabsList, TabsTrigger, TabsContent } from '@forge-enablers-genai/ui'",
       "vanillaTier": "js-behavior"
     },
     "avatar": {
@@ -348,7 +348,7 @@
         "@radix-ui/react-avatar"
       ],
       "registryDeps": [],
-      "import": "import { Avatar, AvatarImage, AvatarFallback } from '@falabella-enablers-genai/ui'",
+      "import": "import { Avatar, AvatarImage, AvatarFallback } from '@forge-enablers-genai/ui'",
       "vanillaTier": "css-only"
     },
     "scroll-area": {
@@ -365,7 +365,7 @@
         "@radix-ui/react-scroll-area"
       ],
       "registryDeps": [],
-      "import": "import { ScrollArea, ScrollBar } from '@falabella-enablers-genai/ui'",
+      "import": "import { ScrollArea, ScrollBar } from '@forge-enablers-genai/ui'",
       "vanillaTier": "js-behavior"
     },
     "collapsible": {
@@ -382,7 +382,7 @@
         "@radix-ui/react-collapsible"
       ],
       "registryDeps": [],
-      "import": "import { Collapsible, CollapsibleTrigger, CollapsibleContent } from '@falabella-enablers-genai/ui'",
+      "import": "import { Collapsible, CollapsibleTrigger, CollapsibleContent } from '@forge-enablers-genai/ui'",
       "vanillaTier": "js-behavior"
     },
     "toast": {
@@ -399,7 +399,7 @@
         "sonner"
       ],
       "registryDeps": [],
-      "import": "import { Toaster, toast } from '@falabella-enablers-genai/ui'",
+      "import": "import { Toaster, toast } from '@forge-enablers-genai/ui'",
       "vanillaTier": "library-adapter"
     },
     "command": {
@@ -425,7 +425,7 @@
       "registryDeps": [
         "dialog"
       ],
-      "import": "import { Command, CommandInput, CommandList, CommandEmpty, CommandGroup, CommandItem } from '@falabella-enablers-genai/ui'",
+      "import": "import { Command, CommandInput, CommandList, CommandEmpty, CommandGroup, CommandItem } from '@forge-enablers-genai/ui'",
       "vanillaTier": "library-adapter"
     },
     "data-table": {
@@ -443,7 +443,7 @@
       "registryDeps": [
         "scroll-area"
       ],
-      "import": "import { DataTable } from '@falabella-enablers-genai/ui'",
+      "import": "import { DataTable } from '@forge-enablers-genai/ui'",
       "vanillaTier": "library-adapter"
     },
     "sidebar": {
@@ -481,7 +481,7 @@
         "lucide-react"
       ],
       "registryDeps": [],
-      "import": "import { SidebarProvider, Sidebar, SidebarHeader, SidebarContent, SidebarFooter, SidebarGroup, SidebarGroupLabel, SidebarGroupContent, SidebarMenu, SidebarMenuItem, SidebarMenuButton, SidebarTrigger } from '@falabella-enablers-genai/ui'",
+      "import": "import { SidebarProvider, Sidebar, SidebarHeader, SidebarContent, SidebarFooter, SidebarGroup, SidebarGroupLabel, SidebarGroupContent, SidebarMenu, SidebarMenuItem, SidebarMenuButton, SidebarTrigger } from '@forge-enablers-genai/ui'",
       "vanillaTier": "js-behavior"
     },
     "chart-core": {
@@ -502,7 +502,7 @@
         "echarts-for-react"
       ],
       "registryDeps": [],
-      "import": "import { Chart } from '@falabella-enablers-genai/ui'",
+      "import": "import { Chart } from '@forge-enablers-genai/ui'",
       "vanillaTier": "library-adapter"
     },
     "bar-chart": {
@@ -521,7 +521,7 @@
       "registryDeps": [
         "chart-core"
       ],
-      "import": "import { BarChart } from '@falabella-enablers-genai/ui'",
+      "import": "import { BarChart } from '@forge-enablers-genai/ui'",
       "vanillaTier": "library-adapter"
     },
     "line-chart": {
@@ -541,7 +541,7 @@
       "registryDeps": [
         "chart-core"
       ],
-      "import": "import { LineChart } from '@falabella-enablers-genai/ui'",
+      "import": "import { LineChart } from '@forge-enablers-genai/ui'",
       "vanillaTier": "library-adapter"
     },
     "pie-chart": {
@@ -560,7 +560,7 @@
       "registryDeps": [
         "chart-core"
       ],
-      "import": "import { PieChart } from '@falabella-enablers-genai/ui'",
+      "import": "import { PieChart } from '@forge-enablers-genai/ui'",
       "vanillaTier": "library-adapter"
     },
     "area-chart": {
@@ -579,7 +579,7 @@
       "registryDeps": [
         "chart-core"
       ],
-      "import": "import { AreaChart } from '@falabella-enablers-genai/ui'",
+      "import": "import { AreaChart } from '@forge-enablers-genai/ui'",
       "vanillaTier": "library-adapter"
     },
     "scatter-chart": {
@@ -600,7 +600,7 @@
       "registryDeps": [
         "chart-core"
       ],
-      "import": "import { ScatterChart } from '@falabella-enablers-genai/ui'",
+      "import": "import { ScatterChart } from '@forge-enablers-genai/ui'",
       "vanillaTier": "library-adapter"
     },
     "radar-chart": {
@@ -621,7 +621,7 @@
       "registryDeps": [
         "chart-core"
       ],
-      "import": "import { RadarChart } from '@falabella-enablers-genai/ui'",
+      "import": "import { RadarChart } from '@forge-enablers-genai/ui'",
       "vanillaTier": "library-adapter"
     },
     "gauge-chart": {
@@ -640,7 +640,7 @@
       "registryDeps": [
         "chart-core"
       ],
-      "import": "import { GaugeChart } from '@falabella-enablers-genai/ui'",
+      "import": "import { GaugeChart } from '@forge-enablers-genai/ui'",
       "vanillaTier": "library-adapter"
     },
     "treemap-chart": {
@@ -660,7 +660,7 @@
       "registryDeps": [
         "chart-core"
       ],
-      "import": "import { TreemapChart } from '@falabella-enablers-genai/ui'",
+      "import": "import { TreemapChart } from '@forge-enablers-genai/ui'",
       "vanillaTier": "library-adapter"
     },
     "heatmap-chart": {
@@ -679,7 +679,7 @@
       "registryDeps": [
         "chart-core"
       ],
-      "import": "import { HeatmapChart } from '@falabella-enablers-genai/ui'",
+      "import": "import { HeatmapChart } from '@forge-enablers-genai/ui'",
       "vanillaTier": "library-adapter"
     },
     "funnel-chart": {
@@ -698,7 +698,7 @@
       "registryDeps": [
         "chart-core"
       ],
-      "import": "import { FunnelChart } from '@falabella-enablers-genai/ui'",
+      "import": "import { FunnelChart } from '@forge-enablers-genai/ui'",
       "vanillaTier": "library-adapter"
     },
     "waterfall-chart": {
@@ -718,7 +718,7 @@
       "registryDeps": [
         "chart-core"
       ],
-      "import": "import { WaterfallChart } from '@falabella-enablers-genai/ui'",
+      "import": "import { WaterfallChart } from '@forge-enablers-genai/ui'",
       "vanillaTier": "library-adapter"
     },
     "sankey-chart": {
@@ -739,7 +739,7 @@
       "registryDeps": [
         "chart-core"
       ],
-      "import": "import { SankeyChart } from '@falabella-enablers-genai/ui'",
+      "import": "import { SankeyChart } from '@forge-enablers-genai/ui'",
       "vanillaTier": "library-adapter"
     },
     "sunburst-chart": {
@@ -759,7 +759,7 @@
       "registryDeps": [
         "chart-core"
       ],
-      "import": "import { SunburstChart } from '@falabella-enablers-genai/ui'",
+      "import": "import { SunburstChart } from '@forge-enablers-genai/ui'",
       "vanillaTier": "library-adapter"
     },
     "candlestick-chart": {
@@ -779,7 +779,7 @@
       "registryDeps": [
         "chart-core"
       ],
-      "import": "import { CandlestickChart } from '@falabella-enablers-genai/ui'",
+      "import": "import { CandlestickChart } from '@forge-enablers-genai/ui'",
       "vanillaTier": "library-adapter"
     },
     "boxplot-chart": {
@@ -799,7 +799,7 @@
       "registryDeps": [
         "chart-core"
       ],
-      "import": "import { BoxPlotChart } from '@falabella-enablers-genai/ui'",
+      "import": "import { BoxPlotChart } from '@forge-enablers-genai/ui'",
       "vanillaTier": "library-adapter"
     },
     "parallel-chart": {
@@ -819,12 +819,12 @@
       "registryDeps": [
         "chart-core"
       ],
-      "import": "import { ParallelChart } from '@falabella-enablers-genai/ui'",
+      "import": "import { ParallelChart } from '@forge-enablers-genai/ui'",
       "vanillaTier": "library-adapter"
     },
     "logo": {
       "name": "Logo",
-      "description": "Falabella Tecnología official logo with full, mark, and text variants.",
+      "description": "Forge Tecnología official logo with full, mark, and text variants.",
       "status": "stable",
       "file": "components/logo.tsx",
       "exports": [
@@ -833,7 +833,7 @@
       ],
       "dependencies": [],
       "registryDeps": [],
-      "import": "import { Logo } from '@falabella-enablers-genai/ui'",
+      "import": "import { Logo } from '@forge-enablers-genai/ui'",
       "vanillaTier": "css-only"
     },
     "status": {
@@ -853,7 +853,7 @@
       ],
       "dependencies": [],
       "registryDeps": [],
-      "import": "import { StatusDot, StatusBadge, StatusIndicator } from '@falabella-enablers-genai/ui'",
+      "import": "import { StatusDot, StatusBadge, StatusIndicator } from '@forge-enablers-genai/ui'",
       "vanillaTier": "css-only"
     }
   }

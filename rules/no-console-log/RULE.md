@@ -18,12 +18,12 @@ Do **not** commit calls to `console.log()`, `console.debug()`, `console.info()`,
 ## Why
 
 - `console.*` leaks debug output to production browsers and server logs where it is unstructured, unfilterable, and indexed inconsistently.
-- Falabella services emit structured logs via a project-configured logger (correlation IDs, log levels, PII scrubbing, sink routing). Mixing `console.*` fragments observability and breaks log aggregation parsing.
+- forge services emit structured logs via a project-configured logger (correlation IDs, log levels, PII scrubbing, sink routing). Mixing `console.*` fragments observability and breaks log aggregation parsing.
 - It is the most common source of accidental PII / token leaks in browser builds — credentials passed to `console.log("debug", req)` end up in browser devtools and any error reporting service the user has enabled.
 
 ## What to use instead
 
-Every Falabella service has a configured logger. The exact import depends on the stack:
+Every forge service has a configured logger. The exact import depends on the stack:
 
 - **Backend Node/TypeScript services:** `import { logger } from '@/lib/logger'` (project-specific path; check the README).
 - **Frontend React/Next:** `import { logger } from '@/lib/log'` or the analytics/telemetry helper documented in the project README.

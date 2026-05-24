@@ -75,7 +75,7 @@ A registry SHALL be organized so that any conforming `Registry` implementation c
 #### Scenario: Resolver finds a published version
 
 - **WHEN** a Git registry contains `skills/code-review/standard/versions/1.0.0/bundle.tar.gz` and `index.json` lists `code-review/standard@1.0.0` as the latest version
-- **THEN** `falabella-installer install code-review/standard` resolves to that bundle
+- **THEN** `fdh install code-review/standard` resolves to that bundle
 
 #### Scenario: Missing bundle.sha256 fails resolution
 
@@ -88,7 +88,7 @@ The registry root SHALL contain an `index.json` file that lists every published 
 
 #### Scenario: Search uses index.json
 
-- **WHEN** a developer runs `falabella-installer search` against a Git registry
+- **WHEN** a developer runs `fdh search` against a Git registry
 - **THEN** the search reads `index.json` and does not need to walk every `manifest.json` to produce results
 
 #### Scenario: Index and manifest disagreement detected
@@ -122,7 +122,7 @@ Versions SHALL use semantic versioning (`MAJOR.MINOR.PATCH`). Pre-release and bu
 #### Scenario: Pre-release versions resolvable
 
 - **WHEN** a registry contains `versions/2.0.0-rc.1/`
-- **THEN** `falabella-installer install code-review/standard@2.0.0-rc.1` resolves and installs that version
+- **THEN** `fdh install code-review/standard@2.0.0-rc.1` resolves and installs that version
 
 ### Requirement: Hash verification before write
 

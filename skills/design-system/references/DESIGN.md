@@ -1,5 +1,7 @@
 # DESIGN.md - Indice 1:1 del Design System
 
+*Brand strings updated 2026-05-23 by the rebrand-to-forge-development-hub change; original wording used "forge".*
+
 > **Para LLMs:** este archivo es solo una puerta de entrada. La fuente de verdad es el DS original: tokens, componentes y documentacion generada del repo.
 > No inventes aliases, namespaces ni valores locales.
 
@@ -37,7 +39,7 @@
 
 ## Stack Canonico
 
-- **Paquete:** `@falabella-enablers-genai/ui`
+- **Paquete:** `@forge-enablers-genai/ui`
 - **React:** 19+
 - **Componentes:** Radix UI + CVA + Tailwind v4
 - **Tablas:** `@tanstack/react-table`
@@ -49,8 +51,8 @@
 CSS global para consumidores:
 
 ```css
-@import "@falabella-enablers-genai/ui/tokens.css";
-@import "@falabella-enablers-genai/ui/styles.css";
+@import "@forge-enablers-genai/ui/tokens.css";
+@import "@forge-enablers-genai/ui/styles.css";
 ```
 
 `tokens.css` ya incluye `:root` y `.dark`. No existe un subpath publico separado para dark mode.
@@ -62,7 +64,7 @@ CSS global para consumidores:
 1. **El DS original manda.** Si este directorio discrepa de `tokens/tokens.json`, `components.meta.json`, `COMPONENTS.md` o `packages/ui/src/components`, corrige este directorio.
 2. **No crear tokens paralelos.** Prohibido cualquier namespace o alias local que duplique tokens canonicos.
 3. **No copiar valores a mano.** Usa CSS variables generadas (`--color-*`, `--space-*`, `--type-*`, `--button-*`, etc.) o utilities de Tailwind mapeadas por `styles.css`.
-4. **No importar rutas internas del paquete.** Consumidores usan solo `@falabella-enablers-genai/ui/tokens.css`, `@falabella-enablers-genai/ui/styles.css` y los exports React del paquete.
+4. **No importar rutas internas del paquete.** Consumidores usan solo `@forge-enablers-genai/ui/tokens.css`, `@forge-enablers-genai/ui/styles.css` y los exports React del paquete.
 5. **Usa componentes existentes primero.** Antes de escribir UI custom, revisa `COMPONENTS.md`.
 6. **Dark mode es semantico.** Activa con `.dark` en `<html>`; no codifiques colores por tema en componentes.
 7. **Estados obligatorios.** Todo elemento interactivo debe cubrir default, hover, focus-visible, active y disabled.

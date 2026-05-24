@@ -22,14 +22,14 @@ spec.loader.exec_module(vm)
 SAMPLE_COMPONENTS_IDX = {
     "skill": {"design-system", "i18n-helper"},
     "rule": {"no-console-log"},
-    "agent": {"falabella-pr-writer"},
+    "agent": {"forge-pr-writer"},
     "hook": {"doctor-on-session-start"},
 }
 
 SAMPLE_PROFILES = {
     "profiles": {
         "minimal": {"description": "x", "owner_team": "x", "skills": ["design-system"]},
-        "falabella-frontend": {
+        "forge-frontend": {
             "description": "x", "owner_team": "x",
             "skills": ["design-system"], "rules": ["no-console-log"],
         },

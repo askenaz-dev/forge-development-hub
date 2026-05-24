@@ -1,6 +1,8 @@
+*Brand strings updated 2026-05-23 by the rebrand-to-forge-development-hub change; original wording used "forge".*
+
 ## Context
 
-The `installer-core` change shipped a working CLI (`falabella-installer`) and a Git-backed registry good enough for a 30-developer pilot. Scaling to the full Falabella engineering org requires a discoverable, browseable web product — not "read READMEs in the registry's GitHub UI" — with the same identity (Keycloak) and roles the rest of Falabella's developer tooling uses. The original build prompt anticipated this in three separate changes (`registry-mvp`, `governance`, `web-ui`), but the user has chosen to deliver a focused subset of all three as a single coherent product (`dev-portal`) so the portal MVP is one decision unit rather than three sequenced ones. The naming rename (`falabella-installer` → `fdh`) lands in the same change so docs and install snippets never reference a stale name.
+The `installer-core` change shipped a working CLI (`fdh`) and a Git-backed registry good enough for a 30-developer pilot. Scaling to the full Forge engineering org requires a discoverable, browseable web product — not "read READMEs in the registry's GitHub UI" — with the same identity (Keycloak) and roles the rest of Forge's developer tooling uses. The original build prompt anticipated this in three separate changes (`registry-mvp`, `governance`, `web-ui`), but the user has chosen to deliver a focused subset of all three as a single coherent product (`dev-portal`) so the portal MVP is one decision unit rather than three sequenced ones. The naming rename (`fdh` → `fdh`) lands in the same change so docs and install snippets never reference a stale name.
 
 This change does NOT replace the Git-backed registry with Postgres + MinIO — that storage upgrade stays in a future `registry-storage` change. The portal API reads from the same `pkg/registry.GitRegistry` the CLI uses; both share refreshes. A future change can swap `GitRegistry` for an `HTTPRegistry` without touching the portal.
 
@@ -8,13 +10,13 @@ This change does NOT replace the Git-backed registry with Postgres + MinIO — t
 
 **Goals:**
 
-- A modern, professional web portal Falabella developers want to use, with full SSR, dark mode, accessibility, and Spanish + English.
-- Keycloak OIDC integration that uses Falabella's existing IdP without code-level coupling to Keycloak.
+- A modern, professional web portal Forge developers want to use, with full SSR, dark mode, accessibility, and Spanish + English.
+- Keycloak OIDC integration that uses Forge's existing IdP without code-level coupling to Keycloak.
 - A first-install onboarding wizard that walks "I just heard about this" → "my first skill is installed" in under 5 minutes.
 - A versioned, OpenAPI-documented HTTP API the portal consumes (and that future automation can also consume).
-- Rename `falabella-installer` → `fdh` cleanly: new binary, new module, new config directory, with a 90-day back-compat stub.
+- Rename `fdh` → `fdh` cleanly: new binary, new module, new config directory, with a 90-day back-compat stub.
 - Local-dev parity: `docker compose up` brings Keycloak + API + Web online together.
-- Production-shaped deploy: Helm chart targeting Falabella's existing Kubernetes platform.
+- Production-shaped deploy: Helm chart targeting Forge's existing Kubernetes platform.
 
 **Non-Goals:**
 
@@ -39,11 +41,11 @@ This change does NOT replace the Git-backed registry with Postgres + MinIO — t
 
 - **Astro.** Strong for content-first sites. Loses on the interactive portions (admin shell, search UX) where Next's RSC model is more flexible.
 - **Plain React + Vite + react-router.** Lighter, no SSR. Loses SEO and first-paint speed for the catalog pages where it matters.
-- **Remix.** Equally good technically; chose Next for ecosystem familiarity in the Falabella org.
+- **Remix.** Equally good technically; chose Next for ecosystem familiarity in the Forge org.
 
 ### Backend: Go, separate process from the frontend
 
-**Choice:** A new Go binary `fdh-portal-api` in the same module as the CLI (`github.com/falabella/fdh/cmd/fdh-portal-api/`). It depends on the same `pkg/registry`, `pkg/bundle`, `pkg/portability` libraries the CLI already uses. The frontend (Node.js) talks to the backend (Go) over JSON HTTP behind a single Ingress.
+**Choice:** A new Go binary `fdh-portal-api` in the same module as the CLI (`github.com/forge/fdh/cmd/fdh-portal-api/`). It depends on the same `pkg/registry`, `pkg/bundle`, `pkg/portability` libraries the CLI already uses. The frontend (Node.js) talks to the backend (Go) over JSON HTTP behind a single Ingress.
 
 **Why:** Reuse of `pkg/registry` and `pkg/bundle` is the single biggest win — there is exactly one definition of "what is the registry layout" and "what is a valid bundle". Running the frontend on Node lets us use the standard Next.js production runtime (no SSG-only constraints) and keeps the design space open for future server-side personalization. Two containers, one deployment unit.
 
@@ -81,16 +83,16 @@ Roles flow from Keycloak as the `groups` (or `roles`) JWT claim, mapped to porta
 
 ### CLI rename: new module, new binary, 90-day back-compat stub
 
-**Choice:** Move the Go module from `github.com/falabella/skill-installer` to `github.com/falabella/fdh`. The binary becomes `fdh` (`.exe` on Windows). The per-user config directory moves to `~/.config/fdh/` (and the OS equivalents). For 90 days, the old binary `falabella-installer` continues to ship as a 30-line stub: it prints a deprecation notice to stderr and forwards every argument to the `fdh` binary if found on PATH, else suggests the install command. The Go module rename is a mechanical refactor handled in one PR; no API change.
+**Choice:** Move the Go module from `github.com/forge/skill-installer` to `github.com/forge/fdh`. The binary becomes `fdh` (`.exe` on Windows). The per-user config directory moves to `~/.config/fdh/` (and the OS equivalents). For 90 days, the old binary `fdh` continues to ship as a 30-line stub: it prints a deprecation notice to stderr and forwards every argument to the `fdh` binary if found on PATH, else suggests the install command. The Go module rename is a mechanical refactor handled in one PR; no API change.
 
 A `fdh config migrate` subcommand performs the move from the old config directory to the new one explicitly.
 
-**Why:** The "Falabella Development Hub" brand is what the product wants to stand on; `falabella-installer` was always a working title. Renaming once, early, before the broader rollout, is much cheaper than living with a misleading name. The 90-day stub keeps pilot devs unbroken; the migrate subcommand makes the user-visible move explicit and forgiving.
+**Why:** The "Forge Development Hub" brand is what the product wants to stand on; `fdh` was always a working title. Renaming once, early, before the broader rollout, is much cheaper than living with a misleading name. The 90-day stub keeps pilot devs unbroken; the migrate subcommand makes the user-visible move explicit and forgiving.
 
 **Alternatives considered:**
 
-- **No rename, keep `falabella-installer`.** Cheaper today; permanent friction in marketing and docs. Rejected.
-- **Symlink `fdh` → `falabella-installer`.** Works on Unix; flaky on Windows. The stub-binary approach is OS-uniform.
+- **No rename, keep `fdh`.** Cheaper today; permanent friction in marketing and docs. Rejected.
+- **Symlink `fdh` → `fdh`.** Works on Unix; flaky on Windows. The stub-binary approach is OS-uniform.
 - **Big-bang break.** Acceptable but unfriendly to the 30 existing pilot users. 90-day overlap is cheap.
 
 ### Local dev: Docker Compose bringing up Keycloak + API + Web
@@ -99,9 +101,9 @@ A `fdh config migrate` subcommand performs the move from the old config director
 
 **Why:** Local development needs to be one command. Keycloak is heavy (~400MB image, ~30s startup) but a single dev container suffices for the whole team and dispenses with "configure your local Keycloak manually" friction. The fixture overlay gives every developer the 8 SDLC seed skills from `installer-core` to work against.
 
-### Production deploy: Helm chart, Falabella's existing Kubernetes platform
+### Production deploy: Helm chart, Forge's existing Kubernetes platform
 
-**Choice:** A Helm chart at `deploy/helm/fdh-portal/` deploys API + Web as separate Deployments (HPA-enabled), with a single Ingress fronting both at `https://fdh.falabella.internal`. Keycloak is NOT deployed by this chart — the platform identity team operates the canonical Keycloak; the chart only takes a values file with the OIDC discovery URL, client ID, and a Kubernetes secret reference for the client secret. Prometheus ServiceMonitor and OTel collector wiring are included.
+**Choice:** A Helm chart at `deploy/helm/fdh-portal/` deploys API + Web as separate Deployments (HPA-enabled), with a single Ingress fronting both at `https://fdh.forge.internal`. Keycloak is NOT deployed by this chart — the platform identity team operates the canonical Keycloak; the chart only takes a values file with the OIDC discovery URL, client ID, and a Kubernetes secret reference for the client secret. Prometheus ServiceMonitor and OTel collector wiring are included.
 
 **Why:** Keycloak is platform-team property; we consume it. The Ingress design lets future products under the FDH umbrella (e.g., a "Pipelines" portal) join the same domain without DNS shuffling.
 
@@ -113,15 +115,15 @@ A `fdh config migrate` subcommand performs the move from the old config director
 
 ### Design system: Tailwind tokens + shadcn/ui vendored
 
-**Choice:** A Tailwind theme with Falabella-flavored color tokens (primary, secondary, accent, neutral, semantic). shadcn/ui components copied into `web/components/ui/` so we customize freely. Lucide icons. Geist font family (or the Falabella brand font if one exists).
+**Choice:** A Tailwind theme with Forge-flavored color tokens (primary, secondary, accent, neutral, semantic). shadcn/ui components copied into `web/components/ui/` so we customize freely. Lucide icons. Geist font family (or the Forge brand font if one exists).
 
 **Why:** This stack ships polished UI fast and is universally familiar in the dev-tools world. shadcn/ui being vendored (not a dependency) means we own the components and can tune them.
 
 ### Observability: Prometheus + OpenTelemetry + structured logs
 
-**Choice:** Go API exposes `/metrics` for Prometheus, traces export via OTLP to whatever collector the Falabella platform team operates, logs are JSON to stdout with `slog`. The Next.js app emits the same OTel trace context via `@vercel/otel` (which works for any Node host, not just Vercel).
+**Choice:** Go API exposes `/metrics` for Prometheus, traces export via OTLP to whatever collector the Forge platform team operates, logs are JSON to stdout with `slog`. The Next.js app emits the same OTel trace context via `@vercel/otel` (which works for any Node host, not just Vercel).
 
-**Why:** Standard, swappable, the rest of Falabella's platform uses the same shapes.
+**Why:** Standard, swappable, the rest of Forge's platform uses the same shapes.
 
 ## Risks / Trade-offs
 
@@ -135,7 +137,7 @@ A `fdh config migrate` subcommand performs the move from the old config director
 
 - **Risk: Spec drift between OpenAPI and Go handlers.** Hand-maintained OpenAPI plus hand-written Go handlers always diverges eventually. → **Mitigation:** generate Go server stubs from OpenAPI using `oapi-codegen` so the spec IS the contract; route definitions stay in spec; handler bodies stay in Go. The frontend's API client is similarly generated from the OpenAPI spec via `openapi-typescript`.
 
-- **Risk: Anonymous browsing leaks information that should be authenticated.** Skill descriptions, owner teams, scan status — are these acceptable to expose pre-login? → **Mitigation:** for the MVP, treat the registry contents as "internal" not "secret" — anyone inside Falabella's network can read them. Anonymous browsing is permitted only on the portal's domain (the Ingress is on the internal network). If a skill needs to be private to a team, that's a future change (`portal-access-control`).
+- **Risk: Anonymous browsing leaks information that should be authenticated.** Skill descriptions, owner teams, scan status — are these acceptable to expose pre-login? → **Mitigation:** for the MVP, treat the registry contents as "internal" not "secret" — anyone inside Forge's network can read them. Anonymous browsing is permitted only on the portal's domain (the Ingress is on the internal network). If a skill needs to be private to a team, that's a future change (`portal-access-control`).
 
 - **Risk: Two long-running services raise operational cost.** Compared to one CLI binary, the portal is a real service to operate. → **Mitigation:** keep the surface small, autoscale on CPU, define SLOs and alerts in the Helm chart, document the runbook (which itself becomes the first "real" use of the `operations/runbook-template` seed skill).
 
@@ -147,16 +149,16 @@ A `fdh config migrate` subcommand performs the move from the old config director
 
 The rollout sequences as eleven milestones. Each milestone is a coherent deliverable that can be demonstrated and reviewed independently; the next one begins as soon as the previous one is accepted. No calendar dates — milestones gate on completion criteria, not on time.
 
-- **M1 — CLI rename complete.** `falabella/fdh` repository exists. CLI renamed: module path, binary name, config directory. Back-compat stub binary for `falabella-installer` published with 90-day deprecation notice. `fdh config migrate` command lands. Full test suite passes against the renamed module on macOS, Linux, Windows. Existing pilot devs can reinstall.
+- **M1 — CLI rename complete.** `forge/fdh` repository exists. CLI renamed: module path, binary name, config directory. Back-compat stub binary for `fdh` published with 90-day deprecation notice. `fdh config migrate` command lands. Full test suite passes against the renamed module on macOS, Linux, Windows. Existing pilot devs can reinstall.
 - **M2 — Portal API skeleton.** Go binary `fdh-portal-api` boots, serves `/healthz` and `/readyz`, reads from the shared `pkg/registry`. Catalog endpoints (`GET /api/v1/skills`, `GET /api/v1/skills/{ns}/{name}`, version detail, raw SKILL.md) return real data from the fixture registry. OpenAPI 3.1 spec committed; CI verifies generated Go server stubs match the spec.
 - **M3 — Portal API auth + observability.** OIDC token validation via `go-oidc` with JWKS caching and `kid` rotation. Role-map loader (claim → portal role). `GET /api/v1/auth/me` returns anonymous or authenticated user info correctly. Prometheus `/metrics` endpoint, OpenTelemetry trace export, structured `slog` JSON logs. 60-second auto-refresh + SIGHUP + `POST /api/v1/refresh`.
-- **M4 — Frontend scaffold.** Next.js 14 App Router project up. Tailwind + shadcn/ui vendored. Falabella theme tokens defined. Navigation header, layout root, footer, theme provider (light/dark/system) all in place. ESLint + TypeScript strict in CI. Builds cleanly; `next build` produces an empty-content production bundle.
+- **M4 — Frontend scaffold.** Next.js 14 App Router project up. Tailwind + shadcn/ui vendored. Forge theme tokens defined. Navigation header, layout root, footer, theme provider (light/dark/system) all in place. ESLint + TypeScript strict in CI. Builds cleanly; `next build` produces an empty-content production bundle.
 - **M5 — Public pages.** Landing, install-CLI (with OS detection + per-platform tabs + SHA-256 commands), browse, search (debounced + URL-stateful), skill detail (rendered SKILL.md + version history + per-agent install variants + copy buttons), version detail, 404. Anonymous access works end-to-end against the fixture registry.
 - **M6 — Authenticated pages.** Auth.js configured with Keycloak provider. Sign-in flow with PKCE. Sign-out flow with RP-initiated logout. Profile page reads `/api/v1/auth/me`. Admin shell role-gated. Middleware redirects anonymous users to sign-in for protected routes with `redirect_to` honored.
 - **M7 — Onboarding wizard.** Seven-step wizard from "detect your OS" to "open your agent and confirm the skill appears". Progress persists per wizard session. Activation events emitted as structured logs. `GET /api/v1/admin/activation` exposes recent events for inspection. "What's next" panels appear after completion.
 - **M8 — i18n + accessibility polish.** `next-intl` wired with `es` (default) and `en`. Every user-facing string externalized. Locale switcher in navigation. CI check for translation parity between locales. Axe-core accessibility test runs against every page in CI; zero `serious`/`critical` violations. Manual keyboard-navigation audit clean.
 - **M9 — Local-dev infrastructure.** `docker compose up` brings up Keycloak (with pre-seeded realm + test users), API, Web, and the fixture registry. `compose.fixture.yml` overlay rebuilds the 8 SDLC seed skills on demand. `docs/local-dev.md` covers the one-command flow.
-- **M10 — Production deployment.** Helm chart at `deploy/helm/fdh-portal/` deploys API + Web behind a single Ingress at `https://fdh.falabella.internal`. Prometheus ServiceMonitor + OTel collector wiring. Kubernetes Secret references for the Keycloak client secret. Smoke test against a real (or `kind`) cluster passes.
+- **M10 — Production deployment.** Helm chart at `deploy/helm/fdh-portal/` deploys API + Web behind a single Ingress at `https://fdh.forge.internal`. Prometheus ServiceMonitor + OTel collector wiring. Kubernetes Secret references for the Keycloak client secret. Smoke test against a real (or `kind`) cluster passes.
 - **M11 — Docs + pilot acceptance.** `docs/getting-started.md` updated to feature the portal. `docs/portal-admin.md`, `docs/migration.md`, `docs/keycloak-setup.md`, `docs/runbook.md` all authored. Lighthouse Performance ≥ 90 on landing, ≥ 85 on skill detail. Pilot dry-run with 5 developers completes. Five open questions in this design resolved. v1.0.0 release cut.
 
 **Rollback strategy:** The portal is purely additive — the CLI continues to work against the same Git registry whether the portal is up or down. The Helm chart is a clean `helm uninstall` away from gone. The CLI rename has the 90-day stub buying time; if the rename itself proves disruptive, the stub can be extended.
@@ -166,7 +168,7 @@ The rollout sequences as eleven milestones. Each milestone is a coherent deliver
 ## Open Questions
 
 - **Q1.** Which Keycloak realm and client config? Confidential client (client_secret in K8s secret) is the assumed default; public client + PKCE-only is possible too. Decision needed from the platform identity team before phase 4.
-- **Q2.** Does Falabella have an existing brand design system / Figma library we should align with, or do we author the FDH visual identity inside this change?
-- **Q3.** Is the portal's domain `fdh.falabella.internal`, or is it joining an existing dev-tools subdomain like `tools.falabella.internal/fdh`? Affects Ingress + Keycloak redirect URI configuration.
+- **Q2.** Does Forge have an existing brand design system / Figma library we should align with, or do we author the FDH visual identity inside this change?
+- **Q3.** Is the portal's domain `fdh.forge.internal`, or is it joining an existing dev-tools subdomain like `tools.forge.internal/fdh`? Affects Ingress + Keycloak redirect URI configuration.
 - **Q4.** Internal-network anonymous browsing — confirmed acceptable, or do we need anonymous → login gate from day one?
 - **Q5.** Activation telemetry sink — the portal will emit structured log events; what's the ingestion path the analytics team prefers (Loki / Datadog / Splunk / Kafka)?

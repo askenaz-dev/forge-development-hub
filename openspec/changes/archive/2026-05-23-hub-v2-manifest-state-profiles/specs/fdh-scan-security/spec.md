@@ -1,3 +1,5 @@
+*Brand strings updated 2026-05-23 by the rebrand-to-forge-development-hub change; original wording used "forge".*
+
 ## ADDED Requirements
 
 ### Requirement: Comando `fdh scan` audita componentes
@@ -49,11 +51,11 @@
 
 ### Requirement: Perfilado de riesgo de MCPs declarados
 
-`fdh scan` SHALL leer cualquier referencia a MCP servers que un componente declare (en agent configs, en hooks, en skill metadata) y SHALL clasificar el riesgo según una lista interna: MCPs corporativos Falabella = `info`, MCPs OSS conocidos = `warning`, MCPs no listados = `error` (requiere allowlist explícita).
+`fdh scan` SHALL leer cualquier referencia a MCP servers que un componente declare (en agent configs, en hooks, en skill metadata) y SHALL clasificar el riesgo según una lista interna: MCPs corporativos Forge = `info`, MCPs OSS conocidos = `warning`, MCPs no listados = `error` (requiere allowlist explícita).
 
 #### Scenario: MCP corporativo
 
-- **WHEN** un componente declara `mcp_servers: [falabella-internal-db]` y ese nombre está en la lista corporativa
+- **WHEN** un componente declara `mcp_servers: [forge-internal-db]` y ese nombre está en la lista corporativa
 - **THEN** `fdh scan` reporta `info` informativo
 
 #### Scenario: MCP desconocido

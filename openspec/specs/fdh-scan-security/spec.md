@@ -2,7 +2,7 @@
 
 ## Purpose
 
-Introduce el comando `fdh scan` como capability de seguridad que audita skills/rules/agents/hooks antes de publicar al hub o instalar en un consumer: detección rule-based deterministic (sin LLMs en path crítico) de secrets (API keys, AWS access keys, GitHub tokens, JWTs, URLs con credenciales, env vars con valores hardcodeados), validación de hooks contra inyección de comandos (`curl | sh`, `eval`, interpolación insegura), perfilado de riesgo de MCPs declarados (corporativo Falabella `info`, OSS conocidos `warning`, no listados `error`), y auditoría de combinaciones de permisos en `tools` de agents. La evolución a un pipeline adversarial multi-agente queda como change futuro `evolve-scan-to-adversarial`.
+Introduce el comando `fdh scan` como capability de seguridad que audita skills/rules/agents/hooks antes de publicar al hub o instalar en un consumer: detección rule-based deterministic (sin LLMs en path crítico) de secrets (API keys, AWS access keys, GitHub tokens, JWTs, URLs con credenciales, env vars con valores hardcodeados), validación de hooks contra inyección de comandos (`curl | sh`, `eval`, interpolación insegura), perfilado de riesgo de MCPs declarados (corporativo Forge `info`, OSS conocidos `warning`, no listados `error`), y auditoría de combinaciones de permisos en `tools` de agents. La evolución a un pipeline adversarial multi-agente queda como change futuro `evolve-scan-to-adversarial`.
 
 ## Requirements
 
@@ -55,11 +55,11 @@ Introduce el comando `fdh scan` como capability de seguridad que audita skills/r
 
 ### Requirement: Perfilado de riesgo de MCPs declarados
 
-`fdh scan` SHALL leer cualquier referencia a MCP servers que un componente declare (en agent configs, en hooks, en skill metadata) y SHALL clasificar el riesgo según una lista interna: MCPs corporativos Falabella = `info`, MCPs OSS conocidos = `warning`, MCPs no listados = `error` (requiere allowlist explícita).
+`fdh scan` SHALL leer cualquier referencia a MCP servers que un componente declare (en agent configs, en hooks, en skill metadata) y SHALL clasificar el riesgo según una lista interna: MCPs corporativos Forge = `info`, MCPs OSS conocidos = `warning`, MCPs no listados = `error` (requiere allowlist explícita).
 
 #### Scenario: MCP corporativo
 
-- **WHEN** un componente declara `mcp_servers: [falabella-internal-db]` y ese nombre está en la lista corporativa
+- **WHEN** un componente declara `mcp_servers: [forge-internal-db]` y ese nombre está en la lista corporativa
 - **THEN** `fdh scan` reporta `info` informativo
 
 #### Scenario: MCP desconocido

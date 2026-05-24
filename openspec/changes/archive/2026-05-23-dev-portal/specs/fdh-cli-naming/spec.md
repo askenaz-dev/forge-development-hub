@@ -1,3 +1,5 @@
+*Brand strings updated 2026-05-23 by the rebrand-to-forge-development-hub change; original wording used "forge".*
+
 ## ADDED Requirements
 
 ### Requirement: Canonical CLI binary name
@@ -16,12 +18,12 @@ The CLI binary SHALL be named `fdh` (or `fdh.exe` on Windows). Every release art
 
 ### Requirement: Canonical Go module path
 
-The Go module SHALL be `github.com/falabella/fdh`. Every internal package import path MUST start with this prefix. The previous module path `github.com/falabella/skill-installer` MUST NOT appear anywhere in compiled binaries or in `go.mod`.
+The Go module SHALL be `github.com/forge/fdh`. Every internal package import path MUST start with this prefix. The previous module path `github.com/forge/skill-installer` MUST NOT appear anywhere in compiled binaries or in `go.mod`.
 
 #### Scenario: Module path consistent across files
 
 - **WHEN** the build succeeds
-- **THEN** `grep -r 'github.com/falabella/skill-installer' .` against the source tree returns zero matches (except in migration documentation explicitly explaining the prior path)
+- **THEN** `grep -r 'github.com/forge/skill-installer' .` against the source tree returns zero matches (except in migration documentation explicitly explaining the prior path)
 
 ### Requirement: Per-user config directory
 
@@ -34,25 +36,25 @@ The per-user configuration directory SHALL be `~/.config/fdh/` on Linux, `~/Libr
 
 ### Requirement: Backward-compatible read of legacy config
 
-For 90 days after the rename ships, the CLI SHALL read configuration from the legacy directory (`~/.config/falabella-installer/` and OS equivalents) if and only if the new `~/.config/fdh/` directory does not contain the requested file. When a legacy file is used, the CLI MUST emit a one-line warning to stderr naming the legacy path and recommending `fdh config migrate`.
+For 90 days after the rename ships, the CLI SHALL read configuration from the legacy directory (`~/.config/fdh/` and OS equivalents) if and only if the new `~/.config/fdh/` directory does not contain the requested file. When a legacy file is used, the CLI MUST emit a one-line warning to stderr naming the legacy path and recommending `fdh config migrate`.
 
 #### Scenario: Legacy config still works during deprecation window
 
-- **WHEN** a developer who upgraded from `falabella-installer` to `fdh` has a `~/.config/falabella-installer/config.yaml` but no `~/.config/fdh/config.yaml`, and runs `fdh config get registry.url`
+- **WHEN** a developer who upgraded from `fdh` to `fdh` has a `~/.config/fdh/config.yaml` but no `~/.config/fdh/config.yaml`, and runs `fdh config get registry.url`
 - **THEN** the command prints the value from the legacy file AND prints a deprecation warning to stderr citing the legacy path
 
 #### Scenario: New config wins over legacy when both exist
 
-- **WHEN** both `~/.config/fdh/config.yaml` and `~/.config/falabella-installer/config.yaml` exist
+- **WHEN** both `~/.config/fdh/config.yaml` and `~/.config/fdh/config.yaml` exist
 - **THEN** the new path is authoritative; the legacy file is ignored and no warning is emitted
 
 ### Requirement: `fdh config migrate` subcommand
 
-The CLI SHALL provide a `fdh config migrate` subcommand that copies any legacy config files from `~/.config/falabella-installer/` to `~/.config/fdh/`, preserving values, then prints a summary of the files moved. Re-running the command on an already-migrated machine MUST be a no-op with a clear "nothing to migrate" message.
+The CLI SHALL provide a `fdh config migrate` subcommand that copies any legacy config files from `~/.config/fdh/` to `~/.config/fdh/`, preserving values, then prints a summary of the files moved. Re-running the command on an already-migrated machine MUST be a no-op with a clear "nothing to migrate" message.
 
 #### Scenario: First-time migration
 
-- **WHEN** a developer with a legacy `~/.config/falabella-installer/config.yaml` runs `fdh config migrate`
+- **WHEN** a developer with a legacy `~/.config/fdh/config.yaml` runs `fdh config migrate`
 - **THEN** `~/.config/fdh/config.yaml` is created with identical content, the command prints a summary listing each migrated file, and exit code is zero
 
 #### Scenario: Re-run is idempotent
@@ -60,18 +62,18 @@ The CLI SHALL provide a `fdh config migrate` subcommand that copies any legacy c
 - **WHEN** a developer runs `fdh config migrate` on a machine where migration already happened (legacy files absent or new files already present)
 - **THEN** the command prints "nothing to migrate" and exits zero without modifying any files
 
-### Requirement: Legacy `falabella-installer` stub binary for 90 days
+### Requirement: Legacy `fdh` stub binary for 90 days
 
-For 90 days after the rename ships, a stub binary SHALL be published under the legacy name `falabella-installer`. The stub MUST: (a) print to stderr a one-line deprecation notice naming the new binary `fdh` and the migration command, (b) if `fdh` is found on `PATH`, forward all arguments and the exit code transparently, (c) if `fdh` is not on `PATH`, print a short install hint and exit with code 127.
+For 90 days after the rename ships, a stub binary SHALL be published under the legacy name `fdh`. The stub MUST: (a) print to stderr a one-line deprecation notice naming the new binary `fdh` and the migration command, (b) if `fdh` is found on `PATH`, forward all arguments and the exit code transparently, (c) if `fdh` is not on `PATH`, print a short install hint and exit with code 127.
 
 #### Scenario: Stub forwards to fdh when present
 
-- **WHEN** a developer runs `falabella-installer doctor` on a machine where `fdh` is on PATH
+- **WHEN** a developer runs `fdh doctor` on a machine where `fdh` is on PATH
 - **THEN** stderr contains a one-line deprecation notice, stdout contains the doctor output, and the exit code matches what `fdh doctor` would have produced
 
 #### Scenario: Stub instructs install when fdh missing
 
-- **WHEN** a developer runs `falabella-installer install foo/bar` on a machine where `fdh` is not on PATH
+- **WHEN** a developer runs `fdh install foo/bar` on a machine where `fdh` is not on PATH
 - **THEN** stderr instructs the developer to install `fdh` from the documented channel, exit code is 127
 
 ### Requirement: Release artifact naming

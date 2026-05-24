@@ -1,9 +1,11 @@
+*Brand strings updated 2026-05-23 by the rebrand-to-forge-development-hub change; original wording used "forge".*
+
 ## 1. Project scaffolding
 
-- [x] 1.1 Create the dedicated `falabella/skill-installer` repository at Falabella's Git host (resolved Q1). Add a README that names this OpenSpec hub as the spec source of truth and links to the archived `installer-core` change once available.
+- [x] 1.1 Create the dedicated `forge/skill-installer` repository at Forge's Git host (resolved Q1). Add a README that names this OpenSpec hub as the spec source of truth and links to the archived `installer-core` change once available.
 - [x] 1.2 Create the Go module (`go mod init`), pin the Go toolchain version (`go.mod` directive), and commit an initial `.gitignore`, `LICENSE`, and `README.md`.
 - [x] 1.3 Add base dependencies: `spf13/cobra`, `spf13/viper`, `go-git/go-git/v5`, `goccy/go-yaml` (or `gopkg.in/yaml.v3`), `stretchr/testify`.
-- [x] 1.4 Establish package layout: `cmd/falabella-installer/` (main + root cobra command), `internal/cli/` (one file per command), `pkg/registry/`, `pkg/adapters/`, `pkg/portability/`, `pkg/provenance/`, `pkg/bundle/`, `internal/testutil/`.
+- [x] 1.4 Establish package layout: `cmd/fdh/` (main + root cobra command), `internal/cli/` (one file per command), `pkg/registry/`, `pkg/adapters/`, `pkg/portability/`, `pkg/provenance/`, `pkg/bundle/`, `internal/testutil/`.
 - [x] 1.5 Add a `Makefile` (or `Taskfile`/`mage` — pick one and justify in the README) with targets: `build`, `test`, `lint`, `release`, `e2e`. *Chose Taskfile — single static binary, identical syntax on macOS/Linux/Windows, removes the `make`-on-Windows friction documented in the README.*
 - [x] 1.6 Configure `golangci-lint` with a strict but pragmatic ruleset (gofmt, govet, staticcheck, errcheck, ineffassign, gosimple).
 - [x] 1.7 Add a GitHub Actions workflow `ci.yml` with a matrix of `macos-latest`, `ubuntu-latest`, `windows-latest` running `make lint test`. *Uses `task` instead of `make` to match the build-runner choice in 1.5.*
@@ -21,7 +23,7 @@
 - [x] 3.1 Define the `AgentEntry` struct: `id`, `display_name`, `detect[]` (probe specs), `paths.user[]`, `paths.project[]`, `source_doc_url`, `verified_on`.
 - [x] 3.2 Author `pkg/adapters/builtin.yaml` containing the four default agents with the exact path declarations from the `agent-adapter-map` spec.
 - [x] 3.3 Embed `builtin.yaml` into the binary via `go:embed`.
-- [x] 3.4 Implement YAML loading + schema validation for both the embedded default and the user override file (`~/.config/falabella-installer/adapters.yaml` or OS-equivalent).
+- [x] 3.4 Implement YAML loading + schema validation for both the embedded default and the user override file (`~/.config/fdh/adapters.yaml` or OS-equivalent).
 - [x] 3.5 Implement per-agent merge logic: user entries fully replace embedded entries with the same `id`; agents in the embedded default not mentioned by the user are preserved.
 - [x] 3.6 Implement detection probe evaluation: `dir-exists`, `exec-on-path`, `shell-exit-zero` probe types. No probe may require elevated privileges.
 - [x] 3.7 Implement path-set union for multi-agent install (deduplicate across agents, return unique destination paths plus which agents each path satisfies).
@@ -91,19 +93,19 @@
 
 ## 10. Release pipeline and pilot rollout prep
 
-- [x] 10.1 Add a `release.yml` GitHub Actions workflow in the `falabella/skill-installer` repo building binaries for all five target platforms via `goreleaser` (or hand-rolled `go build` matrix — pick one and justify in `docs/release.md`). Each binary is packaged as a tar.gz.
+- [x] 10.1 Add a `release.yml` GitHub Actions workflow in the `forge/skill-installer` repo building binaries for all five target platforms via `goreleaser` (or hand-rolled `go build` matrix — pick one and justify in `docs/release.md`). Each binary is packaged as a tar.gz.
 - [x] 10.2 Compute SHA-256 checksums for every release tar.gz and publish them as adjacent `.sha256` files.
-- [x] 10.3 Publish release artifacts to Falabella's internal package manager (Nexus / JFrog / GitHub Packages — selection confirmed with ops as part of this task). Each release publishes five tar.gz files plus their checksums under a single versioned path. Homebrew tap, apt/yum repo, and Windows installer are explicitly deferred to `ops-readiness`.
+- [x] 10.3 Publish release artifacts to Forge's internal package manager (Nexus / JFrog / GitHub Packages — selection confirmed with ops as part of this task). Each release publishes five tar.gz files plus their checksums under a single versioned path. Homebrew tap, apt/yum repo, and Windows installer are explicitly deferred to `ops-readiness`.
 - [x] 10.4 Pilot binaries ship unsigned (resolved Q2 — checksum-only). Document the verification step in the quickstart and add a one-line warning to `docs/release.md` that signed binaries land in `ops-readiness`.
 - [x] 10.5 Author `/installer/docs/quickstart.md`: install the binary → run `doctor` → install a seed skill → confirm in each agent.
 - [x] 10.6 Author `/installer/docs/adapters.md`: documents the embedded adapter map, how to override it per-user, how to add a new agent.
 - [x] 10.7 Author `/installer/docs/portability.md`: explains the portable vs non-portable distinction, lists every lint rule, gives examples of each.
-- [x] 10.8 Run `falabella-installer doctor` end-to-end on a fresh macOS, Linux, and Windows machine against the pilot registry; document any pilot-blocker findings.
+- [x] 10.8 Run `fdh doctor` end-to-end on a fresh macOS, Linux, and Windows machine against the pilot registry; document any pilot-blocker findings.
 
 ## 11. Final acceptance
 
 - [x] 11.1 Verify all spec scenarios are implemented and pass: walk through every `#### Scenario:` block in each spec file and confirm a test exists or a manual verification step is recorded.
 - [x] 11.2 Run the full CI matrix (macOS + Linux + Windows) clean.
 - [x] 11.3 Confirm exit codes match the documented set across every failure path (manual smoke or scripted).
-- [x] 11.4 Pilot dry-run with 2–3 Falabella developers before the formal 30-dev rollout; collect findings.
+- [x] 11.4 Pilot dry-run with 2–3 Forge developers before the formal 30-dev rollout; collect findings.
 - [x] 11.5 Archive this change via `/opsx:archive installer-core` once pilot dry-run passes. (The four open questions in design.md are already resolved; pilot dry-run is the only remaining gate.)

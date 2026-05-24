@@ -1,3 +1,5 @@
+*Brand strings updated 2026-05-23 by the rebrand-to-forge-development-hub change; original wording used "forge".*
+
 ## ADDED Requirements
 
 ### Requirement: Next.js 14 App Router with TypeScript strict
@@ -110,7 +112,7 @@ The frontend SHALL meet WCAG 2.1 AA accessibility. Specifically: all interactive
 
 ### Requirement: Tailwind CSS + shadcn/ui as the design system
 
-The frontend SHALL use Tailwind CSS for utility-first styling and shadcn/ui components vendored into the repository (not consumed as a runtime dependency). Custom Falabella theme tokens MUST be defined in `tailwind.config.ts` (or equivalent). Component variants MUST follow shadcn/ui patterns.
+The frontend SHALL use Tailwind CSS for utility-first styling and shadcn/ui components vendored into the repository (not consumed as a runtime dependency). Custom Forge theme tokens MUST be defined in `tailwind.config.ts` (or equivalent). Component variants MUST follow shadcn/ui patterns.
 
 #### Scenario: shadcn/ui components vendored
 

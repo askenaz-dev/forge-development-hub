@@ -1,3 +1,5 @@
+*Brand strings updated 2026-05-23 by the rebrand-to-forge-development-hub change; original wording used "forge".*
+
 ## ADDED Requirements
 
 ### Requirement: Versioned HTTP API under /api/v1
@@ -140,7 +142,7 @@ The API SHALL emit logs to stdout in JSON format using `log/slog`. Every log lin
 
 ### Requirement: Reuse of pkg/registry from the CLI module
 
-The portal API SHALL consume the same `github.com/falabella/fdh/pkg/registry` package that the CLI consumes. Both MUST agree on the `Registry` interface, the JSON shapes, and the canonical hash. No portal-specific fork of these types is permitted.
+The portal API SHALL consume the same `github.com/forge/fdh/pkg/registry` package that the CLI consumes. Both MUST agree on the `Registry` interface, the JSON shapes, and the canonical hash. No portal-specific fork of these types is permitted.
 
 #### Scenario: Single registry implementation
 

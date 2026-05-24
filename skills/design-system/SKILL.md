@@ -1,13 +1,13 @@
 ---
 name: design-system
-description: Use when the user wants to build, design, style, modify, or review any UI — React/Next/Vue components, screens, forms, buttons, layouts, dashboards, charts, modals, tables, navigation — or when the user mentions Tailwind, CSS, dark mode, accessibility, WCAG, design tokens, colors, typography, spacing, or Falabella visual identity. ALWAYS load this skill BEFORE writing UI code so design system rules, tokens, and the component catalog are in context.
+description: Use when the user wants to build, design, style, modify, or review any UI — React/Next/Vue components, screens, forms, buttons, layouts, dashboards, charts, modals, tables, navigation — or when the user mentions Tailwind, CSS, dark mode, accessibility, WCAG, design tokens, colors, typography, spacing, or Forge visual identity. ALWAYS load this skill BEFORE writing UI code so design system rules, tokens, and the component catalog are in context.
 version: 0.1.0
 ds-version: 1.0.1
 ---
 
 ## Purpose
 
-This skill loads the Falabella design system contract into context before any UI is generated. The upstream source of truth is the `@falabella-enablers-genai/ui` package (repo `FTI00575-design-system`); a pinned snapshot of its documentation lives under `references/`. Treat `references/` as canonical for this session: do not invent tokens, components, or APIs that are not in `references/COMPONENTS.md` or `references/AGENTS.md`. The pinned upstream version is in `.ds-version`.
+This skill loads the Forge design system contract into context before any UI is generated. The upstream source of truth is the `@forge-enablers-genai/ui` package (repo `FTI00575-design-system`); a pinned snapshot of its documentation lives under `references/`. Treat `references/` as canonical for this session: do not invent tokens, components, or APIs that are not in `references/COMPONENTS.md` or `references/AGENTS.md`. The pinned upstream version is in `.ds-version`.
 
 ## Rules (non-negotiable)
 
@@ -73,12 +73,12 @@ Read these references on demand (do NOT pre-load all of them — they are large)
 
 ## Setup in a consumer project
 
-The consumer project needs access to the Falabella private npm scope.
+The consumer project needs access to the Forge private npm scope.
 
 **1. Configure `.npmrc`** (repo root or `~/.npmrc`):
 
 ```
-@falabella-enablers-genai:registry=https://npm.pkg.github.com
+@forge-enablers-genai:registry=https://npm.pkg.github.com
 //npm.pkg.github.com/:_authToken=${GITHUB_PKG_TOKEN}
 ```
 
@@ -87,21 +87,21 @@ The consumer project needs access to the Falabella private npm scope.
 **3. Recommended path — CLI flow (`genai-ds`):** copies component source into the consumer project, giving full ownership.
 
 ```bash
-npx @falabella-enablers-genai/cli init           # bootstrap config
-npx @falabella-enablers-genai/cli add button     # copy Button into the project
+npx @forge-enablers-genai/cli init           # bootstrap config
+npx @forge-enablers-genai/cli add button     # copy Button into the project
 ```
 
 **Alternative — npm package import** (runtime dependency, no source copy):
 
 ```bash
-npm install @falabella-enablers-genai/ui
+npm install @forge-enablers-genai/ui
 ```
 
 Then in the consumer's global CSS:
 
 ```css
-@import "@falabella-enablers-genai/ui/tokens.css";
-@import "@falabella-enablers-genai/ui/styles.css";
+@import "@forge-enablers-genai/ui/tokens.css";
+@import "@forge-enablers-genai/ui/styles.css";
 ```
 
 `tokens.css` already includes `:root` and `.dark`. There is no separate dark mode subpath.

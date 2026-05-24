@@ -1,5 +1,7 @@
 # surfaces.md - Superficies 1:1
 
+*Brand strings updated 2026-05-23 by the rebrand-to-forge-development-hub change; original wording used "forge".*
+
 > Fuentes canonicas: `Surface`, `Card`, `Dialog`, `AlertDialog` y `Popover`.
 
 ---
@@ -27,7 +29,7 @@ import {
   CardHeader,
   CardTitle,
   Surface,
-} from "@falabella-enablers-genai/ui";
+} from "@forge-enablers-genai/ui";
 
 <Surface variant="default" padding="lg" radius="xl">
   <Card>
@@ -51,7 +53,7 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from "@falabella-enablers-genai/ui";
+} from "@forge-enablers-genai/ui";
 
 <Dialog>
   <DialogTrigger asChild>

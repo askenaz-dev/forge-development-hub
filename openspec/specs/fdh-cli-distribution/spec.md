@@ -2,10 +2,8 @@
 
 ## Purpose
 
-Canales de distribución del binario `fdh` per-OS, ordenados por adopción: **npm primary** (`@falabella/fdh`) para devs con Node ya instalado (mayoría en 2026), con `install.sh`/`install.ps1`/`.deb`/`.rpm` como fallback Node-less para servers headless y entornos minimal. Homebrew tap interno y winget source interno quedan como canales secundarios/opcionales (no bloquean GA). Manifest público de versiones + endpoint configurable vía `FDH_PKG_HOST`. Firma de binarios deja de bloquear el rollout principal porque el canal npm sidesteps SmartScreen/Gatekeeper. Cierra el gap entre el binario `fdh` y el PATH del developer.
-
+Canales de distribución del binario `fdh` per-OS, ordenados por adopción: **npm primary** (`@forge/fdh`) para devs con Node ya instalado (mayoría en 2026), con `install.sh`/`install.ps1`/`.deb`/`.rpm` como fallback Node-less para servers headless y entornos minimal. Homebrew tap interno y winget source interno quedan como canales secundarios/opcionales (no bloquean GA). Manifest público de versiones + endpoint configurable vía `FDH_PKG_HOST`. Firma de binarios deja de bloquear el rollout principal porque el canal npm sidesteps SmartScreen/Gatekeeper. Cierra el gap entre el binario `fdh` y el PATH del developer.
 ## Requirements
-
 ### Requirement: One-liner universal de instalación per-OS
 
 El sistema SHALL proveer scripts oficiales `install.sh` (POSIX) e `install.ps1` (PowerShell) que descarguen el binario `fdh` correcto para el OS/arch del host desde un endpoint interno conocido, verifiquen su integridad por SHA-256, lo extraigan a un directorio per-usuario y lo agreguen al PATH del usuario sin requerir privilegios de administrador.
@@ -37,11 +35,11 @@ El sistema SHALL proveer scripts oficiales `install.sh` (POSIX) e `install.ps1` 
 
 ### Requirement: Distribución vía Homebrew tap interno
 
-El sistema SHALL publicar una formula Homebrew en un tap interno Falabella (`falabella-internal/tools`) que permita instalar `fdh` con `brew tap falabella-internal/tools && brew install fdh` en macOS y Linux.
+El sistema SHALL publicar una formula Homebrew en un tap interno Forge (`forge-internal/tools`) que permita instalar `fdh` con `brew tap forge-internal/tools && brew install fdh` en macOS y Linux.
 
 #### Scenario: Install vía brew
 
-- **WHEN** un developer ejecuta `brew tap falabella-internal/tools && brew install fdh`
+- **WHEN** un developer ejecuta `brew tap forge-internal/tools && brew install fdh`
 - **THEN** Homebrew descarga el bottle/tarball desde el host interno, lo instala bajo el prefix de brew, hace symlink a `fdh` en `$(brew --prefix)/bin/`, y `fdh --version` responde con la versión instalada sin pasos manuales adicionales
 
 #### Scenario: Upgrade vía brew
@@ -51,16 +49,16 @@ El sistema SHALL publicar una formula Homebrew en un tap interno Falabella (`fal
 
 ### Requirement: Distribución vía winget source interno
 
-El sistema SHALL publicar manifests winget en un source interno Falabella que permita instalar `fdh` con `winget install Falabella.FDH` tras agregar el source.
+El sistema SHALL publicar manifests winget en un source interno Forge que permita instalar `fdh` con `winget install Forge.FDH` tras agregar el source.
 
 #### Scenario: Install vía winget
 
-- **WHEN** un developer con el source interno agregado ejecuta `winget install Falabella.FDH`
+- **WHEN** un developer con el source interno agregado ejecuta `winget install Forge.FDH`
 - **THEN** winget descarga el instalador desde el source interno, instala el binario en una ruta de usuario, registra `fdh.exe` en el PATH y `fdh --version` responde sin reiniciar la sesión
 
 ### Requirement: Paquetes nativos `.deb` y `.rpm` para Linux corporativo
 
-El sistema SHALL proveer paquetes `.deb` (Debian/Ubuntu) y `.rpm` (RHEL/Fedora) en repositorios internos Falabella que instalen `fdh` con el package manager nativo.
+El sistema SHALL proveer paquetes `.deb` (Debian/Ubuntu) y `.rpm` (RHEL/Fedora) en repositorios internos Forge que instalen `fdh` con el package manager nativo.
 
 #### Scenario: Install vía apt
 
@@ -74,17 +72,17 @@ El sistema SHALL proveer paquetes `.deb` (Debian/Ubuntu) y `.rpm` (RHEL/Fedora) 
 
 ### Requirement: Endpoint de distribución configurable via `FDH_PKG_HOST`
 
-Los scripts `install.sh` y `install.ps1` SHALL leer el host de descarga desde la variable de entorno `FDH_PKG_HOST` (no hardcodearlo), permitiendo que el endpoint corporativo real (Artifactory, Nexus, S3 interno, GitHub Enterprise Releases, etc.) se inyecte sin modificar los scripts. El default placeholder es `pkg.falabella.internal` hasta que el equipo de plataforma confirme el host real.
+Los scripts `install.sh` y `install.ps1` SHALL leer el host de descarga desde la variable de entorno `FDH_PKG_HOST` (no hardcodearlo), permitiendo que el endpoint corporativo real (Artifactory, Nexus, S3 interno, GitHub Enterprise Releases, etc.) se inyecte sin modificar los scripts. El default placeholder es `pkg.forge.internal` hasta que el equipo de plataforma confirme el host real.
 
 #### Scenario: Override vía env var
 
-- **WHEN** un developer ejecuta `FDH_PKG_HOST=falabella.jfrog.io/artifactory/fdh-generic-local curl -fsSL https://falabella.jfrog.io/artifactory/fdh-generic-local/fdh/install.sh | bash`
+- **WHEN** un developer ejecuta `FDH_PKG_HOST=forge.jfrog.io/artifactory/fdh-generic-local curl -fsSL https://forge.jfrog.io/artifactory/fdh-generic-local/fdh/install.sh | bash`
 - **THEN** el script usa el host pasado en `FDH_PKG_HOST` para resolver todas las URLs (binario, manifest, SHA-256) sin modificar el script
 
 #### Scenario: Default placeholder cuando env var no está
 
 - **WHEN** un developer ejecuta el one-liner sin setear `FDH_PKG_HOST`
-- **THEN** el script usa `pkg.falabella.internal` como default y emite un warning indicando que se está usando el placeholder; si ese host no responde, sale con error accionable nombrando la env var como override
+- **THEN** el script usa `pkg.forge.internal` como default y emite un warning indicando que se está usando el placeholder; si ese host no responde, sale con error accionable nombrando la env var como override
 
 ### Requirement: Manifest público de versiones disponibles
 
@@ -102,7 +100,7 @@ El sistema SHALL publicar en `https://${FDH_PKG_HOST}/fdh/manifest.json` un mani
 
 ### Requirement: Firma de binarios opcional con warning explícito si está ausente
 
-El sistema MAY distribuir binarios firmados con el certificado corporativo Falabella (Authenticode para Windows, Developer ID + notarization para macOS); cuando la firma no esté disponible y se use el canal fallback (`install.sh`/`install.ps1`/tarball/`.deb`/`.rpm`), el instalador SHALL imprimir un warning visible que nombre la ausencia de firma, confirme la verificación SHA-256, y continúe la instalación sin fallar. Para el canal **primary npm** (`@falabella/fdh`), el binario se ejecuta desde `node_modules/` y Windows SmartScreen / macOS Gatekeeper no disparan los mismos checks, por lo que la firma deja de ser bloqueante para el rollout principal.
+El sistema MAY distribuir binarios firmados con el certificado corporativo Forge (Authenticode para Windows, Developer ID + notarization para macOS); cuando la firma no esté disponible y se use el canal fallback (`install.sh`/`install.ps1`/tarball/`.deb`/`.rpm`), el instalador SHALL imprimir un warning visible que nombre la ausencia de firma, confirme la verificación SHA-256, y continúe la instalación sin fallar. Para el canal **primary npm** (`@forge/fdh`), el binario se ejecuta desde `node_modules/` y Windows SmartScreen / macOS Gatekeeper no disparan los mismos checks, por lo que la firma deja de ser bloqueante para el rollout principal.
 
 #### Scenario: Binario firmado disponible (canal fallback)
 
@@ -116,17 +114,17 @@ El sistema MAY distribuir binarios firmados con el certificado corporativo Falab
 
 #### Scenario: Canal npm sin warning de signing
 
-- **WHEN** un developer instala vía `npx @falabella/fdh init` o `npm i -g @falabella/fdh` con binario subyacente no firmado
+- **WHEN** un developer instala vía `npx @forge/fdh init` o `npm i -g @forge/fdh` con binario subyacente no firmado
 - **THEN** no aparece warning de SmartScreen/Gatekeeper porque el binario se ejecuta desde `node_modules/`; la instalación es transparente
 
 ### Requirement: Canal npm como distribución primary
 
-El canal npm (`@falabella/fdh`) SHALL ser el canal primary de distribución del binario `fdh` para devs con Node ya instalado (mayoría en 2026 dada la dependencia de Claude Code, VS Code, frontend toolchain). Toda documentación oficial SHALL presentar `npx @falabella/fdh init` y `npm i -g @falabella/fdh` como comandos canónicos antes que cualquier otra alternativa.
+El canal npm (`@forge/fdh`) SHALL ser el canal primary de distribución del binario `fdh` para devs con Node ya instalado (mayoría en 2026 dada la dependencia de Claude Code, VS Code, frontend toolchain). Toda documentación oficial SHALL presentar `npx @forge/fdh init` y `npm i -g @forge/fdh` como comandos canónicos antes que cualquier otra alternativa.
 
 #### Scenario: Quickstart lidera con npm
 
 - **WHEN** un nuevo dev abre `docs/quickstart.md` del repo `fdh`
-- **THEN** las primeras dos secciones explican `npx @falabella/fdh init` y `npm i -g @falabella/fdh`; brew/install.sh aparecen después como alternativas para entornos Node-less
+- **THEN** las primeras dos secciones explican `npx @forge/fdh init` y `npm i -g @forge/fdh`; brew/install.sh aparecen después como alternativas para entornos Node-less
 
 #### Scenario: Portal `/install` por defecto
 
@@ -159,4 +157,5 @@ Los canales brew tap interno y winget source interno SHALL ser opcionales y SHAL
 #### Scenario: Brew tap publicado posteriormente
 
 - **WHEN** plataforma activa el tap interno semanas después de GA
-- **THEN** la documentación se actualiza para listar `brew tap falabella-internal/tools && brew install fdh` como alternativa adicional sin desplazar al canal npm primary
+- **THEN** la documentación se actualiza para listar `brew tap forge-internal/tools && brew install fdh` como alternativa adicional sin desplazar al canal npm primary
+

@@ -1,3 +1,5 @@
+*Brand strings updated 2026-05-23 by the rebrand-to-forge-development-hub change; original wording used "forge".*
+
 ## MODIFIED Requirements
 
 ### Requirement: Marcador `.fdh-managed.yaml` en cada componente instalado

@@ -2,7 +2,7 @@
 
 ## Purpose
 
-Defines the file-based contract for storing developer-captured "instincts" on the local machine: each instinct is a single YAML document (frontmatter + markdown body) with a ULID identifier, persisted as `~/.fdh/instincts/<id>.yaml` under a `0700` directory, written atomically via `.tmp + rename`. An optional `.index.json` cache speeds up listings without becoming the source of truth, and a dedicated `instincts:` section in `~/.fdh/state.json` (additive, never destructive) exposes summary stats to `fdh doctor`. This capability is the foundation for the bottom-up knowledge loop that lets tribal domain expertise from 500 Falabella devs become input to the hub catalog without standing up any backend.
+Defines the file-based contract for storing developer-captured "instincts" on the local machine: each instinct is a single YAML document (frontmatter + markdown body) with a ULID identifier, persisted as `~/.fdh/instincts/<id>.yaml` under a `0700` directory, written atomically via `.tmp + rename`. An optional `.index.json` cache speeds up listings without becoming the source of truth, and a dedicated `instincts:` section in `~/.fdh/state.json` (additive, never destructive) exposes summary stats to `fdh doctor`. This capability is the foundation for the bottom-up knowledge loop that lets tribal domain expertise from 500 Forge devs become input to the hub catalog without standing up any backend.
 
 ## Requirements
 

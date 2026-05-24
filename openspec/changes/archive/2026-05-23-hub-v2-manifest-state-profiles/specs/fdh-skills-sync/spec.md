@@ -1,3 +1,5 @@
+*Brand strings updated 2026-05-23 by the rebrand-to-forge-development-hub change; original wording used "forge".*
+
 ## MODIFIED Requirements
 
 ### Requirement: Comando `fdh update` para sincronizar componentes instalados

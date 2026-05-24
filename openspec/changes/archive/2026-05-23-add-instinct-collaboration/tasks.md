@@ -1,3 +1,5 @@
+*Brand strings updated 2026-05-23 by the rebrand-to-forge-development-hub change; original wording used "forge".*
+
 ## 1. Verificación de pre-requisitos
 
 - [x] 1.1 Confirmar que `hub-v2-manifest-state-profiles` está archivado (sus specs viven en `openspec/specs/`, no en su change directory) antes de hacer apply de este change <!-- archived 2026-05-23 (commit cd50eb2 in hub) -->
@@ -84,8 +86,8 @@
 
 ## 12. Documentación
 
-- [x] 12.1 Crear `docs/instincts.md` en el repo `fdh` explicando: qué son instincts, cuándo capturarlos, cómo escribir un body útil, guía de confidence (0.3/0.6/0.9), cómo compartir, cómo `fdh evolve` <!-- C:/falabella/fdh/docs/instincts.md — comprehensive guide with format, confidence guide, all commands, privacy notes, deferred features, 3-min tutorial -->
-- [x] 12.2 Actualizar `hub/README.md` (del hub) para mencionar el bucle bottom-up como complemento al modelo top-down <!-- partially covered: top-level README.md leads with `npx @falabella/fdh init`; the loop is documented in detail in fdh/docs/instincts.md. Hub README could explicitly mention the loop in a follow-up if needed -->
+- [x] 12.1 Crear `docs/instincts.md` en el repo `fdh` explicando: qué son instincts, cuándo capturarlos, cómo escribir un body útil, guía de confidence (0.3/0.6/0.9), cómo compartir, cómo `fdh evolve` <!-- C:/forge/fdh/docs/instincts.md — comprehensive guide with format, confidence guide, all commands, privacy notes, deferred features, 3-min tutorial -->
+- [x] 12.2 Actualizar `hub/README.md` (del hub) para mencionar el bucle bottom-up como complemento al modelo top-down <!-- partially covered: top-level README.md leads with `npx @forge/fdh init`; the loop is documented in detail in fdh/docs/instincts.md. Hub README could explicitly mention the loop in a follow-up if needed -->
 - [x] 12.3 Agregar tutorial corto: "Tu primer instinct" — 3 minutos end-to-end desde capture a export <!-- included as "Tutorial: capture your first instinct in 3 minutes" at the bottom of docs/instincts.md -->
 - [ ] 12.4 Documentar el rol de admin "instinct curator" con responsabilidades + ritmo sugerido (semanal/quincenal) <!-- pending: light treatment in docs/instincts.md ("once enough instincts converge…"); a dedicated ROLES.md or playbook section is a follow-up -->
 

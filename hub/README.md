@@ -1,6 +1,6 @@
 # hub/
 
-Authoritative source of the Falabella Development Hub catalog and profiles. This directory replaces the v1 layout where everything lived under `skills/`.
+Authoritative source of the Forge Development Hub catalog and profiles. This directory replaces the v1 layout where everything lived under `skills/`.
 
 ## Layout
 
@@ -45,7 +45,7 @@ instead of enumerating every component. Profiles live in `profiles.yaml`, are cu
 
 ```yaml
 # Consumer's .fdh/manifest.yaml
-profile: falabella-frontend
+profile: forge-frontend
 extends:
   add_skills: [i18n-helper]
   remove_rules: [no-console-log]
@@ -108,6 +108,10 @@ CI: `.github/workflows/validate-registry.yml` runs all three on every PR touchin
 ## Schema migration v1 → v2
 
 Run `python tools/migrate-registry-v1-v2.py` on a v1 `skills/registry.yaml` to produce a v2 `hub/registry.yaml` automatically (adds `kind: skill` to every entry, renames the list, bumps `schema_version`). The script is idempotent — running it on an already-v2 file is a no-op.
+
+## Renaming your local checkout
+
+If your working copy of this hub still lives under the old `forge-development-hub/` path, see [`docs/operations/rename-checkout.md`](../docs/operations/rename-checkout.md) for the step-by-step move to `forge-development-hub/` (Windows + Unix).
 
 ## See also
 
