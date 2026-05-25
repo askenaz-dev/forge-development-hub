@@ -2,7 +2,7 @@
 
 ## Purpose
 
-Canales de distribución del binario `fdh` per-OS, ordenados por adopción: **npm primary** (`@forge/fdh`) para devs con Node ya instalado (mayoría en 2026), con `install.sh`/`install.ps1`/`.deb`/`.rpm` como fallback Node-less para servers headless y entornos minimal. Homebrew tap interno y winget source interno quedan como canales secundarios/opcionales (no bloquean GA). Manifest público de versiones + endpoint configurable vía `FDH_PKG_HOST`. Firma de binarios deja de bloquear el rollout principal porque el canal npm sidesteps SmartScreen/Gatekeeper. Cierra el gap entre el binario `fdh` y el PATH del developer.
+Canales de distribución del binario `fdh` per-OS, ordenados por adopción: **npm primary** (`@askenaz-dev/fdh`) para devs con Node ya instalado (mayoría en 2026), con `install.sh`/`install.ps1`/`.deb`/`.rpm` como fallback Node-less para servers headless y entornos minimal. Homebrew tap interno y winget source interno quedan como canales secundarios/opcionales (no bloquean GA). Manifest público de versiones + endpoint configurable vía `FDH_RELEASES_BASE`. Firma de binarios deja de bloquear el rollout principal porque el canal npm sidesteps SmartScreen/Gatekeeper. Cierra el gap entre el binario `fdh` y el PATH del developer.
 ## Requirements
 ### Requirement: One-liner universal de instalación per-OS
 
@@ -10,12 +10,12 @@ El sistema SHALL proveer scripts oficiales `install.sh` (POSIX) e `install.ps1` 
 
 #### Scenario: Instalación exitosa en macOS
 
-- **WHEN** un developer en macOS ejecuta `curl -fsSL https://${FDH_PKG_HOST}/fdh/install.sh | bash` (con `FDH_PKG_HOST` apuntando al host interno)
+- **WHEN** un developer en macOS ejecuta `curl -fsSL https://${FDH_RELEASES_BASE}/fdh/install.sh | bash` (con `FDH_RELEASES_BASE` apuntando al host interno)
 - **THEN** el script detecta `darwin/arm64` (o `darwin/amd64`), descarga el tarball correspondiente, valida SHA-256 contra el manifest publicado, extrae `fdh` a `$HOME/.fdh/bin/fdh`, agrega `export PATH="$HOME/.fdh/bin:$PATH"` a `~/.zshrc` (o `~/.bashrc` según `$SHELL`) si aún no está, y deja el binario ejecutable
 
 #### Scenario: Instalación exitosa en Windows
 
-- **WHEN** un developer en Windows ejecuta `iwr -useb https://${env:FDH_PKG_HOST}/fdh/install.ps1 | iex` (con `FDH_PKG_HOST` apuntando al host interno)
+- **WHEN** un developer en Windows ejecuta `iwr -useb https://${env:FDH_RELEASES_BASE}/fdh/install.ps1 | iex` (con `FDH_RELEASES_BASE` apuntando al host interno)
 - **THEN** el script detecta `windows/amd64`, descarga el zip correspondiente, valida SHA-256, extrae `fdh.exe` a `$env:USERPROFILE\.fdh\bin\fdh.exe`, agrega esa ruta al `Path` de usuario en el registro (`HKCU:\Environment`) si aún no está, y emite un mensaje indicando que debe abrirse una nueva sesión de PowerShell para que el PATH tome efecto
 
 #### Scenario: Verificación de integridad falla
@@ -35,11 +35,11 @@ El sistema SHALL proveer scripts oficiales `install.sh` (POSIX) e `install.ps1` 
 
 ### Requirement: Distribución vía Homebrew tap interno
 
-El sistema SHALL publicar una formula Homebrew en un tap interno Forge (`forge-internal/tools`) que permita instalar `fdh` con `brew tap forge-internal/tools && brew install fdh` en macOS y Linux.
+El sistema SHALL publicar una formula Homebrew en un tap interno Forge (`askenaz-dev/tap`) que permita instalar `fdh` con `brew tap askenaz-dev/tap && brew install fdh` en macOS y Linux.
 
 #### Scenario: Install vía brew
 
-- **WHEN** un developer ejecuta `brew tap forge-internal/tools && brew install fdh`
+- **WHEN** un developer ejecuta `brew tap askenaz-dev/tap && brew install fdh`
 - **THEN** Homebrew descarga el bottle/tarball desde el host interno, lo instala bajo el prefix de brew, hace symlink a `fdh` en `$(brew --prefix)/bin/`, y `fdh --version` responde con la versión instalada sin pasos manuales adicionales
 
 #### Scenario: Upgrade vía brew
@@ -70,23 +70,23 @@ El sistema SHALL proveer paquetes `.deb` (Debian/Ubuntu) y `.rpm` (RHEL/Fedora) 
 - **WHEN** un developer con el repo interno configurado ejecuta `sudo dnf install fdh`
 - **THEN** dnf instala el binario en `/usr/local/bin/fdh`, `fdh --version` responde, y `dnf remove fdh` lo desinstala limpiamente
 
-### Requirement: Endpoint de distribución configurable via `FDH_PKG_HOST`
+### Requirement: Endpoint de distribución configurable via `FDH_RELEASES_BASE`
 
-Los scripts `install.sh` y `install.ps1` SHALL leer el host de descarga desde la variable de entorno `FDH_PKG_HOST` (no hardcodearlo), permitiendo que el endpoint corporativo real (Artifactory, Nexus, S3 interno, GitHub Enterprise Releases, etc.) se inyecte sin modificar los scripts. El default placeholder es `pkg.forge.internal` hasta que el equipo de plataforma confirme el host real.
+Los scripts `install.sh` y `install.ps1` SHALL leer el host de descarga desde la variable de entorno `FDH_RELEASES_BASE` (no hardcodearlo), permitiendo que el endpoint corporativo real (Artifactory, Nexus, S3 interno, GitHub Enterprise Releases, etc.) se inyecte sin modificar los scripts. El default placeholder es `pkg.askenaz.dev` hasta que el equipo de plataforma confirme el host real.
 
 #### Scenario: Override vía env var
 
-- **WHEN** un developer ejecuta `FDH_PKG_HOST=forge.jfrog.io/artifactory/fdh-generic-local curl -fsSL https://forge.jfrog.io/artifactory/fdh-generic-local/fdh/install.sh | bash`
-- **THEN** el script usa el host pasado en `FDH_PKG_HOST` para resolver todas las URLs (binario, manifest, SHA-256) sin modificar el script
+- **WHEN** un developer ejecuta `FDH_RELEASES_BASE=forge.jfrog.io/artifactory/fdh-generic-local curl -fsSL https://forge.jfrog.io/artifactory/fdh-generic-local/fdh/install.sh | bash`
+- **THEN** el script usa el host pasado en `FDH_RELEASES_BASE` para resolver todas las URLs (binario, manifest, SHA-256) sin modificar el script
 
 #### Scenario: Default placeholder cuando env var no está
 
-- **WHEN** un developer ejecuta el one-liner sin setear `FDH_PKG_HOST`
-- **THEN** el script usa `pkg.forge.internal` como default y emite un warning indicando que se está usando el placeholder; si ese host no responde, sale con error accionable nombrando la env var como override
+- **WHEN** un developer ejecuta el one-liner sin setear `FDH_RELEASES_BASE`
+- **THEN** el script usa `pkg.askenaz.dev` como default y emite un warning indicando que se está usando el placeholder; si ese host no responde, sale con error accionable nombrando la env var como override
 
 ### Requirement: Manifest público de versiones disponibles
 
-El sistema SHALL publicar en `https://${FDH_PKG_HOST}/fdh/manifest.json` un manifest legible por los scripts de instalación que liste para cada versión: tarball/zip URLs per (os, arch), SHA-256, fecha de release y nota de breaking changes si aplica.
+El sistema SHALL publicar en `https://${FDH_RELEASES_BASE}/fdh/manifest.json` un manifest legible por los scripts de instalación que liste para cada versión: tarball/zip URLs per (os, arch), SHA-256, fecha de release y nota de breaking changes si aplica.
 
 #### Scenario: Manifest contiene versión solicitada
 
@@ -100,7 +100,7 @@ El sistema SHALL publicar en `https://${FDH_PKG_HOST}/fdh/manifest.json` un mani
 
 ### Requirement: Firma de binarios opcional con warning explícito si está ausente
 
-El sistema MAY distribuir binarios firmados con el certificado corporativo Forge (Authenticode para Windows, Developer ID + notarization para macOS); cuando la firma no esté disponible y se use el canal fallback (`install.sh`/`install.ps1`/tarball/`.deb`/`.rpm`), el instalador SHALL imprimir un warning visible que nombre la ausencia de firma, confirme la verificación SHA-256, y continúe la instalación sin fallar. Para el canal **primary npm** (`@forge/fdh`), el binario se ejecuta desde `node_modules/` y Windows SmartScreen / macOS Gatekeeper no disparan los mismos checks, por lo que la firma deja de ser bloqueante para el rollout principal.
+El sistema MAY distribuir binarios firmados con el certificado corporativo Forge (Authenticode para Windows, Developer ID + notarization para macOS); cuando la firma no esté disponible y se use el canal fallback (`install.sh`/`install.ps1`/tarball/`.deb`/`.rpm`), el instalador SHALL imprimir un warning visible que nombre la ausencia de firma, confirme la verificación SHA-256, y continúe la instalación sin fallar. Para el canal **primary npm** (`@askenaz-dev/fdh`), el binario se ejecuta desde `node_modules/` y Windows SmartScreen / macOS Gatekeeper no disparan los mismos checks, por lo que la firma deja de ser bloqueante para el rollout principal.
 
 #### Scenario: Binario firmado disponible (canal fallback)
 
@@ -114,17 +114,17 @@ El sistema MAY distribuir binarios firmados con el certificado corporativo Forge
 
 #### Scenario: Canal npm sin warning de signing
 
-- **WHEN** un developer instala vía `npx @forge/fdh init` o `npm i -g @forge/fdh` con binario subyacente no firmado
+- **WHEN** un developer instala vía `npx @askenaz-dev/fdh init` o `npm i -g @askenaz-dev/fdh` con binario subyacente no firmado
 - **THEN** no aparece warning de SmartScreen/Gatekeeper porque el binario se ejecuta desde `node_modules/`; la instalación es transparente
 
 ### Requirement: Canal npm como distribución primary
 
-El canal npm (`@forge/fdh`) SHALL ser el canal primary de distribución del binario `fdh` para devs con Node ya instalado (mayoría en 2026 dada la dependencia de Claude Code, VS Code, frontend toolchain). Toda documentación oficial SHALL presentar `npx @forge/fdh init` y `npm i -g @forge/fdh` como comandos canónicos antes que cualquier otra alternativa.
+El canal npm (`@askenaz-dev/fdh`) SHALL ser el canal primary de distribución del binario `fdh` para devs con Node ya instalado (mayoría en 2026 dada la dependencia de Claude Code, VS Code, frontend toolchain). Toda documentación oficial SHALL presentar `npx @askenaz-dev/fdh init` y `npm i -g @askenaz-dev/fdh` como comandos canónicos antes que cualquier otra alternativa.
 
 #### Scenario: Quickstart lidera con npm
 
 - **WHEN** un nuevo dev abre `docs/quickstart.md` del repo `fdh`
-- **THEN** las primeras dos secciones explican `npx @forge/fdh init` y `npm i -g @forge/fdh`; brew/install.sh aparecen después como alternativas para entornos Node-less
+- **THEN** las primeras dos secciones explican `npx @askenaz-dev/fdh init` y `npm i -g @askenaz-dev/fdh`; brew/install.sh aparecen después como alternativas para entornos Node-less
 
 #### Scenario: Portal `/install` por defecto
 
@@ -137,7 +137,7 @@ Los canales `install.sh`/`install.ps1` y los paquetes nativos `.deb`/`.rpm` SHAL
 
 #### Scenario: Server sin Node usa install.sh
 
-- **WHEN** un server Linux headless sin Node ejecuta `curl -fsSL https://${FDH_PKG_HOST}/fdh/install.sh | bash`
+- **WHEN** un server Linux headless sin Node ejecuta `curl -fsSL https://${FDH_RELEASES_BASE}/fdh/install.sh | bash`
 - **THEN** la instalación procede como definido en el spec original (descarga + SHA-256 + extracción + PATH editing), con el mismo binario que entrega el paquete npm
 
 #### Scenario: Server Debian usa apt
@@ -157,5 +157,5 @@ Los canales brew tap interno y winget source interno SHALL ser opcionales y SHAL
 #### Scenario: Brew tap publicado posteriormente
 
 - **WHEN** plataforma activa el tap interno semanas después de GA
-- **THEN** la documentación se actualiza para listar `brew tap forge-internal/tools && brew install fdh` como alternativa adicional sin desplazar al canal npm primary
+- **THEN** la documentación se actualiza para listar `brew tap askenaz-dev/tap && brew install fdh` como alternativa adicional sin desplazar al canal npm primary
 

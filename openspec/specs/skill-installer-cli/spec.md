@@ -89,8 +89,8 @@ The `config get <key>` and `config set <key> <value>` commands SHALL manage a mi
 
 #### Scenario: Set and read back a key
 
-- **WHEN** a developer runs `fdh config set registry.url https://skills.forge.internal` then `fdh config get registry.url`
-- **THEN** the second command prints `https://skills.forge.internal` and exits zero
+- **WHEN** a developer runs `fdh config set registry.url https://skills.askenaz.dev` then `fdh config get registry.url`
+- **THEN** the second command prints `https://skills.askenaz.dev` and exits zero
 
 #### Scenario: Reject unknown key
 
