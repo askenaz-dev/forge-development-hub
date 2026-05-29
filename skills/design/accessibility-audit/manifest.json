@@ -1,0 +1,23 @@
+{
+  "schema_version": 1,
+  "namespace": "design",
+  "name": "accessibility-audit",
+  "description": "Audit a UI for WCAG 2.2 AA issues and report findings with severity and remediation.",
+  "owner_team": "accessibility",
+  "tags": [
+    "accessibility",
+    "wcag",
+    "a11y",
+    "audit"
+  ],
+  "latest": "1.0.0",
+  "versions": [
+    {
+      "version": "1.0.0",
+      "content_hash": "07dab19e206d76d3adc49dbc845497eb07fc094508a0aaa83f56c8c8dd79fb78",
+      "published_at": "2026-05-29T00:00:00Z",
+      "published_by": "forge@askenaz",
+      "scan_status": "pass"
+    }
+  ]
+}

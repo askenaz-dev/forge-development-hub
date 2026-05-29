@@ -1,0 +1,23 @@
+{
+  "schema_version": 1,
+  "namespace": "design",
+  "name": "design-critique",
+  "description": "Run a structured design critique covering hierarchy, consistency, accessibility, and content.",
+  "owner_team": "design-systems",
+  "tags": [
+    "design-review",
+    "critique",
+    "ux",
+    "quality"
+  ],
+  "latest": "1.0.0",
+  "versions": [
+    {
+      "version": "1.0.0",
+      "content_hash": "9ef9dfae82eabf694b351ac6539e9a63e2f6f81fc06a83f2cd0bd63eec8c2eef",
+      "published_at": "2026-05-29T00:00:00Z",
+      "published_by": "forge@askenaz",
+      "scan_status": "pass"
+    }
+  ]
+}

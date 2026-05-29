@@ -1,0 +1,23 @@
+{
+  "schema_version": 1,
+  "namespace": "design",
+  "name": "ui-spec-from-wireframe",
+  "description": "Turn a wireframe or mockup into an implementation-ready UI spec.",
+  "owner_team": "product-design",
+  "tags": [
+    "ui",
+    "spec",
+    "handoff",
+    "wireframe"
+  ],
+  "latest": "1.0.0",
+  "versions": [
+    {
+      "version": "1.0.0",
+      "content_hash": "c846ec6329f59ff5c2d2f306a9f024c26cd2055955774d93cd28fb35c1e2b187",
+      "published_at": "2026-05-29T00:00:00Z",
+      "published_by": "forge@askenaz",
+      "scan_status": "pass"
+    }
+  ]
+}

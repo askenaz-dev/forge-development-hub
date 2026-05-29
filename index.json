@@ -3,20 +3,6 @@
   "schema_version": 1,
   "skills": [
     {
-      "description": "Turn a feature request into well-formed user stories with explicit acceptance criteria.",
-      "latest_hash": "d67e4d3e86783ef9d4dc596601ca1a4e04c69d9c30cc872bb211f1d758819337",
-      "latest_version": "1.0.0",
-      "name": "user-story-generation",
-      "namespace": "requirements",
-      "owner_team": "product-platform",
-      "scan_status": "pass",
-      "tags": [
-        "agile",
-        "user-story",
-        "acceptance-criteria"
-      ]
-    },
-    {
       "description": "Draft an architecture decision record (ADR) for a design choice and its alternatives.",
       "latest_hash": "27159ff4818e7f94d72411568064519bdb95324434af234562731b4113b49a45",
       "latest_version": "1.0.0",
@@ -28,102 +14,6 @@
         "adr",
         "architecture",
         "decision-record"
-      ]
-    },
-    {
-      "description": "Compose a clear pull-request description from a diff: summary, rationale, test plan, risks.",
-      "latest_hash": "b266a757e064f1e1f184308cb05882aaeee1ea4516d024da7ec1437348bd1cf3",
-      "latest_version": "1.0.0",
-      "name": "pr-description-writer",
-      "namespace": "development",
-      "owner_team": "dx-platform",
-      "scan_status": "pass",
-      "tags": [
-        "pr",
-        "review",
-        "communication"
-      ]
-    },
-    {
-      "description": "Standardized code review checklist used by every forge reviewer.",
-      "latest_hash": "b3f5557e3bb3a0984525a83499d01d690bfc242d8bb2851931a1fcc9857ecaa9",
-      "latest_version": "1.0.0",
-      "name": "checklist",
-      "namespace": "code-review",
-      "owner_team": "dx-platform",
-      "scan_status": "pass",
-      "tags": [
-        "review",
-        "quality",
-        "checklist"
-      ]
-    },
-    {
-      "description": "Generate unit tests that target observable behavior with high signal and low brittleness.",
-      "latest_hash": "3825b87940c0f668d93a20b4ce255244d62b505693ee9ca65370e810740f570d",
-      "latest_version": "1.0.0",
-      "name": "unit-test-generation",
-      "namespace": "testing",
-      "owner_team": "qa-platform",
-      "scan_status": "pass",
-      "tags": [
-        "unit-test",
-        "tdd"
-      ]
-    },
-    {
-      "description": "Run an OWASP top-10 sweep over a change set and report findings with severity.",
-      "latest_hash": "8059ade8719bcc155f05fbb54086c7ac51dc55bee82c0e06a8d66e100259c570",
-      "latest_version": "1.0.0",
-      "name": "owasp-quick-review",
-      "namespace": "security",
-      "owner_team": "appsec",
-      "scan_status": "pass",
-      "tags": [
-        "owasp",
-        "security",
-        "review"
-      ]
-    },
-    {
-      "description": "Compose release notes from a list of merged PRs grouped by category.",
-      "latest_hash": "6d485319d1bd75f4afa12bf5f5313526e987985ad0f79cdf3b9ed2c9c21af8e8",
-      "latest_version": "1.0.0",
-      "name": "release-notes-generation",
-      "namespace": "cicd",
-      "owner_team": "platform-engineering",
-      "scan_status": "pass",
-      "tags": [
-        "release",
-        "changelog"
-      ]
-    },
-    {
-      "description": "Author or update a service runbook that on-call engineers can follow under pressure.",
-      "latest_hash": "f17cab73a14d46fc97d6b6008f1165755d097eafed311be2292a556820181dfb",
-      "latest_version": "1.0.0",
-      "name": "runbook-template",
-      "namespace": "operations",
-      "owner_team": "sre",
-      "scan_status": "pass",
-      "tags": [
-        "runbook",
-        "on-call",
-        "operations"
-      ]
-    },
-    {
-      "description": "Disciplined diagnosis loop for hard bugs: reproduce → minimize → hypothesize → fix. From mattpocock/skills.",
-      "latest_hash": "2180cbac58118e7a8d41ff28b16173ff67c2b1e6f7ad09dac8bbf978430d0f7e",
-      "latest_version": "1.0.0",
-      "name": "diagnose",
-      "namespace": "development",
-      "owner_team": "imported-from-mattpocock-skills",
-      "scan_status": "pass",
-      "tags": [
-        "debugging",
-        "diagnosis",
-        "community"
       ]
     },
     {
@@ -141,6 +31,121 @@
       ]
     },
     {
+      "description": "Compose release notes from a list of merged PRs grouped by category.",
+      "latest_hash": "6d485319d1bd75f4afa12bf5f5313526e987985ad0f79cdf3b9ed2c9c21af8e8",
+      "latest_version": "1.0.0",
+      "name": "release-notes-generation",
+      "namespace": "cicd",
+      "owner_team": "platform-engineering",
+      "scan_status": "pass",
+      "tags": [
+        "release",
+        "changelog"
+      ]
+    },
+    {
+      "description": "Standardized code review checklist used by every forge reviewer.",
+      "latest_hash": "b3f5557e3bb3a0984525a83499d01d690bfc242d8bb2851931a1fcc9857ecaa9",
+      "latest_version": "1.0.0",
+      "name": "checklist",
+      "namespace": "code-review",
+      "owner_team": "dx-platform",
+      "scan_status": "pass",
+      "tags": [
+        "review",
+        "quality",
+        "checklist"
+      ]
+    },
+    {
+      "namespace": "design",
+      "name": "accessibility-audit",
+      "description": "Audit a UI for WCAG 2.2 AA issues and report findings with severity and remediation.",
+      "owner_team": "accessibility",
+      "tags": [
+        "accessibility",
+        "wcag",
+        "a11y",
+        "audit"
+      ],
+      "latest_version": "1.0.0",
+      "latest_hash": "07dab19e206d76d3adc49dbc845497eb07fc094508a0aaa83f56c8c8dd79fb78",
+      "scan_status": "pass"
+    },
+    {
+      "namespace": "design",
+      "name": "design-critique",
+      "description": "Run a structured design critique covering hierarchy, consistency, accessibility, and content.",
+      "owner_team": "design-systems",
+      "tags": [
+        "design-review",
+        "critique",
+        "ux",
+        "quality"
+      ],
+      "latest_version": "1.0.0",
+      "latest_hash": "9ef9dfae82eabf694b351ac6539e9a63e2f6f81fc06a83f2cd0bd63eec8c2eef",
+      "scan_status": "pass"
+    },
+    {
+      "namespace": "design",
+      "name": "design-system-usage",
+      "description": "Apply a design system consistently: tokens, components, spacing, states, and accessibility.",
+      "owner_team": "design-systems",
+      "tags": [
+        "design-system",
+        "ui",
+        "tokens",
+        "accessibility"
+      ],
+      "latest_version": "1.0.0",
+      "latest_hash": "9a4184c308c09dce551807938dec08096b1e392da232c3d9fecddb9e65314aaa",
+      "scan_status": "pass"
+    },
+    {
+      "namespace": "design",
+      "name": "ui-spec-from-wireframe",
+      "description": "Turn a wireframe or mockup into an implementation-ready UI spec.",
+      "owner_team": "product-design",
+      "tags": [
+        "ui",
+        "spec",
+        "handoff",
+        "wireframe"
+      ],
+      "latest_version": "1.0.0",
+      "latest_hash": "c846ec6329f59ff5c2d2f306a9f024c26cd2055955774d93cd28fb35c1e2b187",
+      "scan_status": "pass"
+    },
+    {
+      "description": "Disciplined diagnosis loop for hard bugs: reproduce \u00e2\u2020\u2019 minimize \u00e2\u2020\u2019 hypothesize \u00e2\u2020\u2019 fix. From mattpocock/skills.",
+      "latest_hash": "2180cbac58118e7a8d41ff28b16173ff67c2b1e6f7ad09dac8bbf978430d0f7e",
+      "latest_version": "1.0.0",
+      "name": "diagnose",
+      "namespace": "development",
+      "owner_team": "imported-from-mattpocock-skills",
+      "scan_status": "pass",
+      "tags": [
+        "debugging",
+        "diagnosis",
+        "community"
+      ]
+    },
+    {
+      "description": "Compose a clear pull-request description from a diff: summary, rationale, test plan, risks.",
+      "latest_hash": "b266a757e064f1e1f184308cb05882aaeee1ea4516d024da7ec1437348bd1cf3",
+      "latest_version": "1.0.0",
+      "name": "pr-description-writer",
+      "namespace": "development",
+      "owner_team": "dx-platform",
+      "scan_status": "pass",
+      "tags": [
+        "pr",
+        "review",
+        "communication"
+      ]
+    },
+    {
       "description": "Create, edit, and benchmark Agent Skills with eval-driven iteration. From anthropics/skills.",
       "latest_hash": "c6bf92ec828ed5e59d8193a7db6d1d606542076964002624d01696c1615f019d",
       "latest_version": "1.0.0",
@@ -152,6 +157,62 @@
         "meta",
         "skill-authoring",
         "community"
+      ]
+    },
+    {
+      "description": "Tell the agent to zoom out and map a code area at a higher level. Claude-only. From mattpocock/skills.",
+      "latest_hash": "a2a5de1b7459b31614f2e76d8365514c24473e2c6ab9aa79b8ab6509f186e897",
+      "latest_version": "1.0.0",
+      "name": "zoom-out",
+      "namespace": "development",
+      "owner_team": "imported-from-mattpocock-skills",
+      "scan_status": "pass",
+      "tags": [
+        "navigation",
+        "community",
+        "claude-only"
+      ]
+    },
+    {
+      "description": "Author or update a service runbook that on-call engineers can follow under pressure.",
+      "latest_hash": "f17cab73a14d46fc97d6b6008f1165755d097eafed311be2292a556820181dfb",
+      "latest_version": "1.0.0",
+      "name": "runbook-template",
+      "namespace": "operations",
+      "owner_team": "sre",
+      "scan_status": "pass",
+      "tags": [
+        "runbook",
+        "on-call",
+        "operations"
+      ]
+    },
+    {
+      "description": "Turn a feature request into well-formed user stories with explicit acceptance criteria.",
+      "latest_hash": "d67e4d3e86783ef9d4dc596601ca1a4e04c69d9c30cc872bb211f1d758819337",
+      "latest_version": "1.0.0",
+      "name": "user-story-generation",
+      "namespace": "requirements",
+      "owner_team": "product-platform",
+      "scan_status": "pass",
+      "tags": [
+        "agile",
+        "user-story",
+        "acceptance-criteria"
+      ]
+    },
+    {
+      "description": "Run an OWASP top-10 sweep over a change set and report findings with severity.",
+      "latest_hash": "8059ade8719bcc155f05fbb54086c7ac51dc55bee82c0e06a8d66e100259c570",
+      "latest_version": "1.0.0",
+      "name": "owasp-quick-review",
+      "namespace": "security",
+      "owner_team": "appsec",
+      "scan_status": "pass",
+      "tags": [
+        "owasp",
+        "security",
+        "review"
       ]
     },
     {
@@ -170,6 +231,19 @@
       ]
     },
     {
+      "description": "Generate unit tests that target observable behavior with high signal and low brittleness.",
+      "latest_hash": "3825b87940c0f668d93a20b4ce255244d62b505693ee9ca65370e810740f570d",
+      "latest_version": "1.0.0",
+      "name": "unit-test-generation",
+      "namespace": "testing",
+      "owner_team": "qa-platform",
+      "scan_status": "pass",
+      "tags": [
+        "unit-test",
+        "tdd"
+      ]
+    },
+    {
       "description": "Toolkit for testing local web apps with Playwright. From anthropics/skills.",
       "latest_hash": "a1f10ba9b611e51df798f2f70ea0c467cd78254cf89059b69f1ccdea4f35e433",
       "latest_version": "1.0.0",
@@ -182,20 +256,6 @@
         "playwright",
         "testing",
         "community"
-      ]
-    },
-    {
-      "description": "Tell the agent to zoom out and map a code area at a higher level. Claude-only. From mattpocock/skills.",
-      "latest_hash": "a2a5de1b7459b31614f2e76d8365514c24473e2c6ab9aa79b8ab6509f186e897",
-      "latest_version": "1.0.0",
-      "name": "zoom-out",
-      "namespace": "development",
-      "owner_team": "imported-from-mattpocock-skills",
-      "scan_status": "pass",
-      "tags": [
-        "navigation",
-        "community",
-        "claude-only"
       ]
     }
   ]
