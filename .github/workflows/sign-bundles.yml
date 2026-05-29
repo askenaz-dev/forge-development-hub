@@ -1,0 +1,62 @@
+name: sign-bundles
+
+# Keyless bundle signing (capability bundle-signing). On each per-component
+# release tag (`<kind-plural>/<name>@<semver>`, created by release-please), this
+# signs the version's canonical content_hash with cosign (sigstore keyless via
+# the Actions OIDC identity) and commits the resulting cosign bundle to
+# `.sigs/<kind-plural>/<name>/<version>.bundle`, which the producer surfaces in
+# the manifest's reserved `signature` field. The signed artifact is the
+# content_hash (no trailing newline), matching the install-time verifier.
+
+on:
+  push:
+    tags:
+      - "*/*@*" # e.g. skills/design-system@0.5.0
+
+permissions:
+  contents: write # commit the .sigs bundle back to main
+  id-token: write # keyless cosign OIDC
+
+jobs:
+  sign:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+          fetch-depth: 0
+      - uses: actions/setup-go@v5
+        with:
+          go-version: "1.22"
+      - uses: sigstore/cosign-installer@v3
+
+      - name: Parse component tag
+        id: tag
+        run: |
+          tag="${GITHUB_REF_NAME}"      # skills/design-system@0.5.0
+          echo "path=${tag%@*}"      >> "$GITHUB_OUTPUT"   # skills/design-system
+          echo "version=${tag##*@}"  >> "$GITHUB_OUTPUT"   # 0.5.0
+
+      - name: Install fdh (canonical hasher)
+        # Resolves to the CLI repo (askenaz-dev/forge-development-hub-cli).
+        run: go install github.com/forge/fdh/cmd/fdh@latest
+
+      - name: Compute canonical content hash
+        run: |
+          # No trailing newline — must match the install-time verifier's blob.
+          printf '%s' "$(fdh bundle-hash "${{ steps.tag.outputs.path }}")" > content-hash
+          echo "content_hash: $(cat content-hash)"
+
+      - name: Sign content hash (keyless)
+        run: cosign sign-blob --yes --bundle cosign.bundle content-hash
+
+      - name: Commit signature
+        run: |
+          dest=".sigs/${{ steps.tag.outputs.path }}/${{ steps.tag.outputs.version }}.bundle"
+          mkdir -p "$(dirname "$dest")"
+          cp cosign.bundle "$dest"
+          git config user.name  "forge-signing-bot"
+          git config user.email "bot@askenaz.dev"
+          git add "$dest"
+          git commit -m "chore(release): sign ${{ steps.tag.outputs.path }}@${{ steps.tag.outputs.version }} [skip ci]"
+          git push origin main

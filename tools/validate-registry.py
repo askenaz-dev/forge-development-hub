@@ -238,6 +238,86 @@ def validate_no_evolve_drafts(entries: list) -> list[str]:
     return errors
 
 
+ENTRYPOINT_BY_KIND = {
+    "skill": "SKILL.md",
+    "rule": "RULE.md",
+    "agent": "AGENT.md",
+    "hook": "HOOK.md",
+}
+
+
+def _extract_frontmatter(text: str) -> dict | None:
+    """Parse the leading YAML frontmatter block delimited by `---` lines.
+    Returns the parsed mapping, or None if absent / no closing delimiter /
+    unparseable."""
+    lines = text.splitlines()
+    if not lines or lines[0].strip() != "---":
+        return None
+    fm_lines: list[str] = []
+    closed = False
+    for line in lines[1:]:
+        if line.strip() == "---":
+            closed = True
+            break
+        fm_lines.append(line)
+    if not closed:
+        return None
+    try:
+        data = yaml.safe_load("\n".join(fm_lines))
+    except yaml.YAMLError:
+        return None
+    return data if isinstance(data, dict) else None
+
+
+def validate_component_versions(entries: list) -> list[str]:
+    """Every component's entrypoint frontmatter MUST declare a SemVer `version`.
+    New components start at 0.1.0 (capability component-versioning-and-release).
+    The frontmatter `version` is the source of truth for the component's
+    published version; the release pipeline writes bumps back into it."""
+    errors: list[str] = []
+    for entry in entries:
+        if not isinstance(entry, dict):
+            continue
+        name = entry.get("name", "<unnamed>")
+        kind = entry.get("kind")
+        path_str = entry.get("path")
+        if not (
+            isinstance(name, str)
+            and isinstance(kind, str)
+            and isinstance(path_str, str)
+        ):
+            continue
+        if kind not in ENTRYPOINT_BY_KIND:
+            continue
+        entrypoint = REPO_ROOT / path_str / ENTRYPOINT_BY_KIND[kind]
+        if not entrypoint.exists():
+            continue  # missing-file is reported by the path/orphan checks
+        ident = f"{kind}:{name}"
+        try:
+            text = entrypoint.read_text(encoding="utf-8")
+        except OSError:
+            continue
+        fm = _extract_frontmatter(text)
+        if fm is None:
+            errors.append(
+                f"components[{ident}]: {entrypoint.relative_to(REPO_ROOT)} is missing "
+                f"parseable YAML frontmatter (required for `version`)"
+            )
+            continue
+        version = fm.get("version")
+        if version is None:
+            errors.append(
+                f"components[{ident}]: {entrypoint.relative_to(REPO_ROOT)} frontmatter "
+                f"missing required `version` (new components start at 0.1.0)"
+            )
+        elif not isinstance(version, str) or not SEMVER.match(version):
+            errors.append(
+                f"components[{ident}]: frontmatter `version` must be SemVer "
+                f"(got {version!r})"
+            )
+    return errors
+
+
 def validate_paths_and_orphans(entries: list) -> list[str]:
     """Verify each entry's path exists + detect orphan directories under any
     of the four kind dirs. An orphan is a directory under skills/, rules/,
@@ -457,6 +537,7 @@ def main() -> int:
         errors.extend(validate_uniqueness_per_kind(components))
         errors.extend(validate_paths_and_orphans(components))
         errors.extend(validate_no_evolve_drafts(components))
+        errors.extend(validate_component_versions(components))
 
     # Profiles validation (optional file)
     if HUB_PROFILES.exists():

@@ -1,0 +1,28 @@
+name: release-please
+
+# Per-component release automation (capability component-versioning-and-release).
+# On every push to main, release-please reads Conventional Commits since each
+# component's last tag, opens/updates a single aggregated release PR that bumps
+# the frontmatter `version` (annotated with x-release-please-version), writes
+# per-component CHANGELOGs, and — on merge of that PR — tags each released
+# component as `<kind-plural>/<name>@<semver>` (tag-separator "@" +
+# include-component-in-tag). 0.x semantics: breaking changes bump minor
+# (bump-minor-pre-major). A component with no prior tag publishes its declared
+# manifest version (0.1.0) as-is.
+
+on:
+  push:
+    branches: [main]
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  release-please:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: googleapis/release-please-action@v4
+        with:
+          config-file: release-please-config.json
+          manifest-file: .release-please-manifest.json

@@ -98,7 +98,7 @@ CI: `.github/workflows/validate-registry.yml` runs all three on every PR touchin
 ## Adding a new component
 
 1. Create the source directory under the matching kind: `rules/no-secrets/`, `agents/code-reviewer/`, etc.
-2. Add the entrypoint file (`RULE.md`, `AGENT.md`, `HOOK.md`, or `SKILL.md`) with required frontmatter.
+2. Add the entrypoint file (`RULE.md`, `AGENT.md`, `HOOK.md`, or `SKILL.md`) with required frontmatter, including a SemVer `version` — new components start at `version: 0.1.0`. The frontmatter `version` is the source of truth for the component's published version; the release pipeline writes bumps back into it (see capability `component-versioning-and-release`). `python tools/validate-registry.py` enforces that every component declares a valid SemVer `version`.
 3. Add an entry to `hub/registry.yaml` with the correct `kind` and a matching `path`.
 4. If the component should be part of a profile, reference it from `hub/profiles.yaml`.
 5. Run `python tools/validate-registry.py` locally; fix errors.
