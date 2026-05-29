@@ -1,0 +1,22 @@
+{
+  "description": "Find architectural refactoring opportunities and deepen shallow modules. From mattpocock/skills.",
+  "latest": "1.0.0",
+  "name": "improve-codebase-architecture",
+  "namespace": "architecture",
+  "owner_team": "imported-from-mattpocock-skills",
+  "schema_version": 1,
+  "tags": [
+    "architecture",
+    "refactoring",
+    "community"
+  ],
+  "versions": [
+    {
+      "content_hash": "995ac319a72aea6ba929eb23b2778044387d8c78d833b10b2b0419e58d1dc055",
+      "published_at": "2026-05-22T12:00:00Z",
+      "published_by": "fixture@local",
+      "scan_status": "pass",
+      "version": "1.0.0"
+    }
+  ]
+}

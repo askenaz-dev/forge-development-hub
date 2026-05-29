@@ -1,0 +1,22 @@
+{
+  "description": "Tell the agent to zoom out and map a code area at a higher level. Claude-only. From mattpocock/skills.",
+  "latest": "1.0.0",
+  "name": "zoom-out",
+  "namespace": "development",
+  "owner_team": "imported-from-mattpocock-skills",
+  "schema_version": 1,
+  "tags": [
+    "navigation",
+    "community",
+    "claude-only"
+  ],
+  "versions": [
+    {
+      "content_hash": "a2a5de1b7459b31614f2e76d8365514c24473e2c6ab9aa79b8ab6509f186e897",
+      "published_at": "2026-05-22T12:00:00Z",
+      "published_by": "fixture@local",
+      "scan_status": "pass",
+      "version": "1.0.0"
+    }
+  ]
+}

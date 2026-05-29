@@ -1,0 +1,22 @@
+{
+  "description": "Turn a feature request into well-formed user stories with explicit acceptance criteria.",
+  "latest": "1.0.0",
+  "name": "user-story-generation",
+  "namespace": "requirements",
+  "owner_team": "product-platform",
+  "schema_version": 1,
+  "tags": [
+    "agile",
+    "user-story",
+    "acceptance-criteria"
+  ],
+  "versions": [
+    {
+      "content_hash": "d67e4d3e86783ef9d4dc596601ca1a4e04c69d9c30cc872bb211f1d758819337",
+      "published_at": "2026-05-22T12:00:00Z",
+      "published_by": "fixture@local",
+      "scan_status": "pass",
+      "version": "1.0.0"
+    }
+  ]
+}

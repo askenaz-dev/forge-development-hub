@@ -1,0 +1,22 @@
+{
+  "description": "Disciplined diagnosis loop for hard bugs: reproduce → minimize → hypothesize → fix. From mattpocock/skills.",
+  "latest": "1.0.0",
+  "name": "diagnose",
+  "namespace": "development",
+  "owner_team": "imported-from-mattpocock-skills",
+  "schema_version": 1,
+  "tags": [
+    "debugging",
+    "diagnosis",
+    "community"
+  ],
+  "versions": [
+    {
+      "content_hash": "2180cbac58118e7a8d41ff28b16173ff67c2b1e6f7ad09dac8bbf978430d0f7e",
+      "published_at": "2026-05-22T12:00:00Z",
+      "published_by": "fixture@local",
+      "scan_status": "pass",
+      "version": "1.0.0"
+    }
+  ]
+}

@@ -1,0 +1,21 @@
+{
+  "description": "Generate unit tests that target observable behavior with high signal and low brittleness.",
+  "latest": "1.0.0",
+  "name": "unit-test-generation",
+  "namespace": "testing",
+  "owner_team": "qa-platform",
+  "schema_version": 1,
+  "tags": [
+    "unit-test",
+    "tdd"
+  ],
+  "versions": [
+    {
+      "content_hash": "3825b87940c0f668d93a20b4ce255244d62b505693ee9ca65370e810740f570d",
+      "published_at": "2026-05-22T12:00:00Z",
+      "published_by": "fixture@local",
+      "scan_status": "pass",
+      "version": "1.0.0"
+    }
+  ]
+}

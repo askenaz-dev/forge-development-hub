@@ -1,0 +1,22 @@
+{
+  "description": "Compose a clear pull-request description from a diff: summary, rationale, test plan, risks.",
+  "latest": "1.0.0",
+  "name": "pr-description-writer",
+  "namespace": "development",
+  "owner_team": "dx-platform",
+  "schema_version": 1,
+  "tags": [
+    "pr",
+    "review",
+    "communication"
+  ],
+  "versions": [
+    {
+      "content_hash": "b266a757e064f1e1f184308cb05882aaeee1ea4516d024da7ec1437348bd1cf3",
+      "published_at": "2026-05-22T12:00:00Z",
+      "published_by": "fixture@local",
+      "scan_status": "pass",
+      "version": "1.0.0"
+    }
+  ]
+}

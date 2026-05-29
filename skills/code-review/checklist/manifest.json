@@ -1,0 +1,22 @@
+{
+  "description": "Standardized code review checklist used by every forge reviewer.",
+  "latest": "1.0.0",
+  "name": "checklist",
+  "namespace": "code-review",
+  "owner_team": "dx-platform",
+  "schema_version": 1,
+  "tags": [
+    "review",
+    "quality",
+    "checklist"
+  ],
+  "versions": [
+    {
+      "content_hash": "b3f5557e3bb3a0984525a83499d01d690bfc242d8bb2851931a1fcc9857ecaa9",
+      "published_at": "2026-05-22T12:00:00Z",
+      "published_by": "fixture@local",
+      "scan_status": "pass",
+      "version": "1.0.0"
+    }
+  ]
+}

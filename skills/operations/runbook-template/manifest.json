@@ -1,0 +1,22 @@
+{
+  "description": "Author or update a service runbook that on-call engineers can follow under pressure.",
+  "latest": "1.0.0",
+  "name": "runbook-template",
+  "namespace": "operations",
+  "owner_team": "sre",
+  "schema_version": 1,
+  "tags": [
+    "runbook",
+    "on-call",
+    "operations"
+  ],
+  "versions": [
+    {
+      "content_hash": "f17cab73a14d46fc97d6b6008f1165755d097eafed311be2292a556820181dfb",
+      "published_at": "2026-05-22T12:00:00Z",
+      "published_by": "fixture@local",
+      "scan_status": "pass",
+      "version": "1.0.0"
+    }
+  ]
+}

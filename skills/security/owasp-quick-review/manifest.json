@@ -1,0 +1,22 @@
+{
+  "description": "Run an OWASP top-10 sweep over a change set and report findings with severity.",
+  "latest": "1.0.0",
+  "name": "owasp-quick-review",
+  "namespace": "security",
+  "owner_team": "appsec",
+  "schema_version": 1,
+  "tags": [
+    "owasp",
+    "security",
+    "review"
+  ],
+  "versions": [
+    {
+      "content_hash": "8059ade8719bcc155f05fbb54086c7ac51dc55bee82c0e06a8d66e100259c570",
+      "published_at": "2026-05-22T12:00:00Z",
+      "published_by": "fixture@local",
+      "scan_status": "pass",
+      "version": "1.0.0"
+    }
+  ]
+}

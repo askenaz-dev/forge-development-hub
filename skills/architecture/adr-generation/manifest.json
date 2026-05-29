@@ -1,0 +1,22 @@
+{
+  "description": "Draft an architecture decision record (ADR) for a design choice and its alternatives.",
+  "latest": "1.0.0",
+  "name": "adr-generation",
+  "namespace": "architecture",
+  "owner_team": "architecture-guild",
+  "schema_version": 1,
+  "tags": [
+    "adr",
+    "architecture",
+    "decision-record"
+  ],
+  "versions": [
+    {
+      "content_hash": "27159ff4818e7f94d72411568064519bdb95324434af234562731b4113b49a45",
+      "published_at": "2026-05-22T12:00:00Z",
+      "published_by": "fixture@local",
+      "scan_status": "pass",
+      "version": "1.0.0"
+    }
+  ]
+}

@@ -1,0 +1,21 @@
+{
+  "description": "Compose release notes from a list of merged PRs grouped by category.",
+  "latest": "1.0.0",
+  "name": "release-notes-generation",
+  "namespace": "cicd",
+  "owner_team": "platform-engineering",
+  "schema_version": 1,
+  "tags": [
+    "release",
+    "changelog"
+  ],
+  "versions": [
+    {
+      "content_hash": "6d485319d1bd75f4afa12bf5f5313526e987985ad0f79cdf3b9ed2c9c21af8e8",
+      "published_at": "2026-05-22T12:00:00Z",
+      "published_by": "fixture@local",
+      "scan_status": "pass",
+      "version": "1.0.0"
+    }
+  ]
+}

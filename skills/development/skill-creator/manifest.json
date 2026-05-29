@@ -1,0 +1,22 @@
+{
+  "description": "Create, edit, and benchmark Agent Skills with eval-driven iteration. From anthropics/skills.",
+  "latest": "1.0.0",
+  "name": "skill-creator",
+  "namespace": "development",
+  "owner_team": "imported-from-anthropics-skills",
+  "schema_version": 1,
+  "tags": [
+    "meta",
+    "skill-authoring",
+    "community"
+  ],
+  "versions": [
+    {
+      "content_hash": "c6bf92ec828ed5e59d8193a7db6d1d606542076964002624d01696c1615f019d",
+      "published_at": "2026-05-22T12:00:00Z",
+      "published_by": "fixture@local",
+      "scan_status": "pass",
+      "version": "1.0.0"
+    }
+  ]
+}
