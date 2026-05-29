@@ -4,7 +4,9 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## What this repo is
 
-A workflow hub, not an application. There is no application source code here — only an OpenSpec workspace (`openspec/`), the same set of OpenSpec skills mirrored across four AI coding tool ecosystems, and four top-level directories of canonical, agent-agnostic **components** (`skills/`, `rules/`, `agents/`, `hooks/`) that the future `fdh` CLI will copy into consumer projects. Real work begins by creating a change under `openspec/changes/<name>/`; the codebase the change targets lives elsewhere or is added later.
+A workflow hub, not an application. There is no application source code here — the same set of OpenSpec skills mirrored across four AI coding tool ecosystems, and four top-level directories of canonical, agent-agnostic **components** (`skills/`, `rules/`, `agents/`, `hooks/`) that the `fdh` CLI copies into consumer projects.
+
+**The OpenSpec workspace moved to the `forge-specs` repo** (a sibling under the same container folder, e.g. `C:\forge`). Specs and changes for the whole system — including the `hub-*` specs this repo implements — now live there; run `openspec` from `forge-specs/`, not here. This repo no longer contains an `openspec/` directory. To work on specs and code together, clone `forge-specs` and run `scripts/meta-clone` to lay this repo and `fdh` out as siblings.
 
 ## Canonical components — four primitives
 
