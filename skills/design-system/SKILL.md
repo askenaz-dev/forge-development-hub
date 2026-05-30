@@ -1,7 +1,7 @@
 ---
 name: design-system
 description: Use when the user wants to build, design, style, modify, or review any UI — React/Next/Vue components, screens, forms, buttons, layouts, dashboards, charts, modals, tables, navigation — or when the user mentions Tailwind, CSS, dark mode, accessibility, WCAG, design tokens, colors, typography, spacing, or Forge visual identity. ALWAYS load this skill BEFORE writing UI code so design system rules, tokens, and the component catalog are in context.
-version: 0.1.0 # x-release-please-version
+version: 0.2.0 # x-release-please-version
 ds-version: 1.0.1
 ---
 
