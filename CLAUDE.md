@@ -23,7 +23,7 @@ The authoritative catalog lives in **`hub/registry.yaml`** (schema v2). Hub admi
 
 Curated bundles of components live in **`hub/profiles.yaml`** (a profile references components from one or more kinds). A consumer references a profile from its `.fdh/manifest.yaml` and may extend or restrict it.
 
-`skills/registry.yaml` is a generated mirror of `hub/registry.yaml` kept for 60 days post-`hub-v2-manifest-state-profiles` apply; **do not edit it directly** — edit `hub/registry.yaml` and run `python tools/regenerate-skills-registry-mirror.py`.
+`hub/registry.yaml` is the sole catalog path. The legacy `skills/registry.yaml` mirror has been removed.
 
 ## Consumer contract — manifest + lock + state
 

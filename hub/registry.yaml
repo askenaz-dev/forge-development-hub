@@ -1,11 +1,7 @@
 # registry.yaml — authoritative catalog of components published by this hub.
 #
-# This file is the SOURCE OF TRUTH. `skills/registry.yaml` is a generated mirror
-# kept for backward compatibility during a 60-day migration window; do NOT edit
-# the mirror directly. See `tools/regenerate-skills-registry-mirror.py`.
-#
-# Consumed by the future `fdh` CLI (`fdh init`, `fdh install`, `fdh update`) via
-# the `registry.url` config. Edited by hub admins; validated in CI on every PR.
+# Consumed by the `fdh` CLI (`fdh init`, `fdh install`, `fdh update`) via the
+# `registry.url` config. Edited by hub admins; validated in CI on every PR.
 #
 # Top-level fields:
 #   schema_version  Integer. Bumped on incompatible shape changes. Adding a new
@@ -56,6 +52,56 @@ components:
     min_fdh_version: "0.4.0"
     agents_supported: [claude-code, codex, copilot, opencode]
     path: skills/design-system
+
+  - name: spec-driven-development
+    kind: skill
+    description: Drive non-trivial changes through a four-phase spec-driven flow — explore, propose, apply, archive. Use when the user wants to introduce SDD discipline to a team, kick off a new change formally, or align on requirements before any implementation work begins.
+    owner_team: dx-platform
+    tags: [sdd, openspec, methodology, process]
+    default: false
+    min_fdh_version: "0.4.0"
+    agents_supported: [claude-code, codex, copilot, opencode]
+    path: skills/spec-driven-development
+
+  - name: tech-stack
+    kind: skill
+    description: forge's approved technology stack reference plus the code-quality gates every service must pass. Pulls the canonical stack from the platform's authenticated registry and enforces linter + SonarLint conventions. Use when starting a new service, validating a technology choice, or wiring up local quality gates.
+    owner_team: dx-platform
+    tags: [tech-stack, code-quality, sonarlint, linters]
+    default: false
+    min_fdh_version: "0.4.0"
+    agents_supported: [claude-code, codex, copilot, opencode]
+    path: skills/tech-stack
+
+  - name: architecture-patterns
+    kind: skill
+    description: Reference architecture patterns and design principles applied across forge services. Covers service boundaries, data ownership, API design, event-driven patterns, and integration approaches. Use when designing a new system, evaluating an existing one, or arguing for a refactor.
+    owner_team: architecture-guild
+    tags: [patterns, boundaries, events, api-design]
+    default: false
+    min_fdh_version: "0.4.0"
+    agents_supported: [claude-code, codex, copilot, opencode]
+    path: skills/architecture-patterns
+
+  - name: devsecops
+    kind: skill
+    description: Security review + DevSecOps practices for forge services. Covers threat modeling, SAST/DAST gates, dependency + container scanning, secret management via Vault, runtime security, and the shift-left checklist every PR runs through. Use when reviewing security posture, wiring security into a pipeline, or onboarding a new service to the platform.
+    owner_team: appsec
+    tags: [devsecops, shift-left, threat-modeling, vault]
+    default: false
+    min_fdh_version: "0.4.0"
+    agents_supported: [claude-code, codex, copilot, opencode]
+    path: skills/devsecops
+
+  - name: landing-zone-deploy
+    kind: skill
+    description: Stand up a new service on forge's landing zone — five GitLab repos covering infrastructure (Terraform), GitOps (Flux), IAM, networking, and secrets (Vault). Use when bootstrapping a new service from scratch or migrating an existing one onto the landing zone.
+    owner_team: platform-engineering
+    tags: [landing-zone, gitops, flux, terraform, vault]
+    default: false
+    min_fdh_version: "0.4.0"
+    agents_supported: [claude-code, codex, copilot, opencode]
+    path: skills/landing-zone-deploy
 
   # --- rules ---------------------------------------------------------------
   - name: no-console-log

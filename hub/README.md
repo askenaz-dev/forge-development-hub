@@ -65,17 +65,6 @@ Schemas for the three are documented in [`CONSUMER-CONTRACT.md`](./CONSUMER-CONT
 
 The hub itself only owns `registry.yaml` and `profiles.yaml`; the rest is consumer state.
 
-## Backward compatibility: `skills/registry.yaml` mirror
-
-During a 60-day migration window after this change applies, `skills/registry.yaml` is kept as a generated mirror of `hub/registry.yaml` so external tools that pinned the old path keep working.
-
-- On Linux/macOS: `skills/registry.yaml` is a POSIX symlink to `hub/registry.yaml`.
-- On Windows: `skills/registry.yaml` is a regenerated copy with a `DO NOT EDIT` header. CI runs `tools/regenerate-skills-registry-mirror.py` on every PR to keep it in sync; pre-commit hook strongly recommended for local dev.
-
-**Do not edit `skills/registry.yaml` directly.** Edit `hub/registry.yaml` and let CI (or the regen script) update the mirror.
-
-The mirror is removed 60 days post-apply by a follow-up cleanup change.
-
 ## Running validators locally
 
 Before opening a PR that touches `hub/`, `skills/`, `rules/`, `agents/`, or `hooks/`:
@@ -86,14 +75,11 @@ python tools/validate-registry.py
 
 # Validate a sample consumer manifest against the catalog
 python tools/validate-manifest.py tests/fixtures/manifests/minimal-valid.yaml
-
-# Regenerate the skills/registry.yaml mirror (Windows or after editing hub/registry.yaml)
-python tools/regenerate-skills-registry-mirror.py
 ```
 
 Both validators exit 0 on success, non-zero with actionable messages on failure.
 
-CI: `.github/workflows/validate-registry.yml` runs all three on every PR touching the relevant paths.
+CI: `.github/workflows/validate-registry.yml` runs them on every PR touching the relevant paths.
 
 ## Adding a new component
 
@@ -102,8 +88,7 @@ CI: `.github/workflows/validate-registry.yml` runs all three on every PR touchin
 3. Add an entry to `hub/registry.yaml` with the correct `kind` and a matching `path`.
 4. If the component should be part of a profile, reference it from `hub/profiles.yaml`.
 5. Run `python tools/validate-registry.py` locally; fix errors.
-6. Run `python tools/regenerate-skills-registry-mirror.py` to update the mirror.
-7. Open PR. CI runs the same checks; merge only when green.
+6. Open PR. CI runs the same checks; merge only when green.
 
 ## Schema migration v1 → v2
 

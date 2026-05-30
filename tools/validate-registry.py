@@ -3,12 +3,8 @@
 (hub/profiles.yaml) against the schemas in the hub-registry-v2 +
 hub-profiles + hub-skills-registry specs.
 
-Also validates that skills/registry.yaml is in sync with hub/registry.yaml
-(it is a generated mirror; if stale, fail and direct the user to the
-regen script).
-
 Exit codes:
-    0  registry + profiles + mirror valid
+    0  registry + profiles valid
     1  one or more validation errors (printed to stderr)
     2  usage error (file not found, YAML parse error)
 
@@ -36,7 +32,6 @@ except ImportError:
 REPO_ROOT = Path(__file__).resolve().parent.parent
 HUB_REGISTRY = REPO_ROOT / "hub" / "registry.yaml"
 HUB_PROFILES = REPO_ROOT / "hub" / "profiles.yaml"
-MIRROR_REGISTRY = REPO_ROOT / "skills" / "registry.yaml"
 
 # kind -> directory under repo root that hosts that kind's components
 KIND_DIRS: dict[str, Path] = {
@@ -477,33 +472,6 @@ def validate_profile_entry(
 # ---------------------------------------------------------------------------
 
 
-def validate_mirror_in_sync() -> list[str]:
-    """Re-import the regen script and use its render to compare."""
-    if not MIRROR_REGISTRY.exists():
-        return ["skills/registry.yaml: mirror file missing — run "
-                "`python tools/regenerate-skills-registry-mirror.py`"]
-    try:
-        import importlib.util
-        spec = importlib.util.spec_from_file_location(
-            "_regen_mirror",
-            REPO_ROOT / "tools" / "regenerate-skills-registry-mirror.py",
-        )
-        if spec is None or spec.loader is None:
-            return ["could not import regenerate-skills-registry-mirror.py"]
-        regen_mod = importlib.util.module_from_spec(spec)
-        spec.loader.exec_module(regen_mod)
-        expected = regen_mod.render_mirror()
-        actual = MIRROR_REGISTRY.read_text(encoding="utf-8")
-        if expected != actual:
-            return [
-                "skills/registry.yaml: stale mirror of hub/registry.yaml. "
-                "Run: python tools/regenerate-skills-registry-mirror.py"
-            ]
-        return []
-    except Exception as exc:
-        return [f"mirror sync check failed: {exc}"]
-
-
 # ---------------------------------------------------------------------------
 # Main
 # ---------------------------------------------------------------------------
@@ -556,10 +524,6 @@ def main() -> int:
                     errors.extend(
                         validate_profile_entry(profile_name, profile, components_idx)
                     )
-
-    # Mirror sync check (only if registry passed top-level validation)
-    if not errors:
-        errors.extend(validate_mirror_in_sync())
 
     if errors:
         _fail(errors)
