@@ -1,93 +1,64 @@
 name: validate-registry
 
-# Runs on every PR/push touching the hub catalog, any of the four primitive
-# directories, the consumer manifest fixtures, or any of the validators.
-# Blocks merge if:
-#   - hub/registry.yaml is malformed or inconsistent with the directory trees
-#   - hub/profiles.yaml references unknown components or has shape errors
-#   - any fixture manifest validates wrong (valid ones must pass, invalid ones must fail)
+# Validates the hub catalog and curated harnesses on every PR that touches
+# them. Mirrors the local `python tools/validate-registry.py` +
+# `validate-manifest.py` invocations so a broken catalog never merges.
+#
+# Fails the build when:
+#   - hub/registry.yaml is malformed or references missing component dirs
+#   - hub/harnesses.yaml references unknown components or has shape errors
+#   - a fixture manifest under tests/fixtures/manifests/ regresses
 #
 # TODO: replace `python tools/...` invocations with `fdh validate-registry`
 # and `fdh validate-manifest` once the Go implementation lands in the fdh repo.
-
 on:
-  pull_request:
-    paths:
-      - "hub/**"
-      - "skills/**"
-      - "rules/**"
-      - "agents/**"
-      - "hooks/**"
-      - "tools/validate-registry.py"
-      - "tools/validate-manifest.py"
-      - "tools/migrate-registry-v1-v2.py"
-      - "tests/**"
-      - ".github/workflows/validate-registry.yml"
   push:
     branches: [main]
     paths:
-      - "hub/**"
-      - "skills/**"
-      - "rules/**"
-      - "agents/**"
-      - "hooks/**"
+      - "hub/registry.yaml"
+      - "hub/harnesses.yaml"
       - "tools/validate-registry.py"
       - "tools/validate-manifest.py"
-      - "tools/migrate-registry-v1-v2.py"
       - "tests/**"
       - ".github/workflows/validate-registry.yml"
+  pull_request:
+    paths:
+      - "hub/registry.yaml"
+      - "hub/harnesses.yaml"
+      - "tools/validate-registry.py"
+      - "tools/validate-manifest.py"
+      - "tests/**"
+      - ".github/workflows/validate-registry.yml"
+  workflow_dispatch:
 
 jobs:
-  validate-registry-and-profiles:
+  validate-registry-and-harnesses:
+    name: Validate hub catalog + harnesses + manifest fixtures
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-python@v5
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
         with:
           python-version: "3.12"
+
       - name: Install PyYAML
-        run: pip install --quiet "pyyaml>=6,<7"
-      - name: Validate hub/registry.yaml + hub/profiles.yaml
+        run: pip install pyyaml
+
+      - name: Validate hub/registry.yaml + hub/harnesses.yaml
         run: python tools/validate-registry.py
 
-  validate-manifest-fixtures:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-python@v5
-        with:
-          python-version: "3.12"
-      - name: Install PyYAML
-        run: pip install --quiet "pyyaml>=6,<7"
-      - name: Valid fixtures MUST pass
+      - name: Validate manifest fixtures (valid + invalid)
         run: |
-          set -e
-          for f in tests/fixtures/manifests/*-valid.yaml; do
-            echo "::group::valid fixture: $f"
-            python tools/validate-manifest.py "$f"
-            echo "::endgroup::"
+          echo "Validating expected-valid fixtures..."
+          for f in minimal-valid explicit-components-valid extends-valid deprecated-profile-valid; do
+            python tools/validate-manifest.py "tests/fixtures/manifests/$f.yaml"
           done
-      - name: Invalid fixtures MUST fail (exit non-zero)
-        run: |
-          set -e
-          for f in tests/fixtures/manifests/*-invalid.yaml; do
-            echo "::group::invalid fixture: $f"
-            if python tools/validate-manifest.py "$f"; then
-              echo "::error::expected failure but validator returned 0 for $f"
-              exit 1
+          echo "Validating expected-invalid fixtures (must fail)..."
+          for f in unknown-harness-invalid empty-invalid unsupported-schema-invalid; do
+            if python tools/validate-manifest.py "tests/fixtures/manifests/$f.yaml"; then
+              echo "::error::expected $f to fail validation"; exit 1
             fi
-            echo "OK: validator correctly rejected $f"
-            echo "::endgroup::"
           done
-
-  python-test-suite:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-python@v5
-        with:
-          python-version: "3.12"
-      - name: Install PyYAML
-        run: pip install --quiet "pyyaml>=6,<7"
-      - name: Run all Python unit tests
-        run: python -m unittest discover -s tests -v

@@ -1,0 +1,5 @@
+# Legacy manifest using the deprecated `profile:` alias. MUST still validate
+# (exit 0) — the validator treats `profile:` as `harness:` and emits a
+# deprecation warning to stderr.
+schema_version: 1
+profile: default

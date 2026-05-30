@@ -1,10 +1,10 @@
 #!/usr/bin/env python3
-"""Validate the hub catalog (hub/registry.yaml) and curated profiles
-(hub/profiles.yaml) against the schemas in the hub-registry-v2 +
-hub-profiles + hub-skills-registry specs.
+"""Validate the hub catalog (hub/registry.yaml) and curated harnesses
+(hub/harnesses.yaml) against the schemas in the hub-registry-v2 +
+hub-harnesses + hub-skills-registry specs.
 
 Exit codes:
-    0  registry + profiles valid
+    0  registry + harnesses valid
     1  one or more validation errors (printed to stderr)
     2  usage error (file not found, YAML parse error)
 
@@ -31,7 +31,7 @@ except ImportError:
 
 REPO_ROOT = Path(__file__).resolve().parent.parent
 HUB_REGISTRY = REPO_ROOT / "hub" / "registry.yaml"
-HUB_PROFILES = REPO_ROOT / "hub" / "profiles.yaml"
+HUB_HARNESSES = REPO_ROOT / "hub" / "harnesses.yaml"
 
 # kind -> directory under repo root that hosts that kind's components
 KIND_DIRS: dict[str, Path] = {
@@ -43,7 +43,7 @@ KIND_DIRS: dict[str, Path] = {
 SUPPORTED_KINDS = set(KIND_DIRS.keys())
 SUPPORTED_AGENTS = {"claude-code", "codex", "copilot", "opencode"}
 SUPPORTED_REGISTRY_SCHEMA_VERSIONS = {2}
-SUPPORTED_PROFILES_SCHEMA_VERSIONS = {1}
+SUPPORTED_HARNESSES_SCHEMA_VERSIONS = {1}
 KEBAB = re.compile(r"^[a-z][a-z0-9]*(-[a-z0-9]+)*$")
 SEMVER = re.compile(r"^\d+\.\d+\.\d+(?:-[\w.]+)?$")
 
@@ -378,7 +378,7 @@ def validate_paths_and_orphans(entries: list) -> list[str]:
 
 
 # ---------------------------------------------------------------------------
-# Profiles validation
+# Harnesses validation
 # ---------------------------------------------------------------------------
 
 
@@ -394,73 +394,73 @@ def _index_components_by_kind(entries: list) -> dict[str, set[str]]:
     return idx
 
 
-def validate_profiles_top_level(data: object) -> list[str]:
+def validate_harnesses_top_level(data: object) -> list[str]:
     errors: list[str] = []
     if not isinstance(data, dict):
-        return ["hub/profiles.yaml: top-level must be a mapping"]
+        return ["hub/harnesses.yaml: top-level must be a mapping"]
     if "schema_version" not in data:
-        errors.append("hub/profiles.yaml: missing top-level field `schema_version`")
-    elif data["schema_version"] not in SUPPORTED_PROFILES_SCHEMA_VERSIONS:
+        errors.append("hub/harnesses.yaml: missing top-level field `schema_version`")
+    elif data["schema_version"] not in SUPPORTED_HARNESSES_SCHEMA_VERSIONS:
         errors.append(
-            f"hub/profiles.yaml: unsupported `schema_version` "
+            f"hub/harnesses.yaml: unsupported `schema_version` "
             f"{data.get('schema_version')} "
-            f"(supported: {sorted(SUPPORTED_PROFILES_SCHEMA_VERSIONS)})"
+            f"(supported: {sorted(SUPPORTED_HARNESSES_SCHEMA_VERSIONS)})"
         )
-    if "profiles" not in data:
-        errors.append("hub/profiles.yaml: missing top-level field `profiles`")
-    elif not isinstance(data["profiles"], dict):
-        errors.append("hub/profiles.yaml: `profiles` must be a mapping")
+    if "harnesses" not in data:
+        errors.append("hub/harnesses.yaml: missing top-level field `harnesses`")
+    elif not isinstance(data["harnesses"], dict):
+        errors.append("hub/harnesses.yaml: `harnesses` must be a mapping")
     return errors
 
 
-def validate_profile_entry(
+def validate_harness_entry(
     name: str,
-    profile: object,
+    harness: object,
     components_idx: dict[str, set[str]],
 ) -> list[str]:
-    if not isinstance(profile, dict):
-        return [f"profiles[{name}]: must be a mapping, got {type(profile).__name__}"]
+    if not isinstance(harness, dict):
+        return [f"harnesses[{name}]: must be a mapping, got {type(harness).__name__}"]
     errors: list[str] = []
-    if "description" not in profile:
-        errors.append(f"profiles[{name}]: missing `description`")
-    elif not isinstance(profile["description"], str) or not profile["description"].strip():
-        errors.append(f"profiles[{name}]: `description` must be a non-empty string")
-    if "owner_team" not in profile:
-        errors.append(f"profiles[{name}]: missing `owner_team`")
-    elif not isinstance(profile["owner_team"], str) or not profile["owner_team"].strip():
-        errors.append(f"profiles[{name}]: `owner_team` must be a non-empty string")
+    if "description" not in harness:
+        errors.append(f"harnesses[{name}]: missing `description`")
+    elif not isinstance(harness["description"], str) or not harness["description"].strip():
+        errors.append(f"harnesses[{name}]: `description` must be a non-empty string")
+    if "owner_team" not in harness:
+        errors.append(f"harnesses[{name}]: missing `owner_team`")
+    elif not isinstance(harness["owner_team"], str) or not harness["owner_team"].strip():
+        errors.append(f"harnesses[{name}]: `owner_team` must be a non-empty string")
 
     component_lists = {
-        "skill": profile.get("skills", []),
-        "rule": profile.get("rules", []),
-        "agent": profile.get("agents", []),
-        "hook": profile.get("hooks", []),
+        "skill": harness.get("skills", []),
+        "rule": harness.get("rules", []),
+        "agent": harness.get("agents", []),
+        "hook": harness.get("hooks", []),
     }
     total_refs = 0
     for kind, refs in component_lists.items():
         if not isinstance(refs, list):
             errors.append(
-                f"profiles[{name}]: `{kind}s` must be a list, "
+                f"harnesses[{name}]: `{kind}s` must be a list, "
                 f"got {type(refs).__name__}"
             )
             continue
         for ref in refs:
             if not isinstance(ref, str):
                 errors.append(
-                    f"profiles[{name}].{kind}s: entries must be strings, "
+                    f"harnesses[{name}].{kind}s: entries must be strings, "
                     f"got {type(ref).__name__}"
                 )
                 continue
             total_refs += 1
             if ref not in components_idx.get(kind, set()):
                 errors.append(
-                    f"profiles[{name}].{kind}s: references unknown {kind} "
+                    f"harnesses[{name}].{kind}s: references unknown {kind} "
                     f"'{ref}' (not present in hub/registry.yaml with kind='{kind}')"
                 )
 
     if total_refs == 0:
         errors.append(
-            f"profiles[{name}]: must reference at least one component "
+            f"harnesses[{name}]: must reference at least one component "
             f"(any of skills/rules/agents/hooks)"
         )
 
@@ -507,22 +507,22 @@ def main() -> int:
         errors.extend(validate_no_evolve_drafts(components))
         errors.extend(validate_component_versions(components))
 
-    # Profiles validation (optional file)
-    if HUB_PROFILES.exists():
+    # Harnesses validation (optional file)
+    if HUB_HARNESSES.exists():
         try:
-            profiles_data = yaml.safe_load(HUB_PROFILES.read_text(encoding="utf-8"))
+            harnesses_data = yaml.safe_load(HUB_HARNESSES.read_text(encoding="utf-8"))
         except yaml.YAMLError as exc:
-            errors.append(f"hub/profiles.yaml: failed to parse: {exc}")
-            profiles_data = None
-        if profiles_data is not None:
-            errors.extend(validate_profiles_top_level(profiles_data))
-            if isinstance(profiles_data, dict) and isinstance(
-                profiles_data.get("profiles"), dict
+            errors.append(f"hub/harnesses.yaml: failed to parse: {exc}")
+            harnesses_data = None
+        if harnesses_data is not None:
+            errors.extend(validate_harnesses_top_level(harnesses_data))
+            if isinstance(harnesses_data, dict) and isinstance(
+                harnesses_data.get("harnesses"), dict
             ):
                 components_idx = _index_components_by_kind(components)
-                for profile_name, profile in profiles_data["profiles"].items():
+                for harness_name, harness in harnesses_data["harnesses"].items():
                     errors.extend(
-                        validate_profile_entry(profile_name, profile, components_idx)
+                        validate_harness_entry(harness_name, harness, components_idx)
                     )
 
     if errors:
@@ -536,15 +536,15 @@ def main() -> int:
             if isinstance(k, str):
                 by_kind[k] = by_kind.get(k, 0) + 1
     by_kind_str = ", ".join(f"{k}={v}" for k, v in sorted(by_kind.items())) or "none"
-    profiles_count = (
-        len(yaml.safe_load(HUB_PROFILES.read_text(encoding="utf-8")).get("profiles", {}))
-        if HUB_PROFILES.exists()
+    harnesses_count = (
+        len(yaml.safe_load(HUB_HARNESSES.read_text(encoding="utf-8")).get("harnesses", {}))
+        if HUB_HARNESSES.exists()
         else 0
     )
     print(
         f"registry valid: schema_version={registry.get('schema_version')}, "
         f"hub_version={registry.get('hub_version')}, "
-        f"components={component_count} ({by_kind_str}), profiles={profiles_count}"
+        f"components={component_count} ({by_kind_str}), harnesses={harnesses_count}"
     )
     return 0
 
