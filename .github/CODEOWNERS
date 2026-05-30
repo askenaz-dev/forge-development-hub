@@ -1,0 +1,24 @@
+# CODEOWNERS — review routing for the Forge hub (capability hub-contribution-policy).
+#
+# Current state: the askenaz-dev org has no GitHub teams yet, and the EMU CLI
+# auth cannot create them (org-level write). Until an org owner provisions the
+# teams via the GitHub web UI, the maintainer is the catch-all owner so every
+# contribution PR still requires a CODEOWNERS review (gate 1).
+#
+# Target state: route each component to the GitHub team mapped from its
+# owner_team. Uncomment the per-team block below once the teams exist, and
+# add a line per new component (its owner_team → team). See CONTRIBUTING.md.
+
+# --- catch-all (transitional) ---
+*                                   @askenaz
+
+# --- target per-component routing (uncomment once teams are provisioned) ---
+# skills/design-system/             @askenaz-dev/design-platform
+# rules/no-console-log/             @askenaz-dev/dx-platform
+# agents/forge-pr-writer/           @askenaz-dev/dx-platform
+# hooks/doctor-on-session-start/    @askenaz-dev/dx-platform
+#
+# The catalog + registry are admin-owned:
+# hub/                              @askenaz-dev/hub-maintainers
+# .github/                          @askenaz-dev/hub-maintainers
+# tools/                            @askenaz-dev/hub-maintainers

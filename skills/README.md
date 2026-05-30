@@ -1,8 +1,6 @@
 # skills/
 
-Skill component source directories. **The authoritative catalog moved to [`hub/registry.yaml`](../hub/) as part of `hub-v2-manifest-state-profiles`.**
-
-`skills/registry.yaml` in this directory is now a **generated mirror** of `hub/registry.yaml`, kept for a 60-day backward-compat window so external tools that pinned the old path keep working. Do not edit it directly.
+Skill component source directories. **The authoritative catalog lives at [`hub/registry.yaml`](../hub/) as part of `hub-v2-manifest-state-profiles`.**
 
 ## Where things are now
 
@@ -41,19 +39,11 @@ The corresponding entry in `hub/registry.yaml` declares `kind: skill` and `path:
      agents_supported: [claude-code, codex, copilot, opencode]
      path: skills/<name>
    ```
-3. **Regenerate the mirror** so `skills/registry.yaml` stays in sync:
-   ```bash
-   python tools/regenerate-skills-registry-mirror.py
-   ```
-4. **Open a PR.** CI runs `tools/validate-registry.py` to confirm consistency across the catalog, the four primitive directories, and the mirror.
+3. **Open a PR.** CI runs `tools/validate-registry.py` to confirm consistency across the catalog and the four primitive directories.
 
 ## Adding rules / agents / hooks instead
 
 Skills are only one of four primitives. To add a rule, agent, or hook, use the corresponding directory (`rules/`, `agents/`, `hooks/`) and the appropriate `kind` in `hub/registry.yaml`. See [`hub/README.md`](../hub/README.md) for layout and entrypoint conventions.
-
-## Mirror lifecycle
-
-The mirror in `skills/registry.yaml` is removed by a follow-up cleanup change ~2026-07-22 (60 days post-apply of `hub-v2-manifest-state-profiles`). Update any internal tooling or docs that reference `skills/registry.yaml` to point at `hub/registry.yaml` before then.
 
 ## Validation
 
@@ -63,11 +53,8 @@ python tools/validate-registry.py
 
 # Consumer manifest fixtures
 python tools/validate-manifest.py tests/fixtures/manifests/<file>.yaml
-
-# Mirror in sync with hub/registry.yaml
-python tools/regenerate-skills-registry-mirror.py --check
 ```
 
-CI: `.github/workflows/validate-registry.yml` runs all three on every PR touching `hub/**`, `skills/**`, `rules/**`, `agents/**`, `hooks/**`, or the validators themselves.
+CI: `.github/workflows/validate-registry.yml` runs both on every PR touching `hub/**`, `skills/**`, `rules/**`, `agents/**`, `hooks/**`, or the validators themselves.
 
 > **TODO:** Both local and CI validation will migrate to `fdh validate-registry` once the Go implementation lands in the `fdh` repo. Tracked as part of `add-fdh-cli-distribution-and-interactive-init` change handoff.

@@ -1,4 +1,4 @@
-"""Tests for tools/validate-registry.py (schema v2 + profiles + mirror sync).
+"""Tests for tools/validate-registry.py (schema v2 + profiles).
 
 Run with stdlib unittest:
     python -m unittest tests.test_validate_registry

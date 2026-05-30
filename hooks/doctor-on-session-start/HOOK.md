@@ -1,6 +1,7 @@
 ---
 name: doctor-on-session-start
 kind: hook
+version: 0.1.0 # x-release-please-version
 description: "Runs fdh doctor --quiet at every Claude Code SessionStart to surface drift early."
 agents_supported: [claude-code]
 tags: [doctor, drift-detection, session-lifecycle]
@@ -54,7 +55,7 @@ Field reference:
 
 ## How to modify or disable
 
-- **Modify the hook for the whole hub:** edit `hooks/doctor-on-session-start/hook.json`, regenerate the mirror with `tools/regenerate-skills-registry-mirror.py`, then have consumers run `fdh update`.
+- **Modify the hook for the whole hub:** edit `hooks/doctor-on-session-start/hook.json`, then have consumers run `fdh update`.
 - **Disable for one project:** remove the hook from that project's `.fdh/manifest.yaml` and run `fdh install`. The managed block in `.claude/settings.json` is automatically cleaned up.
 - **Disable globally for your user:** `fdh uninstall --scope user doctor-on-session-start`.
 - **Customize the `--quiet` behavior:** see `fdh doctor --help` for verbosity flags. If you want a slightly more verbose default, fork this hook into a project-local variant (rename to `doctor-on-session-start-verbose` and adjust the `command`).

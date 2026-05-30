@@ -55,7 +55,7 @@ hooks/<name>/{HOOK.md, hook.json}
 openspec/                  # the spec-driven workflow that drives this repo
 tools/                     # python validators (CI invokes these)
 tests/                     # python unit tests + manifest fixtures
-.github/workflows/         # CI: catalog + profile + mirror sync + fixtures
+.github/workflows/         # CI: catalog + profiles + fixtures
 ```
 
 ## Adding a component
@@ -65,7 +65,7 @@ See `hub/README.md` for the full how-to. tl;dr:
 1. Create `<kind>s/<name>/` with the entrypoint file (`SKILL.md`, `RULE.md`, `AGENT.md`, or `HOOK.md`).
 2. Add an entry to `hub/registry.yaml` with the matching `kind` and `path`.
 3. Optionally reference it from a profile in `hub/profiles.yaml`.
-4. Run `python tools/validate-registry.py && python tools/regenerate-skills-registry-mirror.py`.
+4. Run `python tools/validate-registry.py`.
 5. Open a PR — CI runs all validators on every push.
 
 ## Sibling repos
@@ -87,10 +87,9 @@ Active changes live under `openspec/changes/`; current capabilities under `opens
 ## Validation locally
 
 ```sh
-python tools/validate-registry.py                                # catalog + 4 kinds + profiles + mirror
+python tools/validate-registry.py                                # catalog + 4 kinds + profiles
 python tools/validate-manifest.py tests/fixtures/manifests/<...>.yaml
-python tools/regenerate-skills-registry-mirror.py --check        # mirror sync
-python -m unittest discover -s tests                             # 65 unit tests
+python -m unittest discover -s tests                             # unit tests
 ```
 
 CI runs all of these on every PR touching `hub/`, `skills/`, `rules/`, `agents/`, `hooks/`, `tools/`, or `tests/`.

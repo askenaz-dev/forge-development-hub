@@ -5,7 +5,6 @@ name: validate-registry
 # Blocks merge if:
 #   - hub/registry.yaml is malformed or inconsistent with the directory trees
 #   - hub/profiles.yaml references unknown components or has shape errors
-#   - skills/registry.yaml is stale vs hub/registry.yaml (mirror out of date)
 #   - any fixture manifest validates wrong (valid ones must pass, invalid ones must fail)
 #
 # TODO: replace `python tools/...` invocations with `fdh validate-registry`
@@ -21,7 +20,6 @@ on:
       - "hooks/**"
       - "tools/validate-registry.py"
       - "tools/validate-manifest.py"
-      - "tools/regenerate-skills-registry-mirror.py"
       - "tools/migrate-registry-v1-v2.py"
       - "tests/**"
       - ".github/workflows/validate-registry.yml"
@@ -35,7 +33,6 @@ on:
       - "hooks/**"
       - "tools/validate-registry.py"
       - "tools/validate-manifest.py"
-      - "tools/regenerate-skills-registry-mirror.py"
       - "tools/migrate-registry-v1-v2.py"
       - "tests/**"
       - ".github/workflows/validate-registry.yml"
@@ -50,7 +47,7 @@ jobs:
           python-version: "3.12"
       - name: Install PyYAML
         run: pip install --quiet "pyyaml>=6,<7"
-      - name: Validate hub/registry.yaml + hub/profiles.yaml + mirror sync
+      - name: Validate hub/registry.yaml + hub/profiles.yaml
         run: python tools/validate-registry.py
 
   validate-manifest-fixtures:
@@ -82,20 +79,6 @@ jobs:
             echo "OK: validator correctly rejected $f"
             echo "::endgroup::"
           done
-
-  mirror-sync-check:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-python@v5
-        with:
-          python-version: "3.12"
-      - name: Install PyYAML
-        run: pip install --quiet "pyyaml>=6,<7"
-      - name: skills/registry.yaml must be in sync with hub/registry.yaml
-        # --check exits 1 if stale; CI fails. Authors should run the script
-        # locally (without --check) to regenerate.
-        run: python tools/regenerate-skills-registry-mirror.py --check
 
   python-test-suite:
     runs-on: ubuntu-latest

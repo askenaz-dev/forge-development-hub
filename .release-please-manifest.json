@@ -1,0 +1,6 @@
+{
+  "skills/design-system": "0.1.0",
+  "rules/no-console-log": "0.1.0",
+  "agents/forge-pr-writer": "0.1.0",
+  "hooks/doctor-on-session-start": "0.1.0"
+}
