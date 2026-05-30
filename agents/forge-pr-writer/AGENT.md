@@ -1,7 +1,7 @@
 ---
 name: forge-pr-writer
 kind: agent
-version: 0.1.0 # x-release-please-version
+version: 0.2.0 # x-release-please-version
 description: "Generates pull request descriptions in Forge house style from a git diff or list of changed files."
 agents_supported: [claude-code]
 tools: [Read, Grep, Bash]
