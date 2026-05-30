@@ -79,7 +79,7 @@ names exist):
 
 ## Public vs internal/closed deployment
 
-- **Public hub** (`agent-skills.askenaz.dev`): anonymous reads; org members with
+- **Public hub** (`fdh.askenaz.dev`): anonymous reads; org members with
   Write contribute via branch + PR; external contributors via fork + PR.
 - **Internal/closed** (corporate self-host): compose **(a)** registry serving with
   `Bearer` / `Basic` / `mTLS` auth (the existing `hub-http-registry` mirror auth)
