@@ -39,15 +39,80 @@ schema_version: 1
 
 harnesses:
   # Harness `default` is the base bundle that `fdh init` pre-selects. Its
-  # membership is the catalog's `default: true` set — today one component of
-  # each primitive (skill + rule + agent + hook), so it also serves as the
-  # v2 schema smoke-test: if `default` validates clean, every kind +
-  # cross-reference path is exercised. As more components are marked
-  # `default: true` in registry.yaml, this harness grows with them.
+  # membership is the catalog's `default: true` set — today one component
+  # of each primitive (skill + rule + agent + hook) plus any extra
+  # defaults. It also serves as the v2 schema smoke-test: if `default`
+  # validates clean, every kind + cross-reference path is exercised. As
+  # more components are marked `default: true` in registry.yaml, this
+  # harness grows with them.
   default:
     description: "Base harness pre-selected by `fdh init` — the catalog's default components."
     owner_team: dx-platform
     skills: [design-system]
-    rules: [no-console-log]
+    rules: [no-console-log, no-hardcoded-secrets]
+    agents: [forge-pr-writer]
+    hooks: [doctor-on-session-start]
+
+  # Harness `backend-team` targets engineers building forge backend
+  # services (Go/Node services on the landing zone). Covers process
+  # (SDD), platform bootstrapping (landing-zone-deploy), architecture
+  # (patterns), quality gates (tech-stack), and security baseline
+  # (devsecops). Pulls every non-TS-only rule plus secrets prevention;
+  # skips the TS-specific no-any-cast.
+  backend-team:
+    description: "Stack for engineers building forge backend services — process, platform, architecture, quality gates, security."
+    owner_team: platform-engineering
+    skills:
+      - spec-driven-development
+      - tech-stack
+      - landing-zone-deploy
+      - architecture-patterns
+      - devsecops
+    rules:
+      - no-console-log
+      - no-todo-comments
+      - no-hardcoded-secrets
+    agents: [forge-pr-writer]
+    hooks: [doctor-on-session-start]
+
+  # Harness `frontend-team` targets engineers building forge web surfaces
+  # (Next.js / React on the design system). Covers design-system (UI
+  # canon), architecture patterns (component boundaries), tech-stack
+  # (linter config), and process. Pulls every TS-relevant rule — the
+  # no-any-cast rule earns its keep here.
+  frontend-team:
+    description: "Stack for engineers building forge web/UI — design system, component patterns, TS strictness, process."
+    owner_team: design-platform
+    skills:
+      - design-system
+      - architecture-patterns
+      - tech-stack
+      - spec-driven-development
+    rules:
+      - no-console-log
+      - no-any-cast
+      - no-todo-comments
+      - no-hardcoded-secrets
+    agents: [forge-pr-writer]
+    hooks: [doctor-on-session-start]
+
+  # Harness `appsec-team` targets the application-security guild.
+  # Centers on devsecops (primary skill); pulls landing-zone-deploy for
+  # Vault and secrets management context, architecture-patterns for
+  # threat-modeling surface, and SDD for proposing security changes
+  # through the standard process. Every security-relevant rule on by
+  # default.
+  appsec-team:
+    description: "Stack for the appsec guild — threat modeling, supply-chain security, secrets discipline, security-aware PRs."
+    owner_team: appsec
+    skills:
+      - devsecops
+      - landing-zone-deploy
+      - architecture-patterns
+      - spec-driven-development
+    rules:
+      - no-hardcoded-secrets
+      - no-console-log
+      - no-todo-comments
     agents: [forge-pr-writer]
     hooks: [doctor-on-session-start]

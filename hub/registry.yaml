@@ -114,6 +114,36 @@ components:
     agents_supported: [claude-code, codex, copilot, opencode]
     path: rules/no-console-log
 
+  - name: no-todo-comments
+    kind: rule
+    description: Prohibits naked TODO/FIXME/XXX/HACK/BUG comments in committed source; require a tracker reference (issue, ADR, or spec) so unfinished work is auditable instead of buried.
+    owner_team: dx-platform
+    tags: [code-quality, debt-tracking, comments, process]
+    default: false
+    min_fdh_version: "0.4.0"
+    agents_supported: [claude-code, codex, copilot, opencode]
+    path: rules/no-todo-comments
+
+  - name: no-any-cast
+    kind: rule
+    description: "Prohibits the TypeScript escape hatches `as any`, `: any`, and `<any>` in committed source; force a real type, `unknown` + narrowing, or a documented `// @ts-expect-error` instead."
+    owner_team: dx-platform
+    tags: [typescript, type-safety, quality, strictness]
+    default: false
+    min_fdh_version: "0.4.0"
+    agents_supported: [claude-code, codex, copilot, opencode]
+    path: rules/no-any-cast
+
+  - name: no-hardcoded-secrets
+    kind: rule
+    description: Prohibits committed source/config containing API keys, OAuth tokens, AWS/GCP/Azure credentials, JWT bearers, database URIs with embedded passwords, or PEM-encoded private keys. Use environment variables (read from Vault) or the project's secret manager instead.
+    owner_team: appsec
+    tags: [security, secrets, devsecops, vault, supply-chain]
+    default: true
+    min_fdh_version: "0.4.0"
+    agents_supported: [claude-code, codex, copilot, opencode]
+    path: rules/no-hardcoded-secrets
+
   # --- agents --------------------------------------------------------------
   - name: forge-pr-writer
     kind: agent
