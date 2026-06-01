@@ -17,6 +17,21 @@
       "component": "rules/no-console-log",
       "extra-files": ["RULE.md"]
     },
+    "rules/no-todo-comments": {
+      "release-type": "simple",
+      "component": "rules/no-todo-comments",
+      "extra-files": ["RULE.md"]
+    },
+    "rules/no-any-cast": {
+      "release-type": "simple",
+      "component": "rules/no-any-cast",
+      "extra-files": ["RULE.md"]
+    },
+    "rules/no-hardcoded-secrets": {
+      "release-type": "simple",
+      "component": "rules/no-hardcoded-secrets",
+      "extra-files": ["RULE.md"]
+    },
     "agents/forge-pr-writer": {
       "release-type": "simple",
       "component": "agents/forge-pr-writer",
