@@ -1,6 +1,9 @@
 {
   "skills/design-system": "0.1.0",
   "rules/no-console-log": "0.1.0",
+  "rules/no-todo-comments": "0.1.0",
+  "rules/no-any-cast": "0.1.0",
+  "rules/no-hardcoded-secrets": "0.1.0",
   "agents/forge-pr-writer": "0.1.0",
   "hooks/doctor-on-session-start": "0.1.0"
 }
