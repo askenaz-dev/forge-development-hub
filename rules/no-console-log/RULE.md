@@ -1,7 +1,7 @@
 ---
 name: no-console-log
 kind: rule
-version: 0.1.0 # x-release-please-version
+version: 0.2.0 # x-release-please-version
 scope: ["**/*.{ts,tsx,js,jsx}"]
 severity: warning
 agents_supported: [claude-code, codex, copilot, opencode]
