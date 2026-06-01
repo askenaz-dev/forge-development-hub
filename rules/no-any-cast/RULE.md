@@ -1,7 +1,7 @@
 ---
 name: no-any-cast
 kind: rule
-version: 0.1.0 # x-release-please-version
+version: 0.2.0 # x-release-please-version
 scope: ["**/*.{ts,tsx}"]
 severity: error
 agents_supported: [claude-code, codex, copilot, opencode]

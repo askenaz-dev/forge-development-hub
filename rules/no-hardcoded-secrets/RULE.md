@@ -1,7 +1,7 @@
 ---
 name: no-hardcoded-secrets
 kind: rule
-version: 0.1.0 # x-release-please-version
+version: 0.2.0 # x-release-please-version
 scope: ["**/*.{ts,tsx,js,jsx,go,py,rs,java,kt,swift,rb,yaml,yml,toml,ini,env,sh,ps1}"]
 severity: error
 agents_supported: [claude-code, codex, copilot, opencode]
