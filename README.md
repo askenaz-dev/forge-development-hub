@@ -8,7 +8,7 @@ The canonical catalog of AI coding components (skills, rules, agents, hooks) pub
 npx @askenaz-dev/fdh init
 ```
 
-That runs a wizard: detects which AI agent(s) you have installed (Claude Code, Codex, Copilot, OpenCode), lets you pick a profile, and materializes the right files into your project. No prior install of `fdh` needed.
+That runs a wizard: detects which AI agent(s) you have installed (Claude Code, Codex, Copilot, OpenCode), lets you pick a harness, and materializes the right files into your project. No prior install of `fdh` needed.
 
 To make it permanent:
 
@@ -31,11 +31,11 @@ Four primitives, all listed in one catalog:
 | `agent` | Specialized subagent + tools | `forge-pr-writer` — generates PR descriptions in house style |
 | `hook` | Event-triggered command | `doctor-on-session-start` — runs `fdh doctor --quiet` at session start |
 
-Curated bundles (`profiles.yaml`) let you grab a set with a single line:
+Curated bundles (`harnesses.yaml`) let you grab a set with a single line:
 
 ```yaml
 # .fdh/manifest.yaml
-profile: minimal     # exercises all four primitives end-to-end
+harness: default     # exercises all four primitives end-to-end
 ```
 
 ## Repository layout
@@ -43,7 +43,7 @@ profile: minimal     # exercises all four primitives end-to-end
 ```
 hub/
 ├── registry.yaml          # schema v2, all 4 primitives discriminated by `kind`
-├── profiles.yaml          # curated bundles consumers reference
+├── harnesses.yaml          # curated bundles consumers reference
 ├── README.md              # layout + add-a-component flow
 └── CONSUMER-CONTRACT.md   # schemas of .fdh/manifest.yaml, .fdh/lock.yaml, ~/.fdh/state.json
 
@@ -55,7 +55,7 @@ hooks/<name>/{HOOK.md, hook.json}
 openspec/                  # the spec-driven workflow that drives this repo
 tools/                     # python validators (CI invokes these)
 tests/                     # python unit tests + manifest fixtures
-.github/workflows/         # CI: catalog + profiles + fixtures
+.github/workflows/         # CI: catalog + harnesses + fixtures
 ```
 
 ## Adding a component
@@ -64,7 +64,7 @@ See `hub/README.md` for the full how-to. tl;dr:
 
 1. Create `<kind>s/<name>/` with the entrypoint file (`SKILL.md`, `RULE.md`, `AGENT.md`, or `HOOK.md`).
 2. Add an entry to `hub/registry.yaml` with the matching `kind` and `path`.
-3. Optionally reference it from a profile in `hub/profiles.yaml`.
+3. Optionally reference it from a harness in `hub/harnesses.yaml`.
 4. Run `python tools/validate-registry.py`.
 5. Open a PR — CI runs all validators on every push.
 
@@ -87,7 +87,7 @@ Active changes live under `openspec/changes/`; current capabilities under `opens
 ## Validation locally
 
 ```sh
-python tools/validate-registry.py                                # catalog + 4 kinds + profiles
+python tools/validate-registry.py                                # catalog + 4 kinds + harnesses
 python tools/validate-manifest.py tests/fixtures/manifests/<...>.yaml
 python -m unittest discover -s tests                             # unit tests
 ```

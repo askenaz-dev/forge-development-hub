@@ -26,7 +26,7 @@ that flow and the permission model (capability `hub-contribution-policy`).
 |---|---|---|
 | **1 — Merge** | The contribution PR can't merge without review | Required CI checks + a **non-author CODEOWNERS approval**; **no self-merge** |
 | **2 — Publish** | A version isn't published until a publisher acts | **Publisher** merges the release-please PR → tag `<kind>/<name>@<semver>` → signed bundle |
-| **3 — Adopt** | A merged component isn't auto-installed | Stays `default: false` until an **admin** sets `default: true` or adds it to a profile |
+| **3 — Adopt** | A merged component isn't auto-installed | Stays `default: false` until an **admin** sets `default: true` or adds it to a harness |
 
 A component can be merged and published yet remain opt-in forever (gate 3 never flipped).
 
@@ -42,7 +42,7 @@ not by identity federation.
 | `fdh skill share` (open PR) | Write (or fork) | `author` | — |
 | Approve a contribution PR | CODEOWNERS review | `reviewer` | per-namespace team |
 | Merge the release PR (publish) | Maintain/Admin, restricted | `publisher` | — |
-| Set `default` / profiles | Admin on `hub/` | `admin` | — |
+| Set `default` / harnesses | Admin on `hub/` | `admin` | — |
 
 **Naming coherence (task 1.4):** a namespace's GitHub team, its CODEOWNERS owner,
 and the Keycloak group that maps to `reviewer` for that namespace SHARE A NAME
@@ -79,7 +79,7 @@ names exist):
 
 ## Public vs internal/closed deployment
 
-- **Public hub** (`agent-skills.askenaz.dev`): anonymous reads; org members with
+- **Public hub** (`fdh.askenaz.dev`): anonymous reads; org members with
   Write contribute via branch + PR; external contributors via fork + PR.
 - **Internal/closed** (corporate self-host): compose **(a)** registry serving with
   `Bearer` / `Basic` / `mTLS` auth (the existing `hub-http-registry` mirror auth)

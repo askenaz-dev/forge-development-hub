@@ -7,7 +7,7 @@ Skill component source directories. **The authoritative catalog lives at [`hub/r
 | Concern | Location |
 |---|---|
 | Catalog (all primitives, not just skills) | [`hub/registry.yaml`](../hub/registry.yaml) |
-| Profiles (curated bundles) | [`hub/profiles.yaml`](../hub/profiles.yaml) |
+| Harnesses (curated bundles) | [`hub/harnesses.yaml`](../hub/harnesses.yaml) |
 | Layout + four-primitive overview | [`hub/README.md`](../hub/README.md) |
 | Consumer manifest/lock/state schemas | [`hub/CONSUMER-CONTRACT.md`](../hub/CONSUMER-CONTRACT.md) |
 | Skill source directories | this directory (`skills/<name>/`) |

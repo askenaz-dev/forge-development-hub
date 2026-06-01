@@ -21,7 +21,7 @@ Since `hub-v2-manifest-state-profiles`, the hub publishes **four primitives** di
 
 The authoritative catalog lives in **`hub/registry.yaml`** (schema v2). Hub admins edit it to declare each component's metadata (`name`, `kind`, `description`, `owner_team`, `tags`, `default`, `min_fdh_version`, `agents_supported`, `path`). The `default: true|false` flag here is the single source of truth — any `default` declared inside a component's own frontmatter is ignored by `fdh init`. CI validates the registry on every PR (`.github/workflows/validate-registry.yml`, runs `python tools/validate-registry.py`); see `hub/README.md` for the "add a new component" flow.
 
-Curated bundles of components live in **`hub/profiles.yaml`** (a profile references components from one or more kinds). A consumer references a profile from its `.fdh/manifest.yaml` and may extend or restrict it.
+Curated bundles of components live in **`hub/harnesses.yaml`** (a harness references components from one or more kinds). A consumer references a harness from its `.fdh/manifest.yaml` and may extend or restrict it.
 
 `hub/registry.yaml` is the sole catalog path. The legacy `skills/registry.yaml` mirror has been removed.
 
@@ -29,7 +29,7 @@ Curated bundles of components live in **`hub/profiles.yaml`** (a profile referen
 
 A consumer project that adopts FDH owns three artifacts (schemas documented in [`hub/CONSUMER-CONTRACT.md`](hub/CONSUMER-CONTRACT.md)):
 
-- **`.fdh/manifest.yaml`** — committed; declarative intent ("I want profile X plus these extras"). Edited by humans.
+- **`.fdh/manifest.yaml`** — committed; declarative intent ("I want harness X plus these extras"). Edited by humans.
 - **`.fdh/lock.yaml`** — committed; reproducible snapshot of the last `fdh install` (`hub_commit`, expanded components, integrity hashes). Written by `fdh install`.
 - **`~/.fdh/state.json`** — NOT committed; per-machine inventory enabling `fdh list-installed`, `fdh repair`, `fdh uninstall --dry-run`. Written by every `fdh` command.
 

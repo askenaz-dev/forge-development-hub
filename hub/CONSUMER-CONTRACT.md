@@ -16,18 +16,18 @@ Plus a per-component marker (`.fdh-managed.yaml`) and a sectioned block in `.git
 
 ### Purpose
 
-Declare what the project wants. The single line `profile: minimal` is enough for most projects; teams that need finer control combine a profile with `extends:` or list components explicitly.
+Declare what the project wants. The single line `harness: default` is enough for most projects; teams that need finer control combine a harness with `extends:` or list components explicitly.
 
 ### Schema
 
 ```yaml
 schema_version: 1
 
-# OPTIONAL — reference a curated profile from hub/profiles.yaml.
+# OPTIONAL — reference a curated harness from hub/harnesses.yaml.
 # If omitted, the explicit lists below are the only source.
-profile: <profile-name>
+harness: <harness-name>
 
-# OPTIONAL — extend or restrict the chosen profile.
+# OPTIONAL — extend or restrict the chosen harness.
 extends:
   add_skills:    [<name>, ...]
   add_rules:     [<name>, ...]
@@ -38,8 +38,8 @@ extends:
   remove_agents: [<name>, ...]
   remove_hooks:  [<name>, ...]
 
-# OPTIONAL — explicit lists. If used with `profile:`, they ADD to the profile's
-# expansion (combine with `extends.add_*`). If used without `profile:`, they are
+# OPTIONAL — explicit lists. If used with `harness:`, they ADD to the harness's
+# expansion (combine with `extends.add_*`). If used without `harness:`, they are
 # the only components installed.
 skills:
   - <name>
@@ -51,10 +51,10 @@ hooks:    [...]
 
 ### Resolution order at `fdh install`
 
-1. If `profile:` is set, expand it from `hub/profiles.yaml` into the four component lists.
+1. If `harness:` is set, expand it from `hub/harnesses.yaml` into the four component lists.
 2. Apply `extends.add_*` lists on top.
 3. Apply `extends.remove_*` lists last (idempotent — removing a name not in the set is a no-op + warning).
-4. If explicit `skills:`/`rules:`/`agents:`/`hooks:` lists are present, **union** them with the profile result.
+4. If explicit `skills:`/`rules:`/`agents:`/`hooks:` lists are present, **union** them with the harness result.
 5. Result is written to `.fdh/lock.yaml` with versions + integrity hashes.
 
 ### Validation
@@ -63,26 +63,26 @@ hooks:    [...]
 python tools/validate-manifest.py path/to/.fdh/manifest.yaml
 ```
 
-The validator confirms: schema_version is supported, profile (if referenced) exists in `hub/profiles.yaml`, every component name resolves to a real catalog entry of the matching kind. Removes of non-existent components are permissive (legacy cleanup is OK).
+The validator confirms: schema_version is supported, harness (if referenced) exists in `hub/harnesses.yaml`, every component name resolves to a real catalog entry of the matching kind. Removes of non-existent components are permissive (legacy cleanup is OK).
 
-### Example: minimal
+### Example: default
 
 ```yaml
 schema_version: 1
-profile: minimal
+harness: default
 ```
 
-### Example: profile + extension
+### Example: harness + extension
 
 ```yaml
 schema_version: 1
-profile: minimal
+harness: default
 extends:
   add_skills:    [i18n-helper]
   remove_hooks:  [doctor-on-session-start]
 ```
 
-### Example: no profile, explicit only
+### Example: no harness, explicit only
 
 ```yaml
 schema_version: 1
@@ -104,7 +104,7 @@ A byte-deterministic snapshot of what the last `fdh install` resolved, so two de
 schema_version: 1
 hub_commit: <SHA of the hub at resolve time>
 resolved_at: <ISO 8601 timestamp>
-resolved_from_profile: <profile-name>   # informational; not used for resolution
+resolved_from_harness: <harness-name>   # informational; not used for resolution
 
 skills:
   - name: <name>

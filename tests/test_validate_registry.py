@@ -1,4 +1,4 @@
-"""Tests for tools/validate-registry.py (schema v2 + profiles).
+"""Tests for tools/validate-registry.py (schema v2 + harnesses).
 
 Run with stdlib unittest:
     python -m unittest tests.test_validate_registry
@@ -142,7 +142,7 @@ class TestUniqueness(unittest.TestCase):
         self.assertEqual(errs, [])
 
 
-class TestProfileEntry(unittest.TestCase):
+class TestHarnessEntry(unittest.TestCase):
     def setUp(self) -> None:
         self.components_idx = {
             "skill": {"design-system", "code-review"},
@@ -151,72 +151,72 @@ class TestProfileEntry(unittest.TestCase):
             "hook": {"doctor-on-session-start"},
         }
 
-    def test_valid_minimal_profile(self) -> None:
-        profile = {
+    def test_valid_default_harness(self) -> None:
+        harness = {
             "description": "Starter pack.",
             "owner_team": "dx-platform",
             "skills": ["design-system"],
             "rules": ["no-console-log"],
         }
-        errs = vr.validate_profile_entry("minimal", profile, self.components_idx)
+        errs = vr.validate_harness_entry("default", harness, self.components_idx)
         self.assertEqual(errs, [])
 
-    def test_profile_missing_description(self) -> None:
-        profile = {"owner_team": "x", "skills": ["design-system"]}
-        errs = vr.validate_profile_entry("p", profile, self.components_idx)
+    def test_harness_missing_description(self) -> None:
+        harness = {"owner_team": "x", "skills": ["design-system"]}
+        errs = vr.validate_harness_entry("p", harness, self.components_idx)
         self.assertTrue(any("description" in e for e in errs))
 
-    def test_profile_references_unknown_component(self) -> None:
-        profile = {
+    def test_harness_references_unknown_component(self) -> None:
+        harness = {
             "description": "x",
             "owner_team": "x",
             "rules": ["does-not-exist"],
         }
-        errs = vr.validate_profile_entry("p", profile, self.components_idx)
+        errs = vr.validate_harness_entry("p", harness, self.components_idx)
         self.assertTrue(any("unknown rule 'does-not-exist'" in e for e in errs))
 
-    def test_profile_references_component_with_wrong_kind(self) -> None:
-        profile = {
+    def test_harness_references_component_with_wrong_kind(self) -> None:
+        harness = {
             "description": "x",
             "owner_team": "x",
             # design-system is a skill, not a rule
             "rules": ["design-system"],
         }
-        errs = vr.validate_profile_entry("p", profile, self.components_idx)
+        errs = vr.validate_harness_entry("p", harness, self.components_idx)
         self.assertTrue(any("unknown rule 'design-system'" in e for e in errs))
 
-    def test_profile_empty_must_reference_at_least_one(self) -> None:
-        profile = {"description": "x", "owner_team": "x"}
-        errs = vr.validate_profile_entry("p", profile, self.components_idx)
+    def test_harness_empty_must_reference_at_least_one(self) -> None:
+        harness = {"description": "x", "owner_team": "x"}
+        errs = vr.validate_harness_entry("p", harness, self.components_idx)
         self.assertTrue(any("at least one component" in e for e in errs))
 
-    def test_profile_lists_must_be_lists(self) -> None:
-        profile = {
+    def test_harness_lists_must_be_lists(self) -> None:
+        harness = {
             "description": "x",
             "owner_team": "x",
             "skills": "not-a-list",
         }
-        errs = vr.validate_profile_entry("p", profile, self.components_idx)
+        errs = vr.validate_harness_entry("p", harness, self.components_idx)
         self.assertTrue(any("must be a list" in e for e in errs))
 
 
-class TestProfilesTopLevel(unittest.TestCase):
+class TestHarnessesTopLevel(unittest.TestCase):
     def test_valid(self) -> None:
         self.assertEqual(
-            vr.validate_profiles_top_level({"schema_version": 1, "profiles": {}}),
+            vr.validate_harnesses_top_level({"schema_version": 1, "harnesses": {}}),
             [],
         )
 
     def test_missing_schema_version(self) -> None:
-        errs = vr.validate_profiles_top_level({"profiles": {}})
+        errs = vr.validate_harnesses_top_level({"harnesses": {}})
         self.assertTrue(any("schema_version" in e for e in errs))
 
     def test_unsupported_version(self) -> None:
-        errs = vr.validate_profiles_top_level({"schema_version": 2, "profiles": {}})
+        errs = vr.validate_harnesses_top_level({"schema_version": 2, "harnesses": {}})
         self.assertTrue(any("unsupported" in e for e in errs))
 
-    def test_profiles_must_be_mapping(self) -> None:
-        errs = vr.validate_profiles_top_level({"schema_version": 1, "profiles": []})
+    def test_harnesses_must_be_mapping(self) -> None:
+        errs = vr.validate_harnesses_top_level({"schema_version": 1, "harnesses": []})
         self.assertTrue(any("must be a mapping" in e for e in errs))
 
 

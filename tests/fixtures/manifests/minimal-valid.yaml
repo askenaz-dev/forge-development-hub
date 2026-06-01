@@ -1,4 +1,4 @@
-# Fixture: manifest using `profile: minimal` without extensions.
+# Fixture: manifest using `harness: default` without extensions.
 # Expected: validate-manifest.py exits 0.
 schema_version: 1
-profile: minimal
+harness: default

@@ -3,12 +3,13 @@
 
 Verifies:
   - schema_version is supported (currently 1).
-  - If `profile:` is referenced, the profile exists in hub/profiles.yaml.
+  - If `harness:` is referenced, the harness exists in hub/harnesses.yaml.
+    (`profile:` is accepted as a deprecated alias with a warning.)
   - If `extends:` is present, each referenced component (add_/remove_) exists
     in hub/registry.yaml with the matching kind.
   - If explicit `skills:`/`rules:`/`agents:`/`hooks:` lists are present, each
     name resolves to an existing component of that kind.
-  - At least one of profile/skills/rules/agents/hooks is declared.
+  - At least one of harness/skills/rules/agents/hooks is declared.
 
 Usage:
     python tools/validate-manifest.py <path-to-manifest.yaml>
@@ -36,7 +37,7 @@ except ImportError:
 
 REPO_ROOT = Path(__file__).resolve().parent.parent
 HUB_REGISTRY = REPO_ROOT / "hub" / "registry.yaml"
-HUB_PROFILES = REPO_ROOT / "hub" / "profiles.yaml"
+HUB_HARNESSES = REPO_ROOT / "hub" / "harnesses.yaml"
 
 SUPPORTED_MANIFEST_SCHEMA_VERSIONS = {1}
 SUPPORTED_KINDS = {"skill", "rule", "agent", "hook"}
@@ -86,31 +87,48 @@ def validate_manifest_top_level(manifest: object) -> list[str]:
 
 def validate_manifest_against_catalog(
     manifest: dict,
-    profiles_data: dict | None,
+    harnesses_data: dict | None,
     components_idx: dict[str, set[str]],
 ) -> list[str]:
     errors: list[str] = []
     declared_anything = False
 
-    # Profile reference
-    profile_name = manifest.get("profile")
-    if profile_name is not None:
+    # Harness reference. `harness:` is canonical; `profile:` is a deprecated
+    # alias accepted for one migration window (warns, does not fail). If both
+    # are present, `harness:` wins and `profile:` is ignored with a warning.
+    harness_name = manifest.get("harness")
+    legacy_profile = manifest.get("profile")
+    if legacy_profile is not None:
+        if harness_name is None:
+            harness_name = legacy_profile
+            print(
+                "  ⚠ manifest: `profile:` is deprecated — rename it to `harness:`",
+                file=sys.stderr,
+            )
+        else:
+            print(
+                "  ⚠ manifest: both `harness:` and `profile:` set — "
+                "`profile:` is ignored (use `harness:` only)",
+                file=sys.stderr,
+            )
+
+    if harness_name is not None:
         declared_anything = True
-        if not isinstance(profile_name, str):
+        if not isinstance(harness_name, str):
             errors.append(
-                f"manifest: `profile` must be a string, "
-                f"got {type(profile_name).__name__}"
+                f"manifest: `harness` must be a string, "
+                f"got {type(harness_name).__name__}"
             )
-        elif profiles_data is None or not isinstance(profiles_data.get("profiles"), dict):
+        elif harnesses_data is None or not isinstance(harnesses_data.get("harnesses"), dict):
             errors.append(
-                f"manifest: profile '{profile_name}' referenced but "
-                f"hub/profiles.yaml has no profiles defined"
+                f"manifest: harness '{harness_name}' referenced but "
+                f"hub/harnesses.yaml has no harnesses defined"
             )
-        elif profile_name not in profiles_data["profiles"]:
-            available = sorted(profiles_data["profiles"].keys())
+        elif harness_name not in harnesses_data["harnesses"]:
+            available = sorted(harnesses_data["harnesses"].keys())
             errors.append(
-                f"manifest: profile '{profile_name}' does not exist in "
-                f"hub/profiles.yaml (available: {available})"
+                f"manifest: harness '{harness_name}' does not exist in "
+                f"hub/harnesses.yaml (available: {available})"
             )
 
     # extends block
@@ -212,12 +230,12 @@ def main(argv: list[str] | None = None) -> int:
         return 2
 
     registry = _load_yaml(HUB_REGISTRY, "hub/registry.yaml")
-    profiles_data = None
-    if HUB_PROFILES.exists():
+    harnesses_data = None
+    if HUB_HARNESSES.exists():
         try:
-            profiles_data = yaml.safe_load(HUB_PROFILES.read_text(encoding="utf-8"))
+            harnesses_data = yaml.safe_load(HUB_HARNESSES.read_text(encoding="utf-8"))
         except yaml.YAMLError as exc:
-            print(f"error: failed to parse hub/profiles.yaml: {exc}", file=sys.stderr)
+            print(f"error: failed to parse hub/harnesses.yaml: {exc}", file=sys.stderr)
             return 2
 
     components_idx = _index_components_by_kind(registry if isinstance(registry, dict) else {})
@@ -227,7 +245,7 @@ def main(argv: list[str] | None = None) -> int:
 
     if isinstance(manifest, dict):
         errors.extend(
-            validate_manifest_against_catalog(manifest, profiles_data, components_idx)
+            validate_manifest_against_catalog(manifest, harnesses_data, components_idx)
         )
 
     if errors:
@@ -238,8 +256,10 @@ def main(argv: list[str] | None = None) -> int:
 
     decl_summary: list[str] = []
     if isinstance(manifest, dict):
-        if manifest.get("profile"):
-            decl_summary.append(f"profile={manifest['profile']}")
+        if manifest.get("harness"):
+            decl_summary.append(f"harness={manifest['harness']}")
+        elif manifest.get("profile"):
+            decl_summary.append(f"harness={manifest['profile']} (via deprecated profile:)")
         for kind in SUPPORTED_KINDS:
             key = f"{kind}s"
             if manifest.get(key):

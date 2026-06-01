@@ -1,13 +1,13 @@
 # hub/
 
-Authoritative source of the Forge Development Hub catalog and profiles. This directory replaces the v1 layout where everything lived under `skills/`.
+Authoritative source of the Forge Development Hub catalog and harnesses. This directory replaces the v1 layout where everything lived under `skills/`.
 
 ## Layout
 
 ```
 hub/
 ├── registry.yaml          # v2 catalog of all components (skills, rules, agents, hooks)
-├── profiles.yaml          # curated bundles a consumer manifest can reference
+├── harnesses.yaml          # curated bundles a consumer manifest can reference
 ├── README.md              # this file
 └── CONSUMER-CONTRACT.md   # schemas for .fdh/manifest.yaml, .fdh/lock.yaml, ~/.fdh/state.json
 ```
@@ -32,38 +32,38 @@ hooks/<name>/          # HOOK.md + hook.json
 
 All four are listed in a unified `registry.yaml` discriminated by the `kind` field.
 
-## Profiles
+## Harnesses
 
-A **profile** is a named bundle of components a consumer can reference with a single line:
+A **harness** is a named bundle of components a consumer can reference with a single line:
 
 ```yaml
 # Consumer's .fdh/manifest.yaml
-profile: minimal
+harness: default
 ```
 
-instead of enumerating every component. Profiles live in `profiles.yaml`, are curated by `dx-platform` (or another designated owner), and may be **extended** or **restricted** by the consumer:
+instead of enumerating every component. Harnesses live in `harnesses.yaml`, are curated by `dx-platform` (or another designated owner), and may be **extended** or **restricted** by the consumer:
 
 ```yaml
 # Consumer's .fdh/manifest.yaml
-profile: forge-frontend
+harness: forge-frontend
 extends:
   add_skills: [i18n-helper]
   remove_rules: [no-console-log]
 ```
 
-The expanded list is what gets resolved into `.fdh/lock.yaml`; the profile reference is informational.
+The expanded list is what gets resolved into `.fdh/lock.yaml`; the harness reference is informational.
 
 ## Relationship with the consumer
 
 Consumer repos own three artifacts:
 
-- **`.fdh/manifest.yaml`** — committed; declares intent ("I want profile X plus these extras").
+- **`.fdh/manifest.yaml`** — committed; declares intent ("I want harness X plus these extras").
 - **`.fdh/lock.yaml`** — committed; the exact resolution from the last `fdh install` (versions, integrity hashes, hub commit).
 - **`~/.fdh/state.json`** — NOT committed; per-machine ledger so `fdh list-installed`, `fdh repair`, `fdh uninstall --dry-run` work without scanning every project.
 
 Schemas for the three are documented in [`CONSUMER-CONTRACT.md`](./CONSUMER-CONTRACT.md).
 
-The hub itself only owns `registry.yaml` and `profiles.yaml`; the rest is consumer state.
+The hub itself only owns `registry.yaml` and `harnesses.yaml`; the rest is consumer state.
 
 ## Running validators locally
 
@@ -86,7 +86,7 @@ CI: `.github/workflows/validate-registry.yml` runs them on every PR touching the
 1. Create the source directory under the matching kind: `rules/no-secrets/`, `agents/code-reviewer/`, etc.
 2. Add the entrypoint file (`RULE.md`, `AGENT.md`, `HOOK.md`, or `SKILL.md`) with required frontmatter, including a SemVer `version` — new components start at `version: 0.1.0`. The frontmatter `version` is the source of truth for the component's published version; the release pipeline writes bumps back into it (see capability `component-versioning-and-release`). `python tools/validate-registry.py` enforces that every component declares a valid SemVer `version`.
 3. Add an entry to `hub/registry.yaml` with the correct `kind` and a matching `path`.
-4. If the component should be part of a profile, reference it from `hub/profiles.yaml`.
+4. If the component should be part of a harness, reference it from `hub/harnesses.yaml`.
 5. Run `python tools/validate-registry.py` locally; fix errors.
 6. Open PR. CI runs the same checks; merge only when green.
 
@@ -101,7 +101,7 @@ If your working copy of this hub still lives under the old `forge-development-hu
 ## See also
 
 - `openspec/specs/hub-registry-v2/spec.md` — the v2 schema spec.
-- `openspec/specs/hub-profiles/spec.md` — the profiles spec.
+- `openspec/specs/hub-harnesses/spec.md` — the harnesses spec.
 - `openspec/specs/consumer-manifest-and-lock/spec.md` — the manifest + lock contract.
 - `openspec/specs/installation-state-ledger/spec.md` — the state.json contract.
 - `openspec/specs/hub-rules-primitive/spec.md`, `hub-agents-primitive/spec.md`, `hub-hooks-primitive/spec.md` — the new primitives.
