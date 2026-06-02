@@ -1,0 +1,26 @@
+{
+  "schema_version": 1,
+  "namespace": "design-platform",
+  "name": "design-system",
+  "description": "Forge design system rules, tokens, and component catalog for any UI work.",
+  "owner_team": "design-platform",
+  "tags": [
+    "ui",
+    "react",
+    "tailwind",
+    "accessibility",
+    "design-tokens",
+    "forge-identity"
+  ],
+  "latest": "1.0.0",
+  "versions": [
+    {
+      "version": "1.0.0",
+      "content_hash": "6fbbd1654c64f34f8aca05441882ee7868926ea8480293d0692431cf0094ae16",
+      "published_at": "2026-06-02T00:52:20Z",
+      "published_by": "registry-producer",
+      "scan_status": "none",
+      "status": "active"
+    }
+  ]
+}

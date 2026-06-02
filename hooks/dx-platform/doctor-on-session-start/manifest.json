@@ -1,0 +1,23 @@
+{
+  "schema_version": 1,
+  "namespace": "dx-platform",
+  "name": "doctor-on-session-start",
+  "description": "Runs fdh doctor --quiet at every Claude Code SessionStart to surface drift early.",
+  "owner_team": "dx-platform",
+  "tags": [
+    "doctor",
+    "drift-detection",
+    "session-lifecycle"
+  ],
+  "latest": "1.0.0",
+  "versions": [
+    {
+      "version": "1.0.0",
+      "content_hash": "d273858cca63d310440545bf666f8eac95eed33a1357bcdc549fe59f01da0ce7",
+      "published_at": "2026-06-02T00:52:20Z",
+      "published_by": "registry-producer",
+      "scan_status": "none",
+      "status": "active"
+    }
+  ]
+}

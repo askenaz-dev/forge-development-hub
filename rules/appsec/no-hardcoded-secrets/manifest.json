@@ -1,0 +1,25 @@
+{
+  "schema_version": 1,
+  "namespace": "appsec",
+  "name": "no-hardcoded-secrets",
+  "description": "Prohibits committed source/config containing API keys, OAuth tokens, AWS/GCP/Azure credentials, JWT bearers, database URIs with embedded passwords, or PEM-encoded private keys. Use environment variables (read from Vault) or the project's secret manager instead.",
+  "owner_team": "appsec",
+  "tags": [
+    "security",
+    "secrets",
+    "devsecops",
+    "vault",
+    "supply-chain"
+  ],
+  "latest": "1.0.0",
+  "versions": [
+    {
+      "version": "1.0.0",
+      "content_hash": "8c29fab38824e7f8516cdf55773e7804d4c6cacfe76c98b4766bd49702a99ab5",
+      "published_at": "2026-06-02T00:52:20Z",
+      "published_by": "registry-producer",
+      "scan_status": "none",
+      "status": "active"
+    }
+  ]
+}

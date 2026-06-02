@@ -1,0 +1,24 @@
+{
+  "schema_version": 1,
+  "namespace": "architecture-guild",
+  "name": "architecture-patterns",
+  "description": "Reference architecture patterns and design principles applied across forge services. Covers service boundaries, data ownership, API design, event-driven patterns, and integration approaches. Use when designing a new system, evaluating an existing one, or arguing for a refactor.",
+  "owner_team": "architecture-guild",
+  "tags": [
+    "patterns",
+    "boundaries",
+    "events",
+    "api-design"
+  ],
+  "latest": "1.0.0",
+  "versions": [
+    {
+      "version": "1.0.0",
+      "content_hash": "816a01c7b448d7d1f68893c0e0b5c18afbed9b29497c275a273753313e08a475",
+      "published_at": "2026-06-02T00:52:20Z",
+      "published_by": "registry-producer",
+      "scan_status": "none",
+      "status": "active"
+    }
+  ]
+}

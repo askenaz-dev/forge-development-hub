@@ -1,0 +1,24 @@
+{
+  "schema_version": 1,
+  "namespace": "dx-platform",
+  "name": "no-todo-comments",
+  "description": "Prohibits naked TODO/FIXME/XXX/HACK/BUG comments in committed source; require a tracker reference (issue, ADR, or spec) so unfinished work is auditable instead of buried.",
+  "owner_team": "dx-platform",
+  "tags": [
+    "code-quality",
+    "debt-tracking",
+    "comments",
+    "process"
+  ],
+  "latest": "1.0.0",
+  "versions": [
+    {
+      "version": "1.0.0",
+      "content_hash": "d45d990ff1b69bbdfe8d0f321ac63e8a65cf3320b5c886d2d2f2054c64333f7a",
+      "published_at": "2026-06-02T00:52:20Z",
+      "published_by": "registry-producer",
+      "scan_status": "none",
+      "status": "active"
+    }
+  ]
+}

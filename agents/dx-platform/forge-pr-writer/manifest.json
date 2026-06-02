@@ -1,0 +1,24 @@
+{
+  "schema_version": 1,
+  "namespace": "dx-platform",
+  "name": "forge-pr-writer",
+  "description": "Generates pull request descriptions in Forge house style from a git diff or list of changed files.",
+  "owner_team": "dx-platform",
+  "tags": [
+    "pr",
+    "documentation",
+    "forge-style",
+    "code-review"
+  ],
+  "latest": "1.0.0",
+  "versions": [
+    {
+      "version": "1.0.0",
+      "content_hash": "71b2709dd401ba16570a453fd198b5225b498449f5956735e2549cf9d124503b",
+      "published_at": "2026-06-02T00:52:20Z",
+      "published_by": "registry-producer",
+      "scan_status": "none",
+      "status": "active"
+    }
+  ]
+}

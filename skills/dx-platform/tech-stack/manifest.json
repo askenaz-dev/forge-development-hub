@@ -1,0 +1,24 @@
+{
+  "schema_version": 1,
+  "namespace": "dx-platform",
+  "name": "tech-stack",
+  "description": "forge's approved technology stack reference plus the code-quality gates every service must pass. Pulls the canonical stack from the platform's authenticated registry and enforces linter + SonarLint conventions. Use when starting a new service, validating a technology choice, or wiring up local quality gates.",
+  "owner_team": "dx-platform",
+  "tags": [
+    "tech-stack",
+    "code-quality",
+    "sonarlint",
+    "linters"
+  ],
+  "latest": "1.0.0",
+  "versions": [
+    {
+      "version": "1.0.0",
+      "content_hash": "a8cbe5d4bd42a07c284e2f40b50df0fdaa099e9d6f34048e393439561e5e94d7",
+      "published_at": "2026-06-02T00:52:20Z",
+      "published_by": "registry-producer",
+      "scan_status": "none",
+      "status": "active"
+    }
+  ]
+}

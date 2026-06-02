@@ -1,0 +1,24 @@
+{
+  "schema_version": 1,
+  "namespace": "appsec",
+  "name": "devsecops",
+  "description": "Security review + DevSecOps practices for forge services. Covers threat modeling, SAST/DAST gates, dependency + container scanning, secret management via Vault, runtime security, and the shift-left checklist every PR runs through. Use when reviewing security posture, wiring security into a pipeline, or onboarding a new service to the platform.",
+  "owner_team": "appsec",
+  "tags": [
+    "devsecops",
+    "shift-left",
+    "threat-modeling",
+    "vault"
+  ],
+  "latest": "1.0.0",
+  "versions": [
+    {
+      "version": "1.0.0",
+      "content_hash": "737986b243e1fbe7a2835da6f0dd69fc591ee4bc60daf95b278f7aed611549e8",
+      "published_at": "2026-06-02T00:52:20Z",
+      "published_by": "registry-producer",
+      "scan_status": "none",
+      "status": "active"
+    }
+  ]
+}

@@ -1,0 +1,25 @@
+{
+  "schema_version": 1,
+  "namespace": "platform-engineering",
+  "name": "landing-zone-deploy",
+  "description": "Stand up a new service on forge's landing zone — five GitLab repos covering infrastructure (Terraform), GitOps (Flux), IAM, networking, and secrets (Vault). Use when bootstrapping a new service from scratch or migrating an existing one onto the landing zone.",
+  "owner_team": "platform-engineering",
+  "tags": [
+    "landing-zone",
+    "gitops",
+    "flux",
+    "terraform",
+    "vault"
+  ],
+  "latest": "1.0.0",
+  "versions": [
+    {
+      "version": "1.0.0",
+      "content_hash": "ff40a4f4141a33b0e1cae5f6487d28d0d43955c092db823813207c3dfe61c4e7",
+      "published_at": "2026-06-02T00:52:20Z",
+      "published_by": "registry-producer",
+      "scan_status": "none",
+      "status": "active"
+    }
+  ]
+}

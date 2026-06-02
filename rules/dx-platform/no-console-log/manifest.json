@@ -1,0 +1,25 @@
+{
+  "schema_version": 1,
+  "namespace": "dx-platform",
+  "name": "no-console-log",
+  "description": "Prohibits console.log/info/warn/error/debug in committed TS/JS source; use the project's logger instead.",
+  "owner_team": "dx-platform",
+  "tags": [
+    "typescript",
+    "javascript",
+    "logging",
+    "quality",
+    "observability"
+  ],
+  "latest": "1.0.0",
+  "versions": [
+    {
+      "version": "1.0.0",
+      "content_hash": "c227cbefd26e598c98399d18dd2c7899a99d87b3d7166f816058bc0ec4e65e99",
+      "published_at": "2026-06-02T00:52:20Z",
+      "published_by": "registry-producer",
+      "scan_status": "none",
+      "status": "active"
+    }
+  ]
+}

@@ -1,0 +1,24 @@
+{
+  "schema_version": 1,
+  "namespace": "dx-platform",
+  "name": "spec-driven-development",
+  "description": "Drive non-trivial changes through a four-phase spec-driven flow — explore, propose, apply, archive. Use when the user wants to introduce SDD discipline to a team, kick off a new change formally, or align on requirements before any implementation work begins.",
+  "owner_team": "dx-platform",
+  "tags": [
+    "sdd",
+    "openspec",
+    "methodology",
+    "process"
+  ],
+  "latest": "1.0.0",
+  "versions": [
+    {
+      "version": "1.0.0",
+      "content_hash": "77d0af8604adcd06a090ab370755ace22748724513bd442d3e1f34debaf4acaf",
+      "published_at": "2026-06-02T00:52:20Z",
+      "published_by": "registry-producer",
+      "scan_status": "none",
+      "status": "active"
+    }
+  ]
+}

@@ -1,0 +1,24 @@
+{
+  "schema_version": 1,
+  "namespace": "dx-platform",
+  "name": "no-any-cast",
+  "description": "Prohibits the TypeScript escape hatches `as any`, `: any`, and `\u003cany\u003e` in committed source; force a real type, `unknown` + narrowing, or a documented `// @ts-expect-error` instead.",
+  "owner_team": "dx-platform",
+  "tags": [
+    "typescript",
+    "type-safety",
+    "quality",
+    "strictness"
+  ],
+  "latest": "1.0.0",
+  "versions": [
+    {
+      "version": "1.0.0",
+      "content_hash": "d6627956838f063e55f0a2fdf2bb43768502157dca77b28af77457d33ca5489b",
+      "published_at": "2026-06-02T00:52:20Z",
+      "published_by": "registry-producer",
+      "scan_status": "none",
+      "status": "active"
+    }
+  ]
+}
