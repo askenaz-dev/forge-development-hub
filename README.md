@@ -1,6 +1,12 @@
 # Forge Development Hub
 
-The canonical catalog of AI coding components (skills, rules, agents, hooks) published for Forge developers. Discovered, installed, and updated via the `fdh` CLI.
+[![Validate registry](https://github.com/askenaz-dev/forge-development-hub/actions/workflows/validate-registry.yml/badge.svg)](https://github.com/askenaz-dev/forge-development-hub/actions/workflows/validate-registry.yml)
+[![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
+[![Portal](https://img.shields.io/badge/portal-fdh.askenaz.dev-1f6feb)](https://fdh.askenaz.dev)
+
+**The canonical catalog of AI coding components — write a skill, rule, agent, or hook once, and ship it byte-identical to every agent your team uses.**
+
+This repo is the source of truth for the **skills, rules, agents, and hooks** that power Forge developers' AI coding agents (Claude Code, Codex, Copilot, OpenCode). Components are authored here, published to a versioned, hash-verified registry, and either installed with the [`fdh`](https://github.com/askenaz-dev/forge-development-hub-cli) CLI or browsed in the [portal](https://fdh.askenaz.dev).
 
 ## Try it in 30 seconds
 
@@ -8,89 +14,87 @@ The canonical catalog of AI coding components (skills, rules, agents, hooks) pub
 npx @askenaz-dev/fdh init
 ```
 
-That runs a wizard: detects which AI agent(s) you have installed (Claude Code, Codex, Copilot, OpenCode), lets you pick a harness, and materializes the right files into your project. No prior install of `fdh` needed.
+A wizard detects which AI agent(s) you have (Claude Code, Codex, Copilot, OpenCode), lets you pick a harness, and materializes the right files into your project — no prior install of `fdh` needed. Make it permanent with `npm i -g @askenaz-dev/fdh`.
 
-To make it permanent:
+> **No Node?** The CLI also ships as a POSIX one-liner, a PowerShell script, and `.deb`/`.rpm` packages — see [the CLI quickstart](https://github.com/askenaz-dev/forge-development-hub-cli/blob/main/docs/quickstart.md).
 
-```sh
-npm i -g @askenaz-dev/fdh
-```
+## What's in the hub
 
-> **Don't have Node?** The CLI also ships as a POSIX one-liner, PowerShell script, `.deb`/`.rpm` packages, and eventually Homebrew / winget. See [`fdh/docs/quickstart.md`](https://github.com/askenaz-dev/forge-development-hub-cli/blob/main/docs/quickstart.md).
-
-## What you get
-
-`fdh init` resolves your project's `.fdh/manifest.yaml` against this hub's catalog (`hub/registry.yaml`) and produces a `.fdh/lock.yaml` snapshot. After that, every developer in your team runs `fdh install` and gets byte-identical AI tooling, regardless of their machine.
-
-Four primitives, all listed in one catalog:
+Four primitives, one catalog (`hub/registry.yaml`, schema v2), discriminated by `kind`:
 
 | Primitive | What it does | Example |
 |---|---|---|
-| `skill` | On-demand workflow guidance | `design-system` — Forge DS rules + component catalog |
-| `rule` | Always-on guideline scoped by glob | `no-console-log` — prohibits `console.log` in TS/JS |
-| `agent` | Specialized subagent + tools | `forge-pr-writer` — generates PR descriptions in house style |
-| `hook` | Event-triggered command | `doctor-on-session-start` — runs `fdh doctor --quiet` at session start |
+| `skill` | On-demand workflow guidance | [`design-system`](skills/design-system/) — Forge DS rules + component catalog |
+| `rule` | Always-on guideline scoped by glob | [`no-console-log`](rules/no-console-log/) — prohibits `console.log` in TS/JS |
+| `agent` | Specialized subagent + tools | [`forge-pr-writer`](agents/forge-pr-writer/) — PR descriptions in house style |
+| `hook` | Event-triggered command | [`doctor-on-session-start`](hooks/doctor-on-session-start/) — runs `fdh doctor` at session start |
 
-Curated bundles (`harnesses.yaml`) let you grab a set with a single line:
+Curated **harnesses** (`hub/harnesses.yaml`) bundle components across kinds so a consumer grabs a vetted set in one line:
 
 ```yaml
 # .fdh/manifest.yaml
 harness: default     # exercises all four primitives end-to-end
 ```
 
+`fdh init` resolves your `.fdh/manifest.yaml` against the catalog and writes a `.fdh/lock.yaml` snapshot — so every teammate runs `fdh install` and gets **byte-identical AI tooling**, regardless of machine.
+
+## How it fits together
+
+```mermaid
+flowchart LR
+  authors["authors<br/>skills · rules · agents · hooks"] -->|PR + 3 gates| reg[("hub/registry.yaml<br/>+ published bundles")]
+  reg --> portal["portal<br/>fdh.askenaz.dev"]
+  reg -->|fdh init / install| cli{{"fdh CLI"}}
+  cli --> agents[".claude · .github<br/>.codex · .opencode"]
+```
+
+## Why a hub
+
+- **One source, four agents.** Author once; the `fdh` CLI materializes into each ecosystem's conventions — no copy-paste drift.
+- **Versioned + verified.** Every component is published as a content-hashed bundle and security-scanned (`scan_status` shown in the portal).
+- **Governed contribution.** Components land through a reviewed PR flow with three gates (author → reviewer/publisher → admin adoption).
+- **Reproducible installs.** A committed lockfile pins exactly what each consumer project gets.
+
+## Documentation
+
+| Guide | For | Covers |
+|---|---|---|
+| **[Hub Guide](docs/hub-guide.md)** | everyone | what the hub is, the 4 primitives, **when to use which**, how components are consumed |
+| **[Authoring Guide](docs/authoring-guide.md)** | collaborators | per-kind frontmatter templates, the registry entry, local validation, PR flow, CLI **and** no-CLI paths |
+| **[Maintainer Runbook](docs/maintainer-runbook.md)** | admins | marking `default`, deprecating/yanking, the release pipeline, CODEOWNERS, `scan_status` |
+
+New here? Start with the **Hub Guide**, then the **Authoring Guide** to ship your first component.
+
+## Adding a component (tl;dr)
+
+1. Create `<kind>s/<name>/` with the entrypoint file (`SKILL.md` / `RULE.md` / `AGENT.md` / `HOOK.md`).
+2. Add an entry to `hub/registry.yaml` with the matching `kind` + `path`.
+3. (Optional) reference it from a harness in `hub/harnesses.yaml`.
+4. `python tools/validate-registry.py`.
+5. Open a PR — CI validates the catalog on every push.
+
+Full walkthrough + copy-pasteable templates: **[Authoring Guide](docs/authoring-guide.md)**.
+
 ## Repository layout
 
 ```
 hub/
-├── registry.yaml          # schema v2, all 4 primitives discriminated by `kind`
-├── harnesses.yaml          # curated bundles consumers reference
-├── README.md              # layout + add-a-component flow
-└── CONSUMER-CONTRACT.md   # schemas of .fdh/manifest.yaml, .fdh/lock.yaml, ~/.fdh/state.json
-
-skills/<name>/SKILL.md     # one directory per skill
-rules/<name>/RULE.md       # one directory per rule
-agents/<name>/AGENT.md     # one directory per agent
+├── registry.yaml         # schema v2 — all 4 primitives, discriminated by `kind`
+├── harnesses.yaml        # curated bundles consumers reference
+├── README.md             # layout + add-a-component flow
+└── CONSUMER-CONTRACT.md  # .fdh/manifest.yaml, .fdh/lock.yaml, ~/.fdh/state.json schemas
+skills/<name>/SKILL.md    # one directory per skill
+rules/<name>/RULE.md      # one directory per rule
+agents/<name>/AGENT.md    # one directory per agent
 hooks/<name>/{HOOK.md, hook.json}
-
-openspec/                  # the spec-driven workflow that drives this repo
-tools/                     # python validators (CI invokes these)
-tests/                     # python unit tests + manifest fixtures
-.github/workflows/         # CI: catalog + harnesses + fixtures
+docs/                     # hub guide, authoring guide, maintainer runbook
+tools/                    # python validators (CI invokes these)
+.github/workflows/        # CI: catalog + harnesses + fixtures
 ```
-
-## Adding a component
-
-See `hub/README.md` for the full how-to. tl;dr:
-
-1. Create `<kind>s/<name>/` with the entrypoint file (`SKILL.md`, `RULE.md`, `AGENT.md`, or `HOOK.md`).
-2. Add an entry to `hub/registry.yaml` with the matching `kind` and `path`.
-3. Optionally reference it from a harness in `hub/harnesses.yaml`.
-4. Run `python tools/validate-registry.py`.
-5. Open a PR — CI runs all validators on every push.
-
-## Documentation
-
-Deep guides live under [`docs/`](docs/):
-
-- **[Hub Guide](docs/hub-guide.md)** — what the hub is, the four primitives, **when to use which**, and how components are consumed (`fdh install` / the portal).
-- **[Authoring Guide](docs/authoring-guide.md)** — for collaborators: per-kind frontmatter templates, the `registry.yaml` entry, local validation, the PR flow, and the CLI **and** no-CLI contributor paths.
-- **[Maintainer Runbook](docs/maintainer-runbook.md)** — for admins: marking `default`, deprecating/yanking, the release pipeline, CODEOWNERS, and `scan_status`.
-
-## Sibling repos
-
-- **[`askenaz-dev/forge-development-hub-cli`](https://github.com/askenaz-dev/forge-development-hub-cli)** — the Go CLI + Next.js portal API. Lives in `C:/forge/fdh/`. Houses the `npm/` wrapper that ships `@askenaz-dev/fdh`.
-- **Renaming your local checkout?** See [`docs/operations/rename-checkout.md`](docs/operations/rename-checkout.md) for the step-by-step move from `C:\forge\forge-development-hub` to a new location.
 
 ## Specs & changes
 
-This repo uses OpenSpec for change management. Every non-trivial change passes through:
-
-1. **Explore** (`/opsx:explore`) — thinking partner mode, no code written.
-2. **Propose** (`/opsx:propose`) — scaffolds proposal + design + specs + tasks.
-3. **Apply** (`/opsx:apply`) — implements the tasks top-down, marks done.
-4. **Archive** (`/opsx:archive`) — moves the change to `openspec/changes/archive/YYYY-MM-DD-<name>/` and syncs delta specs into `openspec/specs/<capability>/spec.md`.
-
-Active changes live under `openspec/changes/`; current capabilities under `openspec/specs/`. Run `openspec list --json` to see what's in flight.
+Requirements for this repo's behavior (the `hub-*` capabilities) live in the OpenSpec workspace at **[askenaz-dev/forge-specs](https://github.com/askenaz-dev/forge-specs)** (`openspec/specs/`) — not in this repo. Changes move through Explore → Propose → Apply → Archive; run `openspec` from `forge-specs/`. Clone it and run `scripts/meta-clone` to lay this repo and the CLI out as siblings.
 
 ## Validation locally
 
@@ -100,8 +104,13 @@ python tools/validate-manifest.py tests/fixtures/manifests/<...>.yaml
 python -m unittest discover -s tests                             # unit tests
 ```
 
-CI runs all of these on every PR touching `hub/`, `skills/`, `rules/`, `agents/`, `hooks/`, `tools/`, or `tests/`.
+CI runs these on every PR touching `hub/`, `skills/`, `rules/`, `agents/`, `hooks/`, `tools/`, or `tests/`.
+
+## Sibling repos
+
+- **[`forge-development-hub-cli`](https://github.com/askenaz-dev/forge-development-hub-cli)** — the Go CLI + Next.js portal.
+- **[`forge-specs`](https://github.com/askenaz-dev/forge-specs)** — the OpenSpec workspace (all specs + changes).
 
 ## License
 
-MIT — see [LICENSE](LICENSE) if present, otherwise contact the maintainers.
+MIT — see [LICENSE](LICENSE).
