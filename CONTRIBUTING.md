@@ -6,6 +6,21 @@ may be opened, but a component is **not part of the hub until it is reviewed,
 merged, published, and (for default installs) adopted**. This document describes
 that flow and the permission model (capability `hub-contribution-policy`).
 
+## Documentation
+
+This page is the canonical reference for the **gates and permission model**. For
+the rest, see [`docs/`](docs/):
+
+- **[Authoring Guide](docs/authoring-guide.md)** — start here to add a component:
+  per-kind frontmatter templates, the `registry.yaml` entry, local validation,
+  and both the `fdh skill new/sync/share` path and a no-CLI (fork + manual edit +
+  PR) fallback.
+- **[Hub Guide](docs/hub-guide.md)** — what the hub is and **when to use** a
+  skill vs. rule vs. agent vs. hook.
+- **[Maintainer Runbook](docs/maintainer-runbook.md)** — for admins: marking
+  `default`, deprecating/yanking, the release pipeline, CODEOWNERS, and
+  `scan_status`.
+
 ## The authoring → contribution flow
 
 ```

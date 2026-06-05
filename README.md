@@ -68,6 +68,14 @@ See `hub/README.md` for the full how-to. tl;dr:
 4. Run `python tools/validate-registry.py`.
 5. Open a PR — CI runs all validators on every push.
 
+## Documentation
+
+Deep guides live under [`docs/`](docs/):
+
+- **[Hub Guide](docs/hub-guide.md)** — what the hub is, the four primitives, **when to use which**, and how components are consumed (`fdh install` / the portal).
+- **[Authoring Guide](docs/authoring-guide.md)** — for collaborators: per-kind frontmatter templates, the `registry.yaml` entry, local validation, the PR flow, and the CLI **and** no-CLI contributor paths.
+- **[Maintainer Runbook](docs/maintainer-runbook.md)** — for admins: marking `default`, deprecating/yanking, the release pipeline, CODEOWNERS, and `scan_status`.
+
 ## Sibling repos
 
 - **[`askenaz-dev/forge-development-hub-cli`](https://github.com/askenaz-dev/forge-development-hub-cli)** — the Go CLI + Next.js portal API. Lives in `C:/forge/fdh/`. Houses the `npm/` wrapper that ships `@askenaz-dev/fdh`.
