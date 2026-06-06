@@ -359,20 +359,43 @@ def validate_paths_and_orphans(entries: list) -> list[str]:
         declared_paths[path_str] = ident
         declared_dirs_per_kind[kind].add(abs_path)
 
-    # Orphan detection per kind directory
+    # Orphan detection per kind directory.
+    #
+    # A *source* component directory directly contains the kind's entrypoint
+    # file (e.g. skills/<name>/SKILL.md); every such directory must be declared
+    # in the registry, so an undeclared one is a genuine orphan.
+    #
+    # The registry producer (scripts/build-registry) ALSO writes *published*
+    # artifacts under <kind>/<owner_team>/<name>/ (manifest.json + versioned
+    # bundles) so the CLI's GitRegistry can fetch them. Those owner_team
+    # namespace directories are build output, NOT source components — they have
+    # no entrypoint file at their top level — and MUST NOT be flagged as
+    # orphans. We therefore only flag a directory that looks like a source
+    # component (has the entrypoint) yet is undeclared.
+    entrypoint_by_kind = {
+        "skill": "SKILL.md",
+        "rule": "RULE.md",
+        "agent": "AGENT.md",
+        "hook": "HOOK.md",
+    }
     for kind, kind_dir in KIND_DIRS.items():
         if not kind_dir.exists():
             continue
+        entrypoint = entrypoint_by_kind[kind]
         for child in kind_dir.iterdir():
             if not child.is_dir():
                 continue
-            if child.resolve() not in declared_dirs_per_kind[kind]:
-                rel = child.relative_to(REPO_ROOT)
-                errors.append(
-                    f"orphan: directory '{rel}' has no entry in "
-                    f"hub/registry.yaml with kind='{kind}' "
-                    f"(add an entry or remove the directory)"
-                )
+            if child.resolve() in declared_dirs_per_kind[kind]:
+                continue
+            # Skip published-artifact namespace dirs (no entrypoint here).
+            if not (child / entrypoint).is_file():
+                continue
+            rel = child.relative_to(REPO_ROOT)
+            errors.append(
+                f"orphan: directory '{rel}' has no entry in "
+                f"hub/registry.yaml with kind='{kind}' "
+                f"(add an entry or remove the directory)"
+            )
 
     return errors
 

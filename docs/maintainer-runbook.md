@@ -164,6 +164,26 @@ The reference producer derives each component's `versions[]` and each version's
 `hub_version` in `hub/registry.yaml` is an **informational marker only** and is
 not the source of any component's version.
 
+### On-disk layout: source vs published artifacts
+
+Each kind directory holds **two** different kinds of subdirectory — don't
+confuse them (this is why you see more folders on disk than the catalog lists):
+
+- **Source** (what you author/edit): `<kind>/<name>/` with the entrypoint file,
+  e.g. `skills/design-system/SKILL.md`. **Only these are catalog components** —
+  the catalog and the portal list exactly the source dirs declared in
+  `hub/registry.yaml` (12 today).
+- **Published artifacts** (build output — don't hand-edit): the producer writes
+  `<kind>/<owner_team>/<name>/manifest.json` + `versions/<v>/bundle.tar.gz`,
+  namespaced by `owner_team` (e.g. `skills/appsec/devsecops/…`). The CLI's
+  GitRegistry fetches manifests + bundles from these paths. They are **not**
+  extra components — they are the *published form* of the same source
+  components.
+
+`tools/validate-registry.py` distinguishes the two: a directory is an "orphan"
+only if it looks like a source component (has the entrypoint file) yet is
+missing from `hub/registry.yaml`; published-artifact namespace dirs are ignored.
+
 ---
 
 ## Permissions and CODEOWNERS
