@@ -18,7 +18,7 @@
       ],
       "latest_version": "1.0.0",
       "latest_hash": "6fbbd1654c64f34f8aca05441882ee7868926ea8480293d0692431cf0094ae16",
-      "scan_status": "none"
+      "scan_status": "pass"
     },
     {
       "kind": "skill",
@@ -34,7 +34,7 @@
       ],
       "latest_version": "1.0.0",
       "latest_hash": "77d0af8604adcd06a090ab370755ace22748724513bd442d3e1f34debaf4acaf",
-      "scan_status": "none"
+      "scan_status": "pass"
     },
     {
       "kind": "skill",
@@ -50,7 +50,7 @@
       ],
       "latest_version": "1.0.0",
       "latest_hash": "a8cbe5d4bd42a07c284e2f40b50df0fdaa099e9d6f34048e393439561e5e94d7",
-      "scan_status": "none"
+      "scan_status": "pass"
     },
     {
       "kind": "skill",
@@ -66,7 +66,7 @@
       ],
       "latest_version": "1.0.0",
       "latest_hash": "816a01c7b448d7d1f68893c0e0b5c18afbed9b29497c275a273753313e08a475",
-      "scan_status": "none"
+      "scan_status": "pass"
     },
     {
       "kind": "skill",
@@ -82,7 +82,7 @@
       ],
       "latest_version": "1.0.0",
       "latest_hash": "737986b243e1fbe7a2835da6f0dd69fc591ee4bc60daf95b278f7aed611549e8",
-      "scan_status": "none"
+      "scan_status": "pass"
     },
     {
       "kind": "skill",
@@ -99,7 +99,7 @@
       ],
       "latest_version": "1.0.0",
       "latest_hash": "ff40a4f4141a33b0e1cae5f6487d28d0d43955c092db823813207c3dfe61c4e7",
-      "scan_status": "none"
+      "scan_status": "pass"
     },
     {
       "kind": "rule",
@@ -116,7 +116,7 @@
       ],
       "latest_version": "1.0.0",
       "latest_hash": "c227cbefd26e598c98399d18dd2c7899a99d87b3d7166f816058bc0ec4e65e99",
-      "scan_status": "none"
+      "scan_status": "pass"
     },
     {
       "kind": "rule",
@@ -132,7 +132,7 @@
       ],
       "latest_version": "1.0.0",
       "latest_hash": "d45d990ff1b69bbdfe8d0f321ac63e8a65cf3320b5c886d2d2f2054c64333f7a",
-      "scan_status": "none"
+      "scan_status": "pass"
     },
     {
       "kind": "rule",
@@ -148,7 +148,7 @@
       ],
       "latest_version": "1.0.0",
       "latest_hash": "d6627956838f063e55f0a2fdf2bb43768502157dca77b28af77457d33ca5489b",
-      "scan_status": "none"
+      "scan_status": "pass"
     },
     {
       "kind": "rule",
@@ -165,7 +165,7 @@
       ],
       "latest_version": "1.0.0",
       "latest_hash": "8c29fab38824e7f8516cdf55773e7804d4c6cacfe76c98b4766bd49702a99ab5",
-      "scan_status": "none"
+      "scan_status": "pass"
     },
     {
       "kind": "agent",
@@ -181,7 +181,7 @@
       ],
       "latest_version": "1.0.0",
       "latest_hash": "71b2709dd401ba16570a453fd198b5225b498449f5956735e2549cf9d124503b",
-      "scan_status": "none"
+      "scan_status": "pass"
     },
     {
       "kind": "hook",
@@ -196,7 +196,7 @@
       ],
       "latest_version": "1.0.0",
       "latest_hash": "d273858cca63d310440545bf666f8eac95eed33a1357bcdc549fe59f01da0ce7",
-      "scan_status": "none"
+      "scan_status": "pass"
     }
   ]
 }
