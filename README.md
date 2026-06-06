@@ -4,9 +4,9 @@
 [![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 [![Portal](https://img.shields.io/badge/portal-fdh.askenaz.dev-1f6feb)](https://fdh.askenaz.dev)
 
-**The canonical catalog of AI coding components — write a skill, rule, agent, or hook once, and ship it byte-identical to every agent your team uses.**
+**The harness fabric for AI coding agents — author a skill, rule, agent, or hook once, weave it into a harness, and ship it byte-identical to every agent your team uses.**
 
-This repo is the source of truth for the **skills, rules, agents, and hooks** that power Forge developers' AI coding agents (Claude Code, Codex, Copilot, OpenCode). Components are authored here, published to a versioned, hash-verified registry, and either installed with the [`fdh`](https://github.com/askenaz-dev/forge-development-hub-cli) CLI or browsed in the [portal](https://fdh.askenaz.dev).
+This repo is the source of truth for the **skills, rules, agents, and hooks** that power Forge developers' AI coding agents (Claude Code, Codex, Copilot, OpenCode). Components are authored here, published to a versioned, hash-verified registry, bundled into **harnesses**, and either installed with the [`fdh`](https://github.com/askenaz-dev/forge-development-hub-cli) CLI or browsed in the [portal](https://fdh.askenaz.dev).
 
 ## Try it in 30 seconds
 
@@ -48,7 +48,7 @@ flowchart LR
   cli --> agents[".claude · .github<br/>.codex · .opencode"]
 ```
 
-## Why a hub
+## Why a harness fabric
 
 - **One source, four agents.** Author once; the `fdh` CLI materializes into each ecosystem's conventions — no copy-paste drift.
 - **Versioned + verified.** Every component is published as a content-hashed bundle and security-scanned (`scan_status` shown in the portal).
