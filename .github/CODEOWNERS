@@ -8,8 +8,17 @@
 # Target state: route each component to the GitHub team mapped from its
 # owner_team. Uncomment the per-team block below once the teams exist, and
 # add a line per new component (its owner_team → team). See CONTRIBUTING.md.
+#
+# Bot exclusion (capability portal-gitops-write, decision D3): the web-PR
+# contribution path is mediated by a portal-owned GitHub App ("the bot") that
+# opens PRs but cannot merge. The bot's identity MUST NOT appear as an owner in
+# this file, on ANY line. Branch protection requires a CODEOWNERS approval from
+# a reviewer who is NOT the PR author; since the bot authors web-path PRs, an
+# owner here is always a non-bot human/team — so the bot can never satisfy its
+# own required review. Keep it that way: never add the App / its bot account as
+# a code owner. A leaked bot token can therefore open PRs but never land one.
 
-# --- catch-all (transitional) ---
+# --- catch-all (transitional, NON-bot owner) ---
 *                                   @askenaz
 
 # --- target per-component routing (uncomment once teams are provisioned) ---
