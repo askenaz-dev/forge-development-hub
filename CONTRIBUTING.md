@@ -1,10 +1,14 @@
 # Contributing to the Forge Development Hub
 
 This hub publishes four component primitives — **skills, rules, agents, hooks** —
-consumed by the `fdh` CLI. Contribution is **GitHub-governed** and explicit: a PR
-may be opened, but a component is **not part of the hub until it is reviewed,
-merged, published, and (for default installs) adopted**. This document describes
-that flow and the permission model (capability `hub-contribution-policy`).
+consumed by the `fdh` CLI. Contribution is explicit: a PR may be opened (via the
+**CLI path**, governed by your GitHub permissions, or the parallel **web-PR
+path**, governed by your portal role — see
+[Two ways to *propose*](#two-ways-to-propose-the-cli-path-and-the-web-pr-path)),
+but a component is **not part of the hub until it is reviewed, merged, published,
+and (for default installs) adopted**. Both paths are propose-only and subject to
+the same gates; neither can merge. This document describes that flow and the
+permission model (capabilities `hub-contribution-policy`, `portal-gitops-write`).
 
 ## Documentation
 
@@ -63,6 +67,72 @@ not by identity federation.
 and the Keycloak group that maps to `reviewer` for that namespace SHARE A NAME
 (e.g. `appsec` for the `security` namespace). No Keycloak↔GitHub identity
 federation is required — the shared names give the operational benefit without it.
+
+### Two ways to *propose*: the CLI path and the web-PR path
+
+There are **two parallel ways to open a contribution PR**, each with its own
+authorization surface. Both are **propose-only** and both land on the *same* PR
+subject to the *same* gates — neither can merge or publish on its own
+(capability `portal-gitops-write`).
+
+| | **CLI path** (`fdh <kind> share`) | **Web-PR path** (portal) |
+|---|---|---|
+| Who authorizes | Your **GitHub** permissions (Write/fork), via `gh` | Your **portal role** (`author` / `publisher` / `admin`), via your portal session |
+| Who authors the PR | You (your GitHub identity) | The **bot** (a portal-owned GitHub App) |
+| GitHub account required | Yes | **No** — a portal user with no GitHub identity can still propose |
+| What it can do | Open a PR; never merges | Open a PR; **never merges** |
+
+The web-PR path is mediated by a portal-owned **GitHub App ("the bot")**. When an
+authorized portal user triggers an import, a harness edit, or a curate action,
+the portal validates their role, then the bot opens a PR on this repo. The portal
+**never persists catalog CONFIG** — the PR is the only artifact, so Git stays the
+source of truth (there is no draft store and no shadow catalog).
+
+Portal role → web action (re-enforced server-side, not just in the UI):
+
+| Portal role | Web action it unlocks | What the bot edits |
+|---|---|---|
+| `author`+ | **Import** a component | adds `skills/<name>/` + a `registry.yaml` entry (`default: false`) |
+| `publisher`+ | **Edit a harness** | edits only `hub/harnesses.yaml` |
+| `admin` | **Curate** (`default` flag, deprecate/yank) | edits `hub/registry.yaml` (+ the `default` harness atomically) |
+
+### Both paths are subject to the same three gates
+
+A web-PR-path PR is **just another non-merging PR**. It passes through the exact
+[three gates](#the-three-gates-not-automatically-part-of-the-hub) above:
+
+1. **Required CI** (`validate-registry`, `commitlint`) re-runs the same registry,
+   bundle/frontmatter, and security-scan checks on the PR — the authoritative
+   gate. (The portal also runs these validators server-side *before* opening the
+   PR, so a bad bundle fails fast with an actionable error instead of a red PR —
+   but CI is still the gate, never skipped.)
+2. **A non-author CODEOWNERS review** is required, from a reviewer who is **not**
+   the PR author. The bot authors web-path PRs and is **deliberately excluded
+   from CODEOWNERS** (see `.github/CODEOWNERS`), so it can never satisfy its own
+   review.
+3. **No self-merge.** Branch protection blocks the author from merging; publish
+   (gate 2) and adoption (gate 3) remain human publisher/admin actions.
+
+### The bot is Level-1: propose-only, cannot merge
+
+The GitHub App is scoped to **`forge-development-hub` only**, with **Contents:
+write** + **Pull requests: write** and **no** Administration permission and **no**
+merge capability. This is the security spine: **a leaked bot token cannot corrupt
+the catalog.** The worst it can do is open spammy PRs, which a human declines —
+because branch protection still requires passing CI *and* a non-bot CODEOWNERS
+approval *and* no self-merge before anything lands. The App's private key lives
+only in the API pod (wired via `secretKeyRef`), never in the browser or the web
+pod, and the installation token it mints is short-lived.
+
+### No GitHub identity federation (out of scope)
+
+The two surfaces stay **parallel**; they are **not** federated. A web-PR-path PR
+is authored by the bot, and the **PR body credits the requesting portal user and
+role** for attribution and audit — that credit is *not* an authorization signal
+(authorization is the role gate, enforced regardless of the credited name). An
+optional future "link your GitHub account" feature, which would let the portal
+open PRs authored by the *user's* GitHub identity, is **explicitly out of scope**
+for this change; attribution remains PR-body credit only.
 
 ### Team / namespace seed map
 
